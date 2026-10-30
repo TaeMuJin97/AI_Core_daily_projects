@@ -1,0 +1,4 @@
+# PPT 10쪽의 사전 준비 목록. Day2 핵심 과제의 실행 의존성은 아님.
+numpy
+pandas
+matplotlib

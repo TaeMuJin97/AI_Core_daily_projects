@@ -1,0 +1,27 @@
+[명령]
+python main.py
+
+[실제 정답 출력]
+{
+  "shape": [
+    3,
+    2
+  ],
+  "mean_ms": 200.0,
+  "max_ms": 300.0,
+  "seconds": [
+    [
+      0.1,
+      0.2
+    ],
+    [
+      0.15,
+      0.25
+    ],
+    [
+      0.2,
+      0.3
+    ]
+  ]
+}
+저장: outputs/latency_summary.json

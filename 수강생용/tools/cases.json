@@ -1,0 +1,2894 @@
+[
+  {
+    "id": "00-1-sample",
+    "exercise": "00",
+    "level": 1,
+    "path": "ex00_environment/01_기본필수/hello.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "AI 개발 Day 2 시작!\n"
+  },
+  {
+    "id": "00-2-sample",
+    "exercise": "00",
+    "level": 2,
+    "path": "ex00_environment/02_응용/hello.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "민지님, AI 개발 Day 2 시작!\n"
+  },
+  {
+    "id": "00-3-sample",
+    "exercise": "00",
+    "level": 3,
+    "path": "ex00_environment/03_심화/env_check.py",
+    "kind": "cli",
+    "stdin": "",
+    "contains": [
+      "Python: ",
+      "실행기: ",
+      "venv 사용: ",
+      "numpy: ",
+      "pandas: ",
+      "matplotlib: ",
+      "격리 이유 1: ",
+      "격리 이유 2: "
+    ],
+    "not_contains": [
+      "TODO"
+    ]
+  },
+  {
+    "id": "01-1-sample",
+    "exercise": "01",
+    "level": 1,
+    "path": "ex01_io_types/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "민지\n25\n5.5\n",
+    "expected_stdout": "이름: 현재 나이: 하루 학습시간: 민지님의 내년 나이: 26세\n하루 학습시간: 5.5시간\n"
+  },
+  {
+    "id": "01-1-zero",
+    "exercise": "01",
+    "level": 1,
+    "path": "ex01_io_types/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "준호\n0\n0\n",
+    "expected_stdout": "이름: 현재 나이: 하루 학습시간: 준호님의 내년 나이: 1세\n하루 학습시간: 0.0시간\n"
+  },
+  {
+    "id": "01-1-fraction",
+    "exercise": "01",
+    "level": 1,
+    "path": "ex01_io_types/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "서연\n30\n2.25\n",
+    "expected_stdout": "이름: 현재 나이: 하루 학습시간: 서연님의 내년 나이: 31세\n하루 학습시간: 2.2시간\n"
+  },
+  {
+    "id": "01-2-sample",
+    "exercise": "01",
+    "level": 2,
+    "path": "ex01_io_types/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "12000\n3\n2500\n",
+    "expected_stdout": "단가(원): 수량: 배송비(원): 소계: 36,000.0원\n부가세(소계 10%): 3,600.0원\n최종 결제금액: 42,100.0원\n"
+  },
+  {
+    "id": "01-2-zero",
+    "exercise": "01",
+    "level": 2,
+    "path": "ex01_io_types/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "0\n0\n0\n",
+    "expected_stdout": "단가(원): 수량: 배송비(원): 소계: 0.0원\n부가세(소계 10%): 0.0원\n최종 결제금액: 0.0원\n"
+  },
+  {
+    "id": "01-2-decimal-tax",
+    "exercise": "01",
+    "level": 2,
+    "path": "ex01_io_types/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "1999\n1\n3000\n",
+    "expected_stdout": "단가(원): 수량: 배송비(원): 소계: 1,999.0원\n부가세(소계 10%): 199.9원\n최종 결제금액: 5,198.9원\n"
+  },
+  {
+    "id": "01-3-sample",
+    "exercise": "01",
+    "level": 3,
+    "path": "ex01_io_types/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "125\n",
+    "expected_stdout": "총 분: 2시간 5분\n"
+  },
+  {
+    "id": "01-3-minutes-0",
+    "exercise": "01",
+    "level": 3,
+    "path": "ex01_io_types/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "0\n",
+    "expected_stdout": "총 분: 0시간 0분\n"
+  },
+  {
+    "id": "01-3-minutes-59",
+    "exercise": "01",
+    "level": 3,
+    "path": "ex01_io_types/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "59\n",
+    "expected_stdout": "총 분: 0시간 59분\n"
+  },
+  {
+    "id": "01-3-minutes-60",
+    "exercise": "01",
+    "level": 3,
+    "path": "ex01_io_types/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "60\n",
+    "expected_stdout": "총 분: 1시간 0분\n"
+  },
+  {
+    "id": "01-3-minutes-180",
+    "exercise": "01",
+    "level": 3,
+    "path": "ex01_io_types/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "180\n",
+    "expected_stdout": "총 분: 3시간 0분\n"
+  },
+  {
+    "id": "02-1-sample",
+    "exercise": "02",
+    "level": 1,
+    "path": "ex02_collections/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "점수: [82, 95, 76, 88]\n개수: 4\n합계: 341\n평균: 85.2\n최댓값: 95\n최솟값: 76\n"
+  },
+  {
+    "id": "02-2-sample",
+    "exercise": "02",
+    "level": 2,
+    "path": "ex02_collections/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "이름: 민지\n관심직무: AI Agent 개발자\n점수: [82, 95, 76, 88]\n평균: 85.2\n"
+  },
+  {
+    "id": "02-3-sample",
+    "exercise": "02",
+    "level": 3,
+    "path": "ex02_collections/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "공통 기술: ['Git', 'Python']\n전체 기술: ['Docker', 'Git', 'Python', 'SQL']\nA팀만: ['SQL']\nB팀만: ['Docker']\n"
+  },
+  {
+    "id": "03-1-sample",
+    "exercise": "03",
+    "level": 1,
+    "path": "ex03_conditions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "60\n",
+    "expected_stdout": "점수(0~100): PASS\n"
+  },
+  {
+    "id": "03-1-score-0",
+    "exercise": "03",
+    "level": 1,
+    "path": "ex03_conditions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "0\n",
+    "expected_stdout": "점수(0~100): REVIEW\n"
+  },
+  {
+    "id": "03-1-score-59.9",
+    "exercise": "03",
+    "level": 1,
+    "path": "ex03_conditions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "59.9\n",
+    "expected_stdout": "점수(0~100): REVIEW\n"
+  },
+  {
+    "id": "03-1-score-100",
+    "exercise": "03",
+    "level": 1,
+    "path": "ex03_conditions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "100\n",
+    "expected_stdout": "점수(0~100): PASS\n"
+  },
+  {
+    "id": "03-1-score--1",
+    "exercise": "03",
+    "level": 1,
+    "path": "ex03_conditions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "-1\n",
+    "expected_stdout": "점수(0~100): 점수는 0~100이어야 합니다.\n"
+  },
+  {
+    "id": "03-1-score-101",
+    "exercise": "03",
+    "level": 1,
+    "path": "ex03_conditions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "101\n",
+    "expected_stdout": "점수(0~100): 점수는 0~100이어야 합니다.\n"
+  },
+  {
+    "id": "03-2-sample",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "60000\ny\ny\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 0.0원\n할인액: 11,000.0원\n결제금액: 49,000.0원\n"
+  },
+  {
+    "id": "03-2-threshold-below",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "49999\nn\nn\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 3,000.0원\n할인액: 0.0원\n결제금액: 52,999.0원\n"
+  },
+  {
+    "id": "03-2-threshold-at",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "50000\nn\nn\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 0.0원\n할인액: 0.0원\n결제금액: 50,000.0원\n"
+  },
+  {
+    "id": "03-2-member-only",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "40000\ny\nn\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 3,000.0원\n할인액: 4,000.0원\n결제금액: 39,000.0원\n"
+  },
+  {
+    "id": "03-2-coupon-only",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "40000\nn\ny\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 3,000.0원\n할인액: 5,000.0원\n결제금액: 38,000.0원\n"
+  },
+  {
+    "id": "03-2-discount-cap",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "1000\ny\ny\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 3,000.0원\n할인액: 1,000.0원\n결제금액: 3,000.0원\n"
+  },
+  {
+    "id": "03-2-before-discount",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "50000\ny\ny\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 배송비: 0.0원\n할인액: 10,000.0원\n결제금액: 40,000.0원\n"
+  },
+  {
+    "id": "03-2-bad-amount",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "0\nn\nn\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 구매금액은 양수, 회원/쿠폰은 y 또는 n으로 입력하세요.\n"
+  },
+  {
+    "id": "03-2-bad-flag",
+    "exercise": "03",
+    "level": 2,
+    "path": "ex03_conditions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "50000\nY\nn\n",
+    "expected_stdout": "구매금액(원): 회원(y/n): 쿠폰(y/n): 구매금액은 양수, 회원/쿠폰은 y 또는 n으로 입력하세요.\n"
+  },
+  {
+    "id": "03-3-sample",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "65\ny\n",
+    "expected_stdout": "나이: 회원(y/n): 최종 요금: 6,300원\n"
+  },
+  {
+    "id": "03-3-age-18-n",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "18\nn\n",
+    "expected_stdout": "나이: 회원(y/n): 최종 요금: 8,000원\n"
+  },
+  {
+    "id": "03-3-age-18-y",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "18\ny\n",
+    "expected_stdout": "나이: 회원(y/n): 최종 요금: 7,200원\n"
+  },
+  {
+    "id": "03-3-age-19-n",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "19\nn\n",
+    "expected_stdout": "나이: 회원(y/n): 최종 요금: 12,000원\n"
+  },
+  {
+    "id": "03-3-age-64-y",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "64\ny\n",
+    "expected_stdout": "나이: 회원(y/n): 최종 요금: 10,800원\n"
+  },
+  {
+    "id": "03-3-age-65-n",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "65\nn\n",
+    "expected_stdout": "나이: 회원(y/n): 최종 요금: 7,000원\n"
+  },
+  {
+    "id": "03-3-negative-age",
+    "exercise": "03",
+    "level": 3,
+    "path": "ex03_conditions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "-1\nn\n",
+    "expected_stdout": "나이: 회원(y/n): 나이는 0 이상, 회원 여부는 y 또는 n으로 입력하세요.\n"
+  },
+  {
+    "id": "04-1-sample",
+    "exercise": "04",
+    "level": 1,
+    "path": "ex04_loops/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "10\n",
+    "expected_stdout": "N(0 이상의 정수): 전체 합: 55\n짝수 합: 30\n"
+  },
+  {
+    "id": "04-1-n-0",
+    "exercise": "04",
+    "level": 1,
+    "path": "ex04_loops/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "0\n",
+    "expected_stdout": "N(0 이상의 정수): 전체 합: 0\n짝수 합: 0\n"
+  },
+  {
+    "id": "04-1-n-1",
+    "exercise": "04",
+    "level": 1,
+    "path": "ex04_loops/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "1\n",
+    "expected_stdout": "N(0 이상의 정수): 전체 합: 1\n짝수 합: 0\n"
+  },
+  {
+    "id": "04-1-n-2",
+    "exercise": "04",
+    "level": 1,
+    "path": "ex04_loops/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "2\n",
+    "expected_stdout": "N(0 이상의 정수): 전체 합: 3\n짝수 합: 2\n"
+  },
+  {
+    "id": "04-1-n-9",
+    "exercise": "04",
+    "level": 1,
+    "path": "ex04_loops/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "9\n",
+    "expected_stdout": "N(0 이상의 정수): 전체 합: 45\n짝수 합: 20\n"
+  },
+  {
+    "id": "04-1-negative",
+    "exercise": "04",
+    "level": 1,
+    "path": "ex04_loops/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "-1\n",
+    "expected_stdout": "N(0 이상의 정수): N은 0 이상이어야 합니다.\n"
+  },
+  {
+    "id": "04-2-sample",
+    "exercise": "04",
+    "level": 2,
+    "path": "ex04_loops/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "1. 민지 | 평균 85.2\n2. 서연 | 평균 80.0\n3. 지후 | 평균 83.3\n"
+  },
+  {
+    "id": "04-3-sample",
+    "exercise": "04",
+    "level": 3,
+    "path": "ex04_loops/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "1\nPython\n1\nGit\n2\n9\n0\n",
+    "expected_stdout": "\n1=추가 | 2=목록 | 0=종료\n선택: 추가할 항목: 추가했습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 추가할 항목: 추가했습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 1. Python\n2. Git\n\n1=추가 | 2=목록 | 0=종료\n선택: 잘못된 명령입니다. 다시 입력하세요.\n\n1=추가 | 2=목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "04-3-empty-and-blank",
+    "exercise": "04",
+    "level": 3,
+    "path": "ex04_loops/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "2\n1\n   \n2\n0\n",
+    "expected_stdout": "\n1=추가 | 2=목록 | 0=종료\n선택: 등록된 항목이 없습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 추가할 항목: 빈 항목은 추가할 수 없습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 등록된 항목이 없습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "04-3-immediate-quit",
+    "exercise": "04",
+    "level": 3,
+    "path": "ex04_loops/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "0\n",
+    "expected_stdout": "\n1=추가 | 2=목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "05-1-sample",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "add 결과 1: 8\nadd 결과 2: 5\naverage 결과 1: 90.0\naverage 결과 2: 0.0\n민지: 85.2\n준호: 0.0\n"
+  },
+  {
+    "id": "05-1-add-positive",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "add",
+    "args": [
+      3,
+      5
+    ],
+    "expected_return": 8,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-1-add-mixed",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "add",
+    "args": [
+      -2,
+      7
+    ],
+    "expected_return": 5,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-1-add-zero",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "add",
+    "args": [
+      0,
+      0
+    ],
+    "expected_return": 0,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-1-add-float",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "add",
+    "args": [
+      1.5,
+      2.25
+    ],
+    "expected_return": 3.75,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-1-average-empty",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "average",
+    "args": [
+      []
+    ],
+    "expected_return": 0.0,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "05-1-average-one",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "average",
+    "args": [
+      [
+        100
+      ]
+    ],
+    "expected_return": 100,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        100
+      ]
+    }
+  },
+  {
+    "id": "05-1-average-two",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "average",
+    "args": [
+      [
+        0,
+        100
+      ]
+    ],
+    "expected_return": 50,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        0,
+        100
+      ]
+    }
+  },
+  {
+    "id": "05-1-average-three",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "average",
+    "args": [
+      [
+        1,
+        2,
+        3
+      ]
+    ],
+    "expected_return": 2,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "id": "05-1-format",
+    "exercise": "05",
+    "level": 1,
+    "path": "ex05_functions/01_기본필수/main.py",
+    "kind": "function",
+    "function": "format_result",
+    "args": [
+      "테스트",
+      12.34
+    ],
+    "expected_return": "테스트: 12.3",
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-sample",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "민지: 평균 90.0 | 유효 2개 | 제외 2개\n준호: 평가할 점수 없음 | 제외 2개\n서연: 평가할 점수 없음 | 제외 0개\n"
+  },
+  {
+    "id": "05-2-valid--1",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "is_valid_score",
+    "args": [
+      -1
+    ],
+    "expected_return": false,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-valid-0",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "is_valid_score",
+    "args": [
+      0
+    ],
+    "expected_return": true,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-valid-60",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "is_valid_score",
+    "args": [
+      60
+    ],
+    "expected_return": true,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-valid-100",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "is_valid_score",
+    "args": [
+      100
+    ],
+    "expected_return": true,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-valid-101",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "is_valid_score",
+    "args": [
+      101
+    ],
+    "expected_return": false,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-valid-80.5",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "is_valid_score",
+    "args": [
+      80.5
+    ],
+    "expected_return": true,
+    "expected_stdout": ""
+  },
+  {
+    "id": "05-2-filter-original",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "select_valid_scores",
+    "args": [
+      [
+        -1,
+        0,
+        60,
+        100,
+        101
+      ]
+    ],
+    "expected_return": [
+      0,
+      60,
+      100
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        -1,
+        0,
+        60,
+        100,
+        101
+      ]
+    }
+  },
+  {
+    "id": "05-2-summary-empty",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "summarize_student",
+    "args": [
+      {
+        "name": "A",
+        "scores": []
+      }
+    ],
+    "expected_return": "A: 평가할 점수 없음 | 제외 0개",
+    "expected_stdout": "",
+    "expected_args": {
+      "0": {
+        "name": "A",
+        "scores": []
+      }
+    }
+  },
+  {
+    "id": "05-2-summary-boundaries",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "summarize_student",
+    "args": [
+      {
+        "name": "B",
+        "scores": [
+          0,
+          100
+        ]
+      }
+    ],
+    "expected_return": "B: 평균 50.0 | 유효 2개 | 제외 0개",
+    "expected_stdout": "",
+    "expected_args": {
+      "0": {
+        "name": "B",
+        "scores": [
+          0,
+          100
+        ]
+      }
+    }
+  },
+  {
+    "id": "05-2-summary-all-invalid",
+    "exercise": "05",
+    "level": 2,
+    "path": "ex05_functions/02_응용/main.py",
+    "kind": "function",
+    "function": "summarize_student",
+    "args": [
+      {
+        "name": "C",
+        "scores": [
+          -1,
+          110
+        ]
+      }
+    ],
+    "expected_return": "C: 평가할 점수 없음 | 제외 2개",
+    "expected_stdout": "",
+    "expected_args": {
+      "0": {
+        "name": "C",
+        "scores": [
+          -1,
+          110
+        ]
+      }
+    }
+  },
+  {
+    "id": "05-3-sample",
+    "exercise": "05",
+    "level": 3,
+    "path": "ex05_functions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "2\n1\n  Python  \n1\n   \n2\n8\n0\n",
+    "expected_stdout": "\n1=추가 | 2=목록 | 0=종료\n선택: 등록된 항목이 없습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 추가할 항목: 추가했습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 추가할 항목: 빈 항목은 추가할 수 없습니다.\n\n1=추가 | 2=목록 | 0=종료\n선택: 1. Python\n\n1=추가 | 2=목록 | 0=종료\n선택: 잘못된 명령입니다. 다시 입력하세요.\n\n1=추가 | 2=목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "05-3-add-trim",
+    "exercise": "05",
+    "level": 3,
+    "path": "ex05_functions/03_심화/main.py",
+    "kind": "function",
+    "function": "add_item",
+    "args": [
+      [],
+      " Python "
+    ],
+    "expected_return": true,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "Python"
+      ]
+    }
+  },
+  {
+    "id": "05-3-add-blank",
+    "exercise": "05",
+    "level": 3,
+    "path": "ex05_functions/03_심화/main.py",
+    "kind": "function",
+    "function": "add_item",
+    "args": [
+      [
+        "Git"
+      ],
+      "   "
+    ],
+    "expected_return": false,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "Git"
+      ]
+    }
+  },
+  {
+    "id": "05-3-show-empty",
+    "exercise": "05",
+    "level": 3,
+    "path": "ex05_functions/03_심화/main.py",
+    "kind": "function",
+    "function": "show_items",
+    "args": [
+      []
+    ],
+    "expected_return": null,
+    "expected_stdout": "등록된 항목이 없습니다.\n",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "05-3-show-list",
+    "exercise": "05",
+    "level": 3,
+    "path": "ex05_functions/03_심화/main.py",
+    "kind": "function",
+    "function": "show_items",
+    "args": [
+      [
+        "Python",
+        "Git"
+      ]
+    ],
+    "expected_return": null,
+    "expected_stdout": "1. Python\n2. Git\n",
+    "expected_args": {
+      "0": [
+        "Python",
+        "Git"
+      ]
+    }
+  },
+  {
+    "id": "05-3-quit",
+    "exercise": "05",
+    "level": 3,
+    "path": "ex05_functions/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "0\n",
+    "expected_stdout": "\n1=추가 | 2=목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "06-1-sample",
+    "exercise": "06",
+    "level": 1,
+    "path": "ex06_command_parser/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "add Python\nADD AI Agent\nlist\nquit\n",
+    "expected_stdout": "명령> 추가했습니다.\n명령> 추가했습니다.\n명령> 1. Python\n2. AI Agent\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-1-edge-commands",
+    "exercise": "06",
+    "level": 1,
+    "path": "ex06_command_parser/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "list\nadd\n\naddx Python\nlist extra\nquit extra\nquit\n",
+    "expected_stdout": "명령> 등록된 항목이 없습니다.\n명령> 추가할 항목을 입력하세요.\n명령> 명령을 입력하세요.\n명령> 알 수 없는 명령입니다.\n명령> list에는 인수를 붙이지 않습니다.\n명령> quit에는 인수를 붙이지 않습니다.\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-1-mixed-case-quit",
+    "exercise": "06",
+    "level": 1,
+    "path": "ex06_command_parser/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "QUIT\n",
+    "expected_stdout": "명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-2-sample",
+    "exercise": "06",
+    "level": 2,
+    "path": "ex06_command_parser/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "add Python\nadd Python Data\nadd Git\nsearch python\nsearch Agent\nquit\n",
+    "expected_stdout": "명령> 추가했습니다.\n명령> 추가했습니다.\n명령> 추가했습니다.\n명령> 1. Python\n2. Python Data\n명령> 검색 결과가 없습니다.\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-2-search-empty",
+    "exercise": "06",
+    "level": 2,
+    "path": "ex06_command_parser/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "search\nsearch Python\nquit\n",
+    "expected_stdout": "명령> 검색어를 입력하세요.\n명령> 검색 결과가 없습니다.\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-2-preserve-spaces",
+    "exercise": "06",
+    "level": 2,
+    "path": "ex06_command_parser/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "ADD AI Agent Design\nSEARCH agent design\nquit\n",
+    "expected_stdout": "명령> 추가했습니다.\n명령> 1. AI Agent Design\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-3-sample",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "  ADD AI Agent  \nadd Python\nsearch agent\nlist\nquit\n",
+    "expected_stdout": "명령> 추가했습니다.\n명령> 추가했습니다.\n명령> 1. AI Agent\n명령> 1. AI Agent\n2. Python\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-3-edge-commands",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "list\nadd\n\naddx Python\nlist extra\nquit extra\nquit\n",
+    "expected_stdout": "명령> 등록된 항목이 없습니다.\n명령> 추가할 항목을 입력하세요.\n명령> 명령을 입력하세요.\n명령> 알 수 없는 명령입니다.\n명령> list에는 인수를 붙이지 않습니다.\n명령> quit에는 인수를 붙이지 않습니다.\n명령> 종료합니다.\n"
+  },
+  {
+    "id": "06-3-parse-words",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "parse_command",
+    "args": [
+      "  ADD AI Agent  "
+    ],
+    "expected_return": [
+      "add",
+      "AI Agent"
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "06-3-parse-blank",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "parse_command",
+    "args": [
+      " \t "
+    ],
+    "expected_return": [
+      "",
+      ""
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "06-3-parse-list",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "parse_command",
+    "args": [
+      "list"
+    ],
+    "expected_return": [
+      "list",
+      ""
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "06-3-parse-not-prefix",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "parse_command",
+    "args": [
+      "AdDx Python"
+    ],
+    "expected_return": [
+      "addx",
+      "Python"
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "06-3-parse-search",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "parse_command",
+    "args": [
+      "search  A B "
+    ],
+    "expected_return": [
+      "search",
+      "A B"
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "06-3-normalize",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "normalize_input",
+    "args": [
+      "  AI Agent  "
+    ],
+    "expected_return": "AI Agent",
+    "expected_stdout": ""
+  },
+  {
+    "id": "06-3-search-case",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "search_items",
+    "args": [
+      [
+        "AI Agent",
+        "Python",
+        "Agent tools"
+      ],
+      "aGeNt"
+    ],
+    "expected_return": [
+      "AI Agent",
+      "Agent tools"
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "AI Agent",
+        "Python",
+        "Agent tools"
+      ]
+    }
+  },
+  {
+    "id": "06-3-search-blank",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "search_items",
+    "args": [
+      [
+        "Python"
+      ],
+      "  "
+    ],
+    "expected_return": [],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "Python"
+      ]
+    }
+  },
+  {
+    "id": "06-3-add-blank",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "add_item",
+    "args": [
+      [],
+      " "
+    ],
+    "expected_return": false,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "06-3-add-clean",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "add_item",
+    "args": [
+      [
+        "Git"
+      ],
+      " Python "
+    ],
+    "expected_return": true,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "Git",
+        "Python"
+      ]
+    }
+  },
+  {
+    "id": "06-3-format",
+    "exercise": "06",
+    "level": 3,
+    "path": "ex06_command_parser/03_심화/main.py",
+    "kind": "function",
+    "function": "format_items",
+    "args": [
+      [
+        "Python",
+        "Git"
+      ]
+    ],
+    "expected_return": "1. Python\n2. Git",
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "Python",
+        "Git"
+      ]
+    }
+  },
+  {
+    "id": "07-1-sample",
+    "exercise": "07",
+    "level": 1,
+    "path": "ex07_idea_console/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "1\nStudyBot\n1\nPaperMate\n1\nDataHelper\n2\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 0=종료\n선택: 프로젝트명: 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 프로젝트명: 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 프로젝트명: 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 1. StudyBot\n2. PaperMate\n3. DataHelper\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-1-empty-invalid",
+    "exercise": "07",
+    "level": 1,
+    "path": "ex07_idea_console/01_기본필수/main.py",
+    "kind": "cli",
+    "stdin": "2\n1\n   \n8\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 0=종료\n선택: 등록된 아이디어가 없습니다.\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 프로젝트명: 프로젝트명을 입력하세요.\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 잘못된 명령입니다.\n\n1=등록 | 2=전체 목록 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-1-add-clean",
+    "exercise": "07",
+    "level": 1,
+    "path": "ex07_idea_console/01_기본필수/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      " StudyBot "
+    ],
+    "expected_return": true,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "StudyBot"
+      ]
+    }
+  },
+  {
+    "id": "07-1-add-empty",
+    "exercise": "07",
+    "level": 1,
+    "path": "ex07_idea_console/01_기본필수/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [
+        "StudyBot"
+      ],
+      " "
+    ],
+    "expected_return": false,
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        "StudyBot"
+      ]
+    }
+  },
+  {
+    "id": "07-1-list-empty",
+    "exercise": "07",
+    "level": 1,
+    "path": "ex07_idea_console/01_기본필수/main.py",
+    "kind": "function",
+    "function": "format_ideas",
+    "args": [
+      []
+    ],
+    "expected_return": "등록된 아이디어가 없습니다.",
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-1-list-three",
+    "exercise": "07",
+    "level": 1,
+    "path": "ex07_idea_console/01_기본필수/main.py",
+    "kind": "function",
+    "function": "format_ideas",
+    "args": [
+      [
+        "StudyBot",
+        "PaperMate",
+        "DataHelper"
+      ]
+    ],
+    "expected_return": "1. StudyBot\n2. PaperMate\n3. DataHelper",
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-2-sample",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "1\nStudyBot\n학습 자료 탐색\nResearcher\n응용\n1\nPaperMate\n논문 요약\nWriter\n심화\n1\nDataHelper\n표 데이터 안내\nPlanner\n기본필수\n2\n3\nSTUDY\n4\n심화\n5\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 1. StudyBot | 난이도: 응용\n   문제: 학습 자료 탐색\n   역할: Researcher\n2. PaperMate | 난이도: 심화\n   문제: 논문 요약\n   역할: Writer\n3. DataHelper | 난이도: 기본필수\n   문제: 표 데이터 안내\n   역할: Planner\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 검색어: 1. StudyBot | 난이도: 응용\n   문제: 학습 자료 탐색\n   역할: Researcher\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 필터 난이도: 1. PaperMate | 난이도: 심화\n   문제: 논문 요약\n   역할: Writer\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 기본필수: 1개\n응용: 1개\n심화: 1개\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-2-empty-data",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "2\n3\npython\n4\n심화\n5\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 등록된 아이디어가 없습니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 검색어: 검색 결과가 없습니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 필터 난이도: 해당 난이도의 아이디어가 없습니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 기본필수: 0개\n응용: 0개\n심화: 0개\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-2-bad-inputs",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "8\n3\n   \n4\n초급\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 잘못된 명령입니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 검색어: 검색어를 입력하세요.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 필터 난이도: 난이도는 기본필수·응용·심화 중 하나여야 합니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-2-duplicate-cli",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "cli",
+    "stdin": "1\nStudyBot\n학습 자료 탐색\nResearcher\n응용\n1\n studybot \n덮어쓰기\nWriter\n심화\n5\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 이미 등록된 프로젝트명입니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 기본필수: 0개\n응용: 1개\n심화: 0개\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-2-add-good",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      " Fresh ",
+      " 새 문제 ",
+      " Planner ",
+      " 응용 "
+    ],
+    "expected_return": [
+      true,
+      "아이디어 등록 완료."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "Fresh",
+          "problem": "새 문제",
+          "roles": "Planner",
+          "difficulty": "응용"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-add-duplicate",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        }
+      ],
+      " studybot ",
+      "변경할 문제",
+      "Writer",
+      "심화"
+    ],
+    "expected_return": [
+      false,
+      "이미 등록된 프로젝트명입니다."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-add-empty-name",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      " ",
+      "문제",
+      "Planner",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-2-add-empty-problem",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "  ",
+      "Planner",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-2-add-empty-role",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "문제",
+      "  ",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-2-add-invalid-level",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "문제",
+      "Planner",
+      "초급"
+    ],
+    "expected_return": [
+      false,
+      "난이도는 기본필수·응용·심화 중 하나여야 합니다."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-2-search-name",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ],
+      "STUDY"
+    ],
+    "expected_return": [
+      {
+        "name": "StudyBot",
+        "problem": "학습 자료 탐색",
+        "roles": "Researcher",
+        "difficulty": "응용"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-search-problem",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ],
+      "논문"
+    ],
+    "expected_return": [
+      {
+        "name": "PaperMate",
+        "problem": "논문 요약",
+        "roles": "Writer",
+        "difficulty": "심화"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-search-role",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ],
+      "WRITER"
+    ],
+    "expected_return": [
+      {
+        "name": "PaperMate",
+        "problem": "논문 요약",
+        "roles": "Writer",
+        "difficulty": "심화"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-search-none",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ],
+      "없는 키워드"
+    ],
+    "expected_return": [],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-search-blank",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ],
+      "   "
+    ],
+    "expected_return": [],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-filter",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "filter_by_difficulty",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ],
+      " 심화 "
+    ],
+    "expected_return": [
+      {
+        "name": "PaperMate",
+        "problem": "논문 요약",
+        "roles": "Writer",
+        "difficulty": "심화"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-stats-empty",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "count_by_difficulty",
+    "args": [
+      []
+    ],
+    "expected_return": {
+      "기본필수": 0,
+      "응용": 0,
+      "심화": 0
+    },
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-2-stats-all",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "count_by_difficulty",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    ],
+    "expected_return": {
+      "기본필수": 1,
+      "응용": 1,
+      "심화": 1
+    },
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": "Writer",
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": "Planner",
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-2-format-empty",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "format_ideas",
+    "args": [
+      []
+    ],
+    "expected_return": "등록된 아이디어가 없습니다.",
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-2-format-one",
+    "exercise": "07",
+    "level": 2,
+    "path": "ex07_idea_console/02_응용/main.py",
+    "kind": "function",
+    "function": "format_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        }
+      ]
+    ],
+    "expected_return": "1. StudyBot | 난이도: 응용\n   문제: 학습 자료 탐색\n   역할: Researcher",
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": "Researcher",
+          "difficulty": "응용"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-sample",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "1\nStudyBot\n학습 자료 탐색\nPlanner, Researcher, Writer, planner\n응용\n1\nPaperMate\n논문 요약\nResearcher, Writer\n심화\n1\nDataHelper\n표 데이터 안내\nPlanner\n기본필수\n2\n3\nSTUDY\n4\n심화\n5\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 1. StudyBot | 난이도: 응용\n   문제: 학습 자료 탐색\n   역할: Planner, Researcher, Writer\n2. PaperMate | 난이도: 심화\n   문제: 논문 요약\n   역할: Researcher, Writer\n3. DataHelper | 난이도: 기본필수\n   문제: 표 데이터 안내\n   역할: Planner\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 검색어: 1. StudyBot | 난이도: 응용\n   문제: 학습 자료 탐색\n   역할: Planner, Researcher, Writer\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 필터 난이도: 1. PaperMate | 난이도: 심화\n   문제: 논문 요약\n   역할: Researcher, Writer\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 기본필수: 1개\n응용: 1개\n심화: 1개\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-3-empty-data",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "2\n3\npython\n4\n심화\n5\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 등록된 아이디어가 없습니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 검색어: 검색 결과가 없습니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 필터 난이도: 해당 난이도의 아이디어가 없습니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 기본필수: 0개\n응용: 0개\n심화: 0개\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-3-bad-inputs",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "8\n3\n   \n4\n초급\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 잘못된 명령입니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 검색어: 검색어를 입력하세요.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 필터 난이도: 난이도는 기본필수·응용·심화 중 하나여야 합니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-3-duplicate-cli",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "cli",
+    "stdin": "1\nStudyBot\n학습 자료 탐색\nResearcher\n응용\n1\n studybot \n덮어쓰기\nWriter\n심화\n5\n0\n",
+    "expected_stdout": "\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 아이디어 등록 완료.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 프로젝트명: 해결할 문제: Agent 역할: 난이도(기본필수/응용/심화): 이미 등록된 프로젝트명입니다.\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 기본필수: 0개\n응용: 1개\n심화: 0개\n\n1=등록 | 2=전체 목록 | 3=검색 | 4=난이도 필터 | 5=난이도 통계 | 0=종료\n선택: 종료합니다.\n"
+  },
+  {
+    "id": "07-3-add-good",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      " Fresh ",
+      " 새 문제 ",
+      " Planner ",
+      " 응용 "
+    ],
+    "expected_return": [
+      true,
+      "아이디어 등록 완료."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "Fresh",
+          "problem": "새 문제",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "응용"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-add-duplicate",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        }
+      ],
+      " studybot ",
+      "변경할 문제",
+      "Writer",
+      "심화"
+    ],
+    "expected_return": [
+      false,
+      "이미 등록된 프로젝트명입니다."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-add-empty-name",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      " ",
+      "문제",
+      "Planner",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-3-add-empty-problem",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "  ",
+      "Planner",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-3-add-empty-role",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "문제",
+      "  ",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-3-add-invalid-level",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "문제",
+      "Planner",
+      "초급"
+    ],
+    "expected_return": [
+      false,
+      "난이도는 기본필수·응용·심화 중 하나여야 합니다."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-3-search-name",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ],
+      "STUDY"
+    ],
+    "expected_return": [
+      {
+        "name": "StudyBot",
+        "problem": "학습 자료 탐색",
+        "roles": [
+          "Planner",
+          "Researcher",
+          "Writer"
+        ],
+        "difficulty": "응용"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-search-problem",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ],
+      "논문"
+    ],
+    "expected_return": [
+      {
+        "name": "PaperMate",
+        "problem": "논문 요약",
+        "roles": [
+          "Researcher",
+          "Writer"
+        ],
+        "difficulty": "심화"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-search-role",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ],
+      "WRITER"
+    ],
+    "expected_return": [
+      {
+        "name": "StudyBot",
+        "problem": "학습 자료 탐색",
+        "roles": [
+          "Planner",
+          "Researcher",
+          "Writer"
+        ],
+        "difficulty": "응용"
+      },
+      {
+        "name": "PaperMate",
+        "problem": "논문 요약",
+        "roles": [
+          "Researcher",
+          "Writer"
+        ],
+        "difficulty": "심화"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-search-none",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ],
+      "없는 키워드"
+    ],
+    "expected_return": [],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-search-blank",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "search_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ],
+      "   "
+    ],
+    "expected_return": [],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-filter",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "filter_by_difficulty",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ],
+      " 심화 "
+    ],
+    "expected_return": [
+      {
+        "name": "PaperMate",
+        "problem": "논문 요약",
+        "roles": [
+          "Researcher",
+          "Writer"
+        ],
+        "difficulty": "심화"
+      }
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-stats-empty",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "count_by_difficulty",
+    "args": [
+      []
+    ],
+    "expected_return": {
+      "기본필수": 0,
+      "응용": 0,
+      "심화": 0
+    },
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-3-stats-all",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "count_by_difficulty",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    ],
+    "expected_return": {
+      "기본필수": 1,
+      "응용": 1,
+      "심화": 1
+    },
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        },
+        {
+          "name": "PaperMate",
+          "problem": "논문 요약",
+          "roles": [
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "심화"
+        },
+        {
+          "name": "DataHelper",
+          "problem": "표 데이터 안내",
+          "roles": [
+            "Planner"
+          ],
+          "difficulty": "기본필수"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-format-empty",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "format_ideas",
+    "args": [
+      []
+    ],
+    "expected_return": "등록된 아이디어가 없습니다.",
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-3-format-one",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "format_ideas",
+    "args": [
+      [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        }
+      ]
+    ],
+    "expected_return": "1. StudyBot | 난이도: 응용\n   문제: 학습 자료 탐색\n   역할: Planner, Researcher, Writer",
+    "expected_stdout": "",
+    "expected_args": {
+      "0": [
+        {
+          "name": "StudyBot",
+          "problem": "학습 자료 탐색",
+          "roles": [
+            "Planner",
+            "Researcher",
+            "Writer"
+          ],
+          "difficulty": "응용"
+        }
+      ]
+    }
+  },
+  {
+    "id": "07-3-roles-three",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "normalize_roles",
+    "args": [
+      "Planner, Researcher, Writer"
+    ],
+    "expected_return": [
+      "Planner",
+      "Researcher",
+      "Writer"
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-3-roles-duplicates",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "normalize_roles",
+    "args": [
+      " Planner, planner, RESEARCHER, , Researcher "
+    ],
+    "expected_return": [
+      "Planner",
+      "RESEARCHER"
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-3-roles-only-separators",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "normalize_roles",
+    "args": [
+      " , , "
+    ],
+    "expected_return": [],
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-3-roles-empty",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "normalize_roles",
+    "args": [
+      ""
+    ],
+    "expected_return": [],
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-3-roles-korean-spaces",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "normalize_roles",
+    "args": [
+      "데이터 조사, 보고서 작성"
+    ],
+    "expected_return": [
+      "데이터 조사",
+      "보고서 작성"
+    ],
+    "expected_stdout": ""
+  },
+  {
+    "id": "07-3-roles-csv-empty-rejected",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/main.py",
+    "kind": "function",
+    "function": "add_idea",
+    "args": [
+      [],
+      "A",
+      "문제",
+      " , , ",
+      "응용"
+    ],
+    "expected_return": [
+      false,
+      "프로젝트명·문제·역할을 모두 입력하세요."
+    ],
+    "expected_stdout": "",
+    "expected_args": {
+      "0": []
+    }
+  },
+  {
+    "id": "07-3-student-authored-tests",
+    "exercise": "07",
+    "level": 3,
+    "path": "ex07_idea_console/03_심화/test_cases.py",
+    "kind": "cli",
+    "stdin": "",
+    "expected_stdout": "PASS 1: 역할 정리\nPASS 2: 중복 등록 시 원본 보존\nPASS 3: 빈 데이터 통계\n"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "order_count": 6,
+  "total_quantity": 11,
+  "total_amount": 31000,
+  "raw_count": 14,
+  "rejected_count": 8,
+  "by_item": {
+    "아메리카노": {
+      "quantity": 3,
+      "amount": 9000
+    },
+    "카페라떼": {
+      "quantity": 3,
+      "amount": 12000
+    },
+    "쿠키": {
+      "quantity": 5,
+      "amount": 10000
+    }
+  }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "record_no": 4,
+    "reason": "수량 오류",
+    "raw": {
+      "order_id": "E01",
+      "item": "아메리카노",
+      "unit_price": "3000",
+      "quantity": ""
+    }
+  },
+  {
+    "record_no": 5,
+    "reason": "수량 오류",
+    "raw": {
+      "order_id": "E02",
+      "item": "카페라떼",
+      "unit_price": "4000",
+      "quantity": "두 개"
+    }
+  },
+  {
+    "record_no": 6,
+    "reason": "수량 오류",
+    "raw": {
+      "order_id": "E03",
+      "item": "쿠키",
+      "unit_price": "2000",
+      "quantity": "-1"
+    }
+  },
+  {
+    "record_no": 7,
+    "reason": "상품명 누락",
+    "raw": {
+      "order_id": "E04",
+      "item": "   ",
+      "unit_price": "3000",
+      "quantity": "1"
+    }
+  },
+  {
+    "record_no": 8,
+    "reason": "단가 오류",
+    "raw": {
+      "order_id": "E05",
+      "item": "쿠키",
+      "unit_price": "무료",
+      "quantity": "2"
+    }
+  },
+  {
+    "record_no": 11,
+    "reason": "중복 ID: 확인 필요",
+    "raw": {
+      "order_id": "C01",
+      "item": "아메리카노",
+      "unit_price": 3000,
+      "quantity": 2
+    }
+  },
+  {
+    "record_no": 13,
+    "reason": "중복 ID: 확인 필요",
+    "raw": {
+      "order_id": "C02",
+      "item": "카페라떼",
+      "unit_price": 4000,
+      "quantity": 5
+    }
+  },
+  {
+    "record_no": 14,
+    "reason": "수량 오류",
+    "raw": {
+      "order_id": "E06",
+      "item": "쿠키",
+      "unit_price": 2000,
+      "quantity": 0
+    }
+  }
+]

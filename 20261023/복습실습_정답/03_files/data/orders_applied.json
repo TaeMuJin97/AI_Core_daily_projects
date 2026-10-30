@@ -1,0 +1,14 @@
+[
+  {
+    "order_id": "J01",
+    "item": "아메리카노",
+    "unit_price": 3000,
+    "quantity": 1
+  },
+  {
+    "order_id": "J02",
+    "item": " 카페라떼 ",
+    "unit_price": 4000,
+    "quantity": 2
+  }
+]

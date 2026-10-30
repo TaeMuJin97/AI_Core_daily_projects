@@ -1,0 +1,9 @@
+[명령]
+python main.py
+
+[실제 정답 출력]
+True
+False
+빈 역할 거부
+['Researcher', 'Writer']
+문서 도우미: 역할 2개

@@ -1,0 +1,9 @@
+[명령]
+python main.py
+
+[실제 정답 출력]
+입력 List 공유: ['Researcher', 'Writer']
+클래스 속성 공유: ['Writer']
+수정 후 객체 1: ['Researcher', 'Writer']
+수정 후 객체 2: ['Researcher']
+입력 List: ['Researcher', 'Planner']

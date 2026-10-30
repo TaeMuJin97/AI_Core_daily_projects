@@ -1,0 +1,698 @@
+[
+  {
+    "exercise": "01",
+    "level": "basic",
+    "path": "ex01_classes/01_기본필수",
+    "title": "내 아이디어를 객체로 표현하기",
+    "slide": 12,
+    "refs": "7~13",
+    "minutes": 20,
+    "description": "유효한 입력으로 Idea 객체 2개를 만들고 서로 다른 요약을 출력합니다. name·problem·roles·difficulty 네 필드를 유지합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "INIT",
+        "instruction": "name·problem의 공백을 제거하고 roles를 새 List로 복사해 네 속성을 저장하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "SUMMARY",
+        "instruction": "'이름: 역할 N개' 형태의 문자열을 반환하세요. print하지 않습니다."
+      }
+    ]
+  },
+  {
+    "exercise": "01",
+    "level": "applied",
+    "path": "ex01_classes/02_응용",
+    "title": "내 아이디어를 객체로 표현하기",
+    "slide": 12,
+    "refs": "7~13",
+    "minutes": 20,
+    "description": "add_role(role)를 구현합니다. 앞뒤 공백과 대소문자를 무시한 중복은 False, 새 역할은 True를 반환하며 빈 문자열은 ValueError로 거부합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "ADD-ROLE",
+        "instruction": "문자열 공백 제거·빈 값 검사·대소문자 무시 중복 검사 후 True/False를 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "01",
+    "level": "advanced",
+    "path": "ex01_classes/03_심화",
+    "title": "내 아이디어를 객체로 표현하기",
+    "slide": 12,
+    "refs": "7~13",
+    "minutes": 20,
+    "description": "입력 List 공유와 클래스 속성 List 공유를 각각 재현하고, 안전한 Idea의 상태가 서로 독립임을 증명합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "INIT",
+        "instruction": "name·problem의 공백을 제거하고 roles를 새 List로 복사해 네 속성을 저장하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "SUMMARY",
+        "instruction": "'이름: 역할 N개' 형태의 문자열을 반환하세요. print하지 않습니다."
+      }
+    ]
+  },
+  {
+    "exercise": "02",
+    "level": "basic",
+    "path": "ex02_modules/01_기본필수",
+    "title": "클래스를 모듈로 분리하기",
+    "slide": 22,
+    "refs": "14~23",
+    "minutes": 20,
+    "description": "Idea를 models.py, 실행을 main.py에 배치하고 패키지 루트에서 python -m idea_app.main으로 실행합니다.",
+    "entry": "day3_console/run_console.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "day3_console/idea_app/models.py",
+        "id": "INIT",
+        "instruction": "name·problem의 공백을 제거하고 roles를 새 List로 복사해 네 속성을 저장하세요."
+      },
+      {
+        "file": "day3_console/idea_app/models.py",
+        "id": "SUMMARY",
+        "instruction": "'이름: 역할 N개' 형태의 문자열을 반환하세요. print하지 않습니다."
+      },
+      {
+        "file": "day3_console/idea_app/main.py",
+        "id": "MAIN",
+        "instruction": "Idea 두 개를 만들고 catalog에 등록한 뒤 names() 결과를 출력하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "02",
+    "level": "applied",
+    "path": "ex02_modules/02_응용",
+    "title": "클래스를 모듈로 분리하기",
+    "slide": 22,
+    "refs": "14~23",
+    "minutes": 20,
+    "description": "IdeaCatalog의 등록과 조회를 service.py로 분리합니다. service에서는 input/print를 호출하지 않습니다.",
+    "entry": "day3_console/run_console.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "CATALOG-INIT",
+        "instruction": "객체마다 독립적인 ideas List를 만드세요."
+      },
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "CATALOG-ADD",
+        "instruction": "전달받은 Idea를 현재 목록에 추가하세요."
+      },
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "CATALOG-NAMES",
+        "instruction": "객체 목록을 순회해 이름 List를 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "02",
+    "level": "advanced",
+    "path": "ex02_modules/03_심화",
+    "title": "클래스를 모듈로 분리하기",
+    "slide": 22,
+    "refs": "14~23",
+    "minutes": 20,
+    "description": "run(task) 계약을 공유하는 Researcher·Writer를 구현하고 같은 호출자가 두 역할을 실행하도록 만듭니다. 실제 LLM 호출이 아닙니다.",
+    "entry": "day3_console/run_console.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "day3_console/idea_app/agents.py",
+        "id": "RESEARCHER",
+        "instruction": "'검색: 작업명'을 반환하세요. 화면에 직접 출력하지 않습니다."
+      },
+      {
+        "file": "day3_console/idea_app/agents.py",
+        "id": "WRITER",
+        "instruction": "'작성: 작업명'을 반환하세요. run(task) 계약을 지킵니다."
+      },
+      {
+        "file": "day3_console/idea_app/agents.py",
+        "id": "DISPATCH",
+        "instruction": "구체적인 클래스 이름을 검사하지 말고 각 객체의 run(task)를 호출해 결과 List를 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "03",
+    "level": "basic",
+    "path": "ex03_exceptions_files/01_기본필수",
+    "title": "입력 오류와 텍스트 파일 다루기",
+    "slide": 31,
+    "refs": "24~32",
+    "minutes": 20,
+    "description": "parse_count로 정수/범위를 검사하고 data/note.txt에 한글 한 줄을 저장했다가 동일하게 읽습니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "data/note.txt"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "COUNT",
+        "instruction": "int로 변환한 뒤 1 미만이면 ValueError를 발생시키고 올바른 수를 반환하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "NOTE-SAVE",
+        "instruction": "부모 폴더를 만들고 with·w·UTF-8을 사용해 text를 저장하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "NOTE-READ",
+        "instruction": "with·r·UTF-8로 읽은 문자열을 그대로 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "03",
+    "level": "applied",
+    "path": "ex03_exceptions_files/02_응용",
+    "title": "입력 오류와 텍스트 파일 다루기",
+    "slide": 31,
+    "refs": "24~32",
+    "minutes": 20,
+    "description": "잘못된 입력에서 다시 입력할 수 있는 반복을 완성하고, 파일 없음과 정상 파일을 구분합니다. 정상·문자·0 입력을 기록합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "data/note.txt"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "RETRY",
+        "instruction": "q/EOF이면 None, 올바른 수이면 정수를 반환하고 ValueError이면 안내 후 반복하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "SAFE-READ",
+        "instruction": "읽기에 성공하면 ('ok', text), 파일 없음은 ('missing', 안내), 권한 오류는 ('permission', 안내)를 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "03",
+    "level": "advanced",
+    "path": "ex03_exceptions_files/03_심화",
+    "title": "입력 오류와 텍스트 파일 다루기",
+    "slide": 31,
+    "refs": "24~32",
+    "minutes": 20,
+    "description": "파일 위치를 __file__ 기준으로 고정하고 권한 오류를 입력 오류와 구분합니다. 실제 권한을 바꾸지 않고 mock으로 PermissionError를 재현합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "data/note.txt"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "PATH",
+        "instruction": "현재 코드 파일을 기준으로 data/note.txt의 절대경로를 반환하세요. cwd에 의존하지 않습니다."
+      },
+      {
+        "file": "main.py",
+        "id": "SAFE-READ",
+        "instruction": "읽기에 성공하면 ('ok', text), 파일 없음은 ('missing', 안내), 권한 오류는 ('permission', 안내)를 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "04",
+    "level": "basic",
+    "path": "ex04_json_github/01_기본필수",
+    "title": "저장·복원과 변경 이력 남기기",
+    "slide": 40,
+    "refs": "33~41",
+    "minutes": 25,
+    "description": "아이디어 2개를 JSON으로 저장하고 별도 실행에서 복원합니다. README에 실행 명령과 저장 경로를 씁니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "data/ideas.json"
+    ],
+    "tasks": [
+      {
+        "file": "models.py",
+        "id": "TO-RECORD",
+        "instruction": "Idea의 네 속성을 같은 키의 Dict로 반환하고 roles를 복사하세요."
+      },
+      {
+        "file": "models.py",
+        "id": "FROM-RECORD",
+        "instruction": "Dict와 필수 키를 검사한 뒤 Idea 객체로 복원하세요."
+      },
+      {
+        "file": "storage.py",
+        "id": "LOAD",
+        "instruction": "UTF-8 JSON을 읽으세요. 파일 없음만 []로 처리하고 손상은 ValueError로 전달한 뒤 전체 검사하세요."
+      },
+      {
+        "file": "storage.py",
+        "id": "SAVE",
+        "instruction": "전체 검사를 먼저 수행하고 제공된 write_json_atomic(path, records)로 저장하세요. 실패를 숨기지 마세요."
+      }
+    ]
+  },
+  {
+    "exercise": "04",
+    "level": "applied",
+    "path": "ex04_json_github/02_응용",
+    "title": "저장·복원과 변경 이력 남기기",
+    "slide": 40,
+    "refs": "33~41",
+    "minutes": 25,
+    "description": "저장·복원 값의 동등성을 확인하고 README 변경을 커밋·diff로 검토합니다. 계정 접속이 안 되면 제공된 로컬 비교 도구와 기록지로 대체합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "data/ideas.json"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "EQUAL",
+        "instruction": "두 Idea 목록을 각각 List[Dict]로 바꿔 값이 같은지 비교하세요. 객체의 is 비교가 아닙니다."
+      }
+    ]
+  },
+  {
+    "exercise": "04",
+    "level": "advanced",
+    "path": "ex04_json_github/03_심화",
+    "title": "저장·복원과 변경 이력 남기기",
+    "slide": 40,
+    "refs": "33~41",
+    "minutes": 25,
+    "description": "파일 없음·JSON 손상·키 누락·중복 이름을 구분하고 전체 검사 성공 후에만 현재 목록을 교체합니다. 실제 PR 수행 여부는 기록지에 따로 표시합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "data/ideas.json"
+    ],
+    "tasks": [
+      {
+        "file": "storage.py",
+        "id": "VALIDATE",
+        "instruction": "최상위 List·각 레코드·중복 이름을 전체 검사하고 독립적인 레코드 목록을 반환하세요."
+      },
+      {
+        "file": "storage.py",
+        "id": "LOAD",
+        "instruction": "UTF-8 JSON을 읽으세요. 파일 없음만 []로 처리하고 손상은 ValueError로 전달한 뒤 전체 검사하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "REPLACE",
+        "instruction": "읽기·검사·객체 복원을 새 목록에서 끝낸 뒤에만 current[:]를 교체하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "05",
+    "level": "basic",
+    "path": "ex05_numpy/01_기본필수",
+    "title": "역할별 지연시간 배열 분석",
+    "slide": 48,
+    "refs": "42~49, 87~88",
+    "minutes": 25,
+    "description": "PPT의 3×2 지연시간 배열로 shape·전체 평균·최댓값과 ms→초 변환 결과를 확인합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "outputs/latency_summary.json"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "ARRAY",
+        "instruction": "[[100,200],[150,250],[200,300]]을 dtype=float인 ndarray로 만드세요."
+      },
+      {
+        "file": "main.py",
+        "id": "BASIC-STATS",
+        "instruction": "shape·전체 평균·최댓값·초 단위 배열을 Dict에 반환하세요. 원본 a를 바꾸지 마세요."
+      }
+    ]
+  },
+  {
+    "exercise": "05",
+    "level": "applied",
+    "path": "ex05_numpy/02_응용",
+    "title": "역할별 지연시간 배열 분석",
+    "slide": 48,
+    "refs": "42~49, 87~88",
+    "minutes": 25,
+    "description": "axis=0/1의 의미를 구분해 역할별·요청별 평균을 계산하고 200ms 이상인 값 4개를 선택합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "outputs/latency_summary.json"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "AXIS",
+        "instruction": "역할별/요청별 평균과 200ms 이상인 값·개수를 계산하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "05",
+    "level": "advanced",
+    "path": "ex05_numpy/03_심화",
+    "title": "역할별 지연시간 배열 분석",
+    "slide": 48,
+    "refs": "42~49, 87~88",
+    "minutes": 25,
+    "description": "역할별 [10,20] 보정값을 broadcasting으로 더하고 view/copy의 원본 변경 차이를 재현합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "outputs/latency_summary.json"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "BROADCAST",
+        "instruction": "각 요청에 같은 역할별 보정값을 더한 새 배열을 반환하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "VIEW-COPY",
+        "instruction": "[10,20,30]의 앞 2개 view를 99로 수정한 뒤 copy를 5로 수정하고 세 결과를 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "06",
+    "level": "basic",
+    "path": "ex06_pandas/01_기본필수",
+    "title": "아이디어 표 정제와 집계",
+    "slide": 60,
+    "refs": "50~61, 89",
+    "minutes": 25,
+    "description": "PPT의 6행 표를 DataFrame으로 만들고 열 이름·shape·응용 난이도의 name을 선택합니다. 이 단계에서는 B가 두 번 남습니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "FRAME",
+        "instruction": "제공된 RAW_RECORDS로 DataFrame을 만드세요. 열 순서는 name,difficulty,score,role_count입니다."
+      },
+      {
+        "file": "main.py",
+        "id": "SELECT",
+        "instruction": "원본에서 difficulty가 '응용'인 행의 name을 List로 반환하세요. 중복 제거 전입니다."
+      }
+    ]
+  },
+  {
+    "exercise": "06",
+    "level": "applied",
+    "path": "ex06_pandas/02_응용",
+    "title": "아이디어 표 정제와 집계",
+    "slide": 60,
+    "refs": "50~61, 89",
+    "minutes": 25,
+    "description": "완전 중복만 제거하고 점수 변환 실패를 결측으로 둡니다. 난이도 결측을 미정으로 채운 뒤 응용 평균 75.0을 확인합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "outputs/cleaned_records.json",
+      "outputs/group_summary.json"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "CLEAN",
+        "instruction": "완전 중복 제거→copy→점수 숫자 변환(coerce)→난이도 결측을 '미정'으로 처리하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "MEANS",
+        "instruction": "정제한 표를 난이도로 묶고 score 평균 Series를 반환하세요. 처음 나타난 순서를 유지하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "06",
+    "level": "advanced",
+    "path": "ex06_pandas/03_심화",
+    "title": "아이디어 표 정제와 집계",
+    "slide": 60,
+    "refs": "50~61, 89",
+    "minutes": 25,
+    "description": "그룹별 total·valid·mean_score를 함께 집계하고 원본/정제·결측·변환 실패를 설명하는 3문장 보고서를 완성합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [
+      "outputs/cleaned_records.json",
+      "outputs/group_summary.json",
+      "outputs/cleaning_audit.json",
+      "outputs/cleaning_report.txt"
+    ],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "AGG",
+        "instruction": "difficulty별 total(size)·valid(count)·mean_score(mean)을 한 표로 만들고 인덱스를 열로 바꾸세요."
+      },
+      {
+        "file": "main.py",
+        "id": "AUDIT",
+        "instruction": "원본/정제 행 수, 제거 중복, 원래 점수 결측, 숫자 변환 실패, 정제 점수 결측, 채운 난이도 수를 기록하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "07",
+    "level": "basic",
+    "path": "ex07_review/01_기본필수",
+    "title": "통합 코드리뷰와 수정 검증",
+    "slide": 72,
+    "refs": "62~73, 86",
+    "minutes": 25,
+    "description": "체크리스트 5개 이상을 확인하고, 손상 JSON이 빈 목록으로 바뀌는 문제를 읽기 전용으로 재현합니다. 코드 위치·입력·실제 결과·개선안을 기록합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "main.py",
+        "id": "REPRODUCE",
+        "instruction": "의도적으로 잘못된 review_target.load_records(path)를 호출해 반환된 값을 그대로 반환하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "07",
+    "level": "applied",
+    "path": "ex07_review/02_응용",
+    "title": "통합 코드리뷰와 수정 검증",
+    "slide": 72,
+    "refs": "62~73, 86",
+    "minutes": 25,
+    "description": "광범위한 예외 숨김을 구체적인 예외 처리로 고칩니다. 정상·빈 데이터·파일 없음과 손상 파일의 결과를 구분해 다시 확인합니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "storage.py",
+        "id": "LOAD",
+        "instruction": "UTF-8 JSON을 읽으세요. 파일 없음만 []로 처리하고 손상은 ValueError로 전달한 뒤 전체 검사하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "07",
+    "level": "advanced",
+    "path": "ex07_review/03_심화",
+    "title": "통합 코드리뷰와 수정 검증",
+    "slide": 72,
+    "refs": "62~73, 86",
+    "minutes": 25,
+    "description": "손상 JSON·키 누락·중복 레코드를 포함해 전체 검사 성공 전에 현재 목록을 교체하지 않음을 검증합니다. 2개 이상 실패 사례와 PR/로컬 리뷰 증거를 남깁니다.",
+    "entry": "main.py",
+    "args": [],
+    "outputs": [],
+    "tasks": [
+      {
+        "file": "storage.py",
+        "id": "VALIDATE",
+        "instruction": "최상위 List·각 레코드·중복 이름을 전체 검사하고 독립적인 레코드 목록을 반환하세요."
+      },
+      {
+        "file": "main.py",
+        "id": "SAFE-REPLACE",
+        "instruction": "load_records로 전체 검사된 새 목록을 받은 뒤에만 current[:]를 바꾸세요."
+      }
+    ]
+  },
+  {
+    "exercise": "08",
+    "level": "basic",
+    "path": "ex08_project/01_기본필수",
+    "title": "일일 프로젝트 · 아이디어 콘솔 v2",
+    "slide": 74,
+    "refs": "62~78",
+    "minutes": 40,
+    "description": "모듈형 콘솔의 등록·목록·저장·복원을 연결합니다. 비어 있는 필수 입력은 거부하고 첫 실행의 파일 없음은 빈 목록으로 시작합니다.",
+    "entry": "day3_console/run_console.py",
+    "args": [
+      "--demo"
+    ],
+    "outputs": [
+      "day3_console/data/ideas.json",
+      "day3_console/reports/summary.txt"
+    ],
+    "tasks": [
+      {
+        "file": "day3_console/idea_app/models.py",
+        "id": "TO-RECORD",
+        "instruction": "Idea의 네 속성을 같은 키의 Dict로 반환하고 roles를 복사하세요."
+      },
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "ADD",
+        "instruction": "Idea인지 검사하고 단계의 이름 중복 정책을 적용한 뒤 목록에 추가하세요. 거부 시 기존 목록을 유지하세요."
+      },
+      {
+        "file": "day3_console/idea_app/storage.py",
+        "id": "LOAD",
+        "instruction": "UTF-8 JSON을 읽으세요. 파일 없음만 []로 처리하고 손상은 ValueError로 전달한 뒤 전체 검사하세요."
+      },
+      {
+        "file": "day3_console/idea_app/storage.py",
+        "id": "SAVE",
+        "instruction": "전체 검사를 먼저 수행하고 제공된 write_json_atomic(path, records)로 저장하세요. 실패를 숨기지 마세요."
+      },
+      {
+        "file": "day3_console/idea_app/main.py",
+        "id": "RELOAD",
+        "instruction": "파일의 전체 읽기·검사와 새 객체 복원을 완료한 뒤에만 catalog.replace_all을 호출하세요."
+      }
+    ]
+  },
+  {
+    "exercise": "08",
+    "level": "applied",
+    "path": "ex08_project/02_응용",
+    "title": "일일 프로젝트 · 아이디어 콘솔 v2",
+    "slide": 74,
+    "refs": "62~78",
+    "minutes": 40,
+    "description": "이름의 앞뒤 공백/대소문자를 무시한 중복을 거부하고 이름·문제 검색, NumPy 역할 수 통계와 Pandas 난이도별 개수를 추가합니다.",
+    "entry": "day3_console/run_console.py",
+    "args": [
+      "--demo"
+    ],
+    "outputs": [
+      "day3_console/data/ideas.json",
+      "day3_console/reports/summary.txt"
+    ],
+    "tasks": [
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "ADD",
+        "instruction": "Idea인지 검사하고 단계의 이름 중복 정책을 적용한 뒤 목록에 추가하세요. 거부 시 기존 목록을 유지하세요."
+      },
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "SEARCH",
+        "instruction": "빈 검색어를 거부하고 이름 또는 problem에 검색어가 포함된 Idea 목록을 반환하세요. 대소문자는 무시합니다."
+      },
+      {
+        "file": "day3_console/idea_app/analytics.py",
+        "id": "ROLE-STATS",
+        "instruction": "빈 목록은 count=0/mean=None/max=None, 나머지는 NumPy로 역할 수 평균·최댓값을 구하세요."
+      },
+      {
+        "file": "day3_console/idea_app/analytics.py",
+        "id": "DIFFICULTY-STATS",
+        "instruction": "Pandas groupby.size로 난이도별 개수를 구하고 기본필수/응용/심화 순서의 DataFrame을 반환하세요. 없는 난이도는 0입니다."
+      }
+    ]
+  },
+  {
+    "exercise": "08",
+    "level": "advanced",
+    "path": "ex08_project/03_심화",
+    "title": "일일 프로젝트 · 아이디어 콘솔 v2",
+    "slide": 74,
+    "refs": "62~78",
+    "minutes": 40,
+    "description": "전체 레코드 검사·원자적인 메모리 상태 교체·손상 파일 쓰기 차단을 확인하고 직접 작성한 3개 안전성 테스트와 리뷰 근거를 제출합니다.",
+    "entry": "day3_console/run_console.py",
+    "args": [
+      "--demo"
+    ],
+    "outputs": [
+      "day3_console/data/ideas.json",
+      "day3_console/reports/summary.txt"
+    ],
+    "tasks": [
+      {
+        "file": "day3_console/idea_app/service.py",
+        "id": "REPLACE-ALL",
+        "instruction": "별도 후보 Catalog에서 모든 객체를 add로 검사한 뒤 한 번에 현재 ideas를 교체하세요."
+      },
+      {
+        "file": "day3_console/idea_app/storage.py",
+        "id": "VALIDATE",
+        "instruction": "최상위 List·각 레코드·중복 이름을 전체 검사하고 독립적인 레코드 목록을 반환하세요."
+      },
+      {
+        "file": "day3_console/idea_app/main.py",
+        "id": "RELOAD",
+        "instruction": "파일의 전체 읽기·검사와 새 객체 복원을 완료한 뒤에만 catalog.replace_all을 호출하세요."
+      },
+      {
+        "file": "day3_console/test_cases.py",
+        "id": "TEST-CORRUPT",
+        "instruction": "임시 손상 JSON을 읽어 ValueError가 발생하고 기존 객체·파일 바이트가 그대로임을 assert로 확인하세요."
+      },
+      {
+        "file": "day3_console/test_cases.py",
+        "id": "TEST-PARTIAL",
+        "instruction": "첫 레코드는 정상/둘째는 키 누락인 JSON을 만들어 실패 후 기존 목록이 그대로임을 확인하세요."
+      },
+      {
+        "file": "day3_console/test_cases.py",
+        "id": "TEST-ALIAS",
+        "instruction": "같은 입력 List로 만든 두 Idea와 입력 원본의 상태가 독립임을 assert로 확인하세요."
+      }
+    ]
+  }
+]

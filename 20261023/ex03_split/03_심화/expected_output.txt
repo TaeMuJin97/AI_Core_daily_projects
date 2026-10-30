@@ -1,0 +1,46 @@
+{
+  "group_sizes": [
+    8,
+    4
+  ],
+  "group_overlap": 0,
+  "time_folds": [
+    {
+      "train": [
+        0,
+        1
+      ],
+      "valid": [
+        2,
+        3
+      ]
+    },
+    {
+      "train": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "valid": [
+        4,
+        5
+      ]
+    },
+    {
+      "train": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "valid": [
+        6,
+        7
+      ]
+    }
+  ],
+  "time_ordered": true
+}

@@ -1,0 +1,16 @@
+실습 06 / 포함 검색 명령 추가
+
+[키보드 입력을 포함한 대화형 실행 예]
+명령> add Python
+추가했습니다.
+명령> add Python Data
+추가했습니다.
+명령> add Git
+추가했습니다.
+명령> search python
+1. Python
+2. Python Data
+명령> search Agent
+검색 결과가 없습니다.
+명령> quit
+종료합니다.

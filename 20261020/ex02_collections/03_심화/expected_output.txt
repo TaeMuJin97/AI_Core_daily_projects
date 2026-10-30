@@ -1,0 +1,4 @@
+공통 기술: ['Git', 'Python']
+전체 기술: ['Docker', 'Git', 'Python', 'SQL']
+A팀만: ['SQL']
+B팀만: ['Docker']

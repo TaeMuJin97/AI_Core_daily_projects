@@ -1,0 +1,38 @@
+[
+  {
+    "order_id": "J01",
+    "item": "아메리카노",
+    "unit_price": 3000,
+    "quantity": 1
+  },
+  {
+    "order_id": "J02",
+    "item": " 카페라떼 ",
+    "unit_price": 4000,
+    "quantity": 2
+  },
+  {
+    "order_id": "C01",
+    "item": "아메리카노",
+    "unit_price": 3000,
+    "quantity": 2
+  },
+  {
+    "order_id": "J03",
+    "item": "쿠키",
+    "unit_price": 2000,
+    "quantity": 2
+  },
+  {
+    "order_id": "C02",
+    "item": "카페라떼",
+    "unit_price": 4000,
+    "quantity": 5
+  },
+  {
+    "order_id": "E06",
+    "item": "쿠키",
+    "unit_price": 2000,
+    "quantity": 0
+  }
+]

@@ -1,0 +1,2 @@
+"""PPT 51쪽 입력과 동일한 합성 데이터. 실제 학생 성적이 아닙니다."""
+RAW_RECORDS = [{'name': 'A', 'difficulty': '기본필수', 'score': '80', 'role_count': 2}, {'name': 'B', 'difficulty': '응용', 'score': '90', 'role_count': 3}, {'name': 'B', 'difficulty': '응용', 'score': '90', 'role_count': 3}, {'name': 'C', 'difficulty': '응용', 'score': '60', 'role_count': 2}, {'name': 'D', 'difficulty': '심화', 'score': '미정', 'role_count': 4}, {'name': 'E', 'difficulty': None, 'score': None, 'role_count': 2}]

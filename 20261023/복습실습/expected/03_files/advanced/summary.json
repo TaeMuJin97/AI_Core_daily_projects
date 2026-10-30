@@ -1,0 +1,12 @@
+{
+  "raw_count": 14,
+  "accepted_count": 6,
+  "rejected_count": 8,
+  "total_amount": 31000,
+  "reason_counts": {
+    "수량 오류": 4,
+    "상품명 누락": 1,
+    "단가 오류": 1,
+    "중복 ID: 확인 필요": 2
+  }
+}

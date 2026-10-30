@@ -1,0 +1,4 @@
+shape: (6, 4)
+columns: ['name', 'difficulty', 'score', 'role_count']
+응용 name: ['B', 'B', 'C']
+원본 보존: True

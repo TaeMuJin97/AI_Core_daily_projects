@@ -1,0 +1,8 @@
+{
+  "artifacts": "PASS",
+  "rows_valid": 20,
+  "features": 8,
+  "test_model_calls": 0,
+  "manual_review": "문제정의·해석·README 재현·개인 설명·Git 이력은 별도 확인",
+  "fresh_restore": "SKIPPED: 신뢰 승인 후 실행"
+}

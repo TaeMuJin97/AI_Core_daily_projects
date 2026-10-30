@@ -1,0 +1,43 @@
+"""02 클래스 심화(선택): 상속 대신 객체를 List에 담아 협력시킵니다."""
+
+class Order:
+    def __init__(self, item, unit_price, quantity):
+        self.item = item
+        self.unit_price = unit_price
+        self.quantity = quantity
+
+    def amount(self):
+        return self.unit_price * self.quantity
+
+
+class Cart:
+    def __init__(self):
+        # TODO C_D1: 장바구니 객체마다 독립적인 빈 목록을 만드세요.
+        raise NotImplementedError("C_D1: 장바구니 객체마다 독립적인 빈 목록을 만드세요.")
+
+    def add(self, order):
+        """입력은 이미 만든 Order 객체입니다. 문자열이나 Dict가 아닙니다."""
+        # TODO C_D2: 전달받은 주문 객체를 이 장바구니에 추가하세요.
+        raise NotImplementedError("C_D2: 전달받은 주문 객체를 이 장바구니에 추가하세요.")
+
+    def total_amount(self):
+        # TODO C_D3: 장바구니 안의 주문 금액을 모두 더해 반환하세요.
+        raise NotImplementedError("C_D3: 장바구니 안의 주문 금액을 모두 더해 반환하세요.")
+
+
+def main():
+    first = Cart()
+    second = Cart()
+    first.add(Order("아메리카노", 3000, 2))
+    first.add(Order("쿠키", 2000, 3))
+    print("첫 장바구니 금액:", first.total_amount())
+    print("둘째 장바구니 금액:", second.total_amount())
+    print("서로 다른 목록:", first.orders is not second.orders)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except NotImplementedError as error:
+        print("[아직 작성할 곳]", error)
+        print("해당 TODO 하나부터 채우고 다시 실행하세요. 힌트는 실습안내.html에 있습니다.")
+        raise SystemExit(2)

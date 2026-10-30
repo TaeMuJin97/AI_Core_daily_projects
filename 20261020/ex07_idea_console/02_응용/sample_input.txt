@@ -1,0 +1,22 @@
+1
+StudyBot
+학습 자료 탐색
+Researcher
+응용
+1
+PaperMate
+논문 요약
+Writer
+심화
+1
+DataHelper
+표 데이터 안내
+Planner
+기본필수
+2
+3
+STUDY
+4
+심화
+5
+0

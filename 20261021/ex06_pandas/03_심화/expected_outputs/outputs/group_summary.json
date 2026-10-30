@@ -1,0 +1,26 @@
+[
+  {
+    "difficulty": "기본필수",
+    "total": 1,
+    "valid": 1,
+    "mean_score": 80.0
+  },
+  {
+    "difficulty": "응용",
+    "total": 2,
+    "valid": 2,
+    "mean_score": 75.0
+  },
+  {
+    "difficulty": "심화",
+    "total": 1,
+    "valid": 0,
+    "mean_score": null
+  },
+  {
+    "difficulty": "미정",
+    "total": 1,
+    "valid": 0,
+    "mean_score": null
+  }
+]

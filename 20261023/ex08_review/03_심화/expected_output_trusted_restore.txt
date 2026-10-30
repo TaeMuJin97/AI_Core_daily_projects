@@ -1,0 +1,21 @@
+{
+  "artifacts": "PASS",
+  "rows_valid": 20,
+  "features": 8,
+  "test_model_calls": 0,
+  "manual_review": "문제정의·해석·README 재현·개인 설명·Git 이력은 별도 확인",
+  "fresh_restore": {
+    "fresh_process_restore": true,
+    "predictions_equal": true,
+    "matrix_equal": true,
+    "state_equal": true,
+    "rows": 20,
+    "features": 8,
+    "test_model_calls": 0
+  },
+  "boundary_checks": {
+    "missing_rejected": true,
+    "all_missing_train_rejected": true,
+    "unknown_allowed": true
+  }
+}

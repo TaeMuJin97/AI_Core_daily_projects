@@ -1,0 +1,7 @@
+실습 02 / 두 팀의 기술 비교와 Tuple 언패킹
+
+[키보드 입력을 포함한 대화형 실행 예]
+공통 기술: ['Git', 'Python']
+전체 기술: ['Docker', 'Git', 'Python', 'SQL']
+A팀만: ['SQL']
+B팀만: ['Docker']

@@ -1,0 +1,2 @@
+# Day2 핵심 과제는 Python 표준 라이브러리만 사용한다.
+# pip로 추가 설치할 패키지 없음. 환경 준비 목록은 requirements_environment.txt 참조.

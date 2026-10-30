@@ -1,0 +1,17 @@
+2026-10-20 Day2 Python 실습자료 — 수강생용
+
+1. 압축파일을 먼저 풀어 주세요.
+2. VS Code에서 이 수강생용 폴더 자체를 열어 주세요.
+3. README.md를 열고 Ctrl+Shift+V로 미리 보기를 확인하세요.
+4. Python 3.13 실행기를 선택하고 .venv를 만드세요.
+5. ex00_environment부터 순서대로 시작하세요.
+6. 모든 난이도를 한 번에 수행하지 않습니다. 기본필수 후 응용·심화를 선택합니다.
+7. 실습 01~07은 외부 패키지 없이 실행할 수 있습니다.
+
+실행 예 (.venv 활성화 후):
+python "ex01_io_types/01_기본필수/main.py"
+
+확인 예:
+python tools/check.py --exercise 01 --level basic
+
+TODO를 완성해야 합니다. NotImplementedError는 완성할 위치를 알려주는 표시입니다.

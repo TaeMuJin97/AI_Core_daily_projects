@@ -1,0 +1,16 @@
+{
+  "train_shape": [
+    60,
+    2
+  ],
+  "valid_shape": [
+    20,
+    2
+  ],
+  "finite": true,
+  "train_medians": [
+    1315.0,
+    3.0
+  ],
+  "state_unchanged": true
+}

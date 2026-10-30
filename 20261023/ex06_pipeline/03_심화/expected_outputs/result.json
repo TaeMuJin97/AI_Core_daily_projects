@@ -1,0 +1,22 @@
+{
+  "names_ok": true,
+  "ordered_columns": [
+    "input_chars",
+    "allowed_tools",
+    "task_type",
+    "priority"
+  ],
+  "input_errors_detected": {
+    "missing": true,
+    "extra": true,
+    "forbidden": true
+  },
+  "explicit_drop_shape": [
+    2,
+    4
+  ],
+  "new_predictions": [
+    0,
+    0
+  ]
+}

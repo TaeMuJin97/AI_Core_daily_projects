@@ -1,0 +1,511 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Python 복습 실습 01</title><style>
+    :root{--ink:#203047;--blue:#173353;--line:#d6e1ec;--pale:#eff5fc;}
+    body{margin:0;background:#f5f7fa;color:var(--ink);font:16px/1.85 'Malgun Gothic','Apple SD Gothic Neo',sans-serif;}
+    main{max-width:980px;margin:30px auto;padding:34px 42px;background:white;border:1px solid var(--line);border-radius:10px;}
+    h1{font-size:28px;line-height:1.4;color:var(--blue);margin:48px 0 20px;border-top:3px solid var(--blue);padding-top:20px;}
+    h1:first-child{margin-top:0;} h2{font-size:22px;margin-top:32px;}h3{font-size:19px;margin-top:28px;}
+    .lead{padding:20px;background:var(--pale);border-left:5px solid var(--blue);margin-bottom:24px;}
+    nav{background:var(--pale);padding:14px;line-height:2;}a{color:#185ba0;text-underline-offset:3px;}
+    table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;line-height:1.6;}
+    th{background:var(--pale);text-align:left;}th,td{border:1px solid var(--line);padding:10px;vertical-align:top;}
+    code{font:14px/1.7 Consolas,'Malgun Gothic',monospace;background:#f1f4f8;padding:2px 4px;border-radius:3px;}
+    pre{padding:17px;background:#1d293a;color:#fff;border-radius:7px;overflow-x:auto;line-height:1.7;}
+    pre code{background:transparent;color:inherit;padding:0;}
+    details{border:1px solid var(--line);border-radius:6px;padding:9px 14px;margin:9px 0;background:#fafcff;}
+    summary{cursor:pointer;font-weight:600;}details p{margin:10px 0 3px;}strong{font-weight:700;}
+    @media(max-width:700px){main{margin:0;padding:20px 15px;border:0}table{font-size:12px}th,td{padding:6px}h1{font-size:24px}}
+    @media print{body{background:white}main{margin:0;max-width:none;padding:0;border:0}h1{break-before:page}h1:first-child{break-before:auto}pre{white-space:pre-wrap;color:#111;background:#f5f5f5}table,tr,details{break-inside:avoid}a{color:#111}}
+    </style></head><body><main><h1>Python 복습 실습 01</h1>
+<div class="lead"><strong>새 기술은 잠시 멈추고, 작은 프로그램 하나를 끝까지.</strong><br>
+오늘의 이야기: 카페 주문 5건을 계산하고 파일로 남깁니다.</div>
+<p><strong>수업일: __________  이름: __________</strong></p>
+<p>오늘 모두가 하는 일은 4개의 기본필수입니다. 응용·심화까지 전부 끝내는 날이 아닙니다.
+기본필수는 함수 3곳, 클래스 2곳, 파일 3곳, 프로젝트 3곳 — <strong>총 11개 TODO</strong>입니다.</p>
+<nav><a href="#start">처음 시작</a> · <a href="#functions">함수</a> · <a href="#classes">클래스</a> · <a href="#files">CSV·JSON</a> · <a href="#project">일일 프로젝트</a> · <a href="#trouble">막혔을 때</a></nav>
+<p><a id="start"></a></p>
+<h2>0. 첫 실행부터 성공하기</h2>
+<p>ZIP을 풀고 역할 폴더를 VS Code에서 엽니다. 이 HTML은 읽는 안내서이고 코드는 VS Code에서 수정합니다.
+추가 패키지를 설치하지 않습니다. 기존 Python으로 다음 명령을 실행합니다.</p>
+<pre><code class="language-text">python check_env.py
+python 00_warmup.py
+</code></pre>
+<p><code>00_warmup.py</code>에는 빈칸이 없습니다. 실행 후 <code>double(3)</code>의 3만 4로 바꾸어 다시 실행합니다.
+출력이 6에서 8로 바뀌는지 확인합니다. 오늘도 이렇게 <strong>작은 변경 한 번 → 실행 한 번</strong>을 반복합니다.</p>
+<h3>반복할 네 동작</h3>
+<p><strong>① 값을 예상한다 → ② TODO 하나를 채운다 → ③ 실행·대조한다 → ④ 한 문장으로 설명한다.</strong></p>
+<p>막힌 지점을 기록하고 질문해도 됩니다. 함수 이름·틀·파일 읽기 코드는 제공하며 암기 여부를 검사하지 않습니다.
+짝은 코드를 대신 완성하지 않고 “이 함수는 무엇을 받아서 무엇을 돌려주나요?”부터 묻습니다.</p>
+<h2>운영 시간 — 8교시, 실수업 400분</h2>
+<p>실제 시각과 점심시간은 기관 시간표를 따릅니다. 각 교시는 50분이며 교시 사이 10분 휴식은 별도입니다.</p>
+<table>
+<thead>
+<tr>
+<th>교시</th>
+<th>활동</th>
+<th>50분 배분</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>함수 기본필수</td>
+<td>워밍업 5 · 입력/출력 예상 10 · 구현 30 · 확인 5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>함수 반복·선택 확장</td>
+<td>기본필수 재실행 25 · 응용/심화 또는 추가 연습 15 · 설명/정리 10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>클래스 기본필수</td>
+<td>객체 관찰 5 · 두 객체의 값 추적 10 · 구현 30 · 확인 5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>클래스 반복·선택 확장</td>
+<td>기본필수 재실행 25 · 응용/심화 또는 추가 연습 15 · 설명/정리 10</td>
+</tr>
+<tr>
+<td>5</td>
+<td>CSV·JSON 기본필수</td>
+<td>파일 열기 5 · 5건 손계산 10 · 구현 30 · 확인 5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>정제·집계 반복·선택 확장</td>
+<td>기본필수 마무리 25 · 응용/심화 또는 입력 바꾸기 15 · 재읽기 확인 10</td>
+</tr>
+<tr>
+<td>7</td>
+<td>모듈형 일일 프로젝트</td>
+<td>역할 지도 5 · 함수 입출력 확인 10 · 연결 30 · 확인 5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>프로젝트 마무리</td>
+<td>완성 20 · 짝의 재현 15 · 최종 설명 10 · 돌아보기 5</td>
+</tr>
+</tbody>
+</table>
+<p>빠른 수강생은 자신의 기본필수 점검이 끝나면 선택 과제로 이동합니다.
+천천히 진행하는 수강생은 두 번째 교시에도 기본필수를 계속합니다.
+모르는 내용을 설명하는 짧은 안내는 실습 중에만 하고 새로운 이론 진도를 추가하지 않습니다.</p>
+<p><a id="functions"></a></p>
+<h1>01 함수 활용</h1>
+<p><strong>오전 1~2교시</strong></p>
+<p><strong>꼭 구분할 것:</strong> 함수를 정의하는 것과 호출하는 것은 다릅니다. <code>return</code>은 호출한 곳에 값을 주고,
+<code>print</code>는 화면에 보여 줍니다. <code>price</code>, <code>quantity</code>는 함수가 받은 입력입니다.</p>
+<pre><code class="language-python">amount = calculate_amount(3000, 2)
+print(amount)
+</code></pre>
+<p>위 코드에서 <code>amount</code>에 들어갈 값을 먼저 적습니다. 함수 내부의 매개변수 이름을 바꾸는 것이 아니라
+호출할 때 넘기는 3000과 2를 바꿔서 재실험합니다.</p>
+<p><strong>기본필수 추가 반복:</strong> 수량 2→3, 단가 3000→2000으로 각각 바꾸고 예측값·실행값을 비교합니다.
+같은 함수 세 개로 계속 반복해도 됩니다.</p>
+<h3>기본필수</h3>
+<p>열 파일: <a href="01_functions/basic.py"><code>01_functions/basic.py</code></a><br />
+직접 채울 곳: <strong>F_B1, F_B2, F_B3</strong></p>
+<pre><code class="language-text">python 01_functions/basic.py
+python check.py 01_basic
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 금액 6000 / 문장 “쿠키: 6000원” / 함수 연결 “카페라떼: 8000원”</p>
+<p><strong>설명 질문:</strong> 어떤 줄이 함수를 호출하나요? return 대신 print만 쓰면 amount에는 무엇이 들어갈까요?</p>
+<p>화면 출력 대조: <a href="expected/01_functions/basic.txt"><code>expected/01_functions/basic.txt</code></a></p>
+<details><summary>F_B1 · 힌트 1</summary><p>3000원짜리 음료 2개의 금액을 먼저 손으로 계산합니다.</p></details>
+<details><summary>F_B1 · 힌트 2</summary><p>반환할 값은 price와 quantity의 곱입니다. 함수 안에서 출력하지 않습니다.</p></details>
+<details><summary>F_B2 · 힌트 1</summary><p>반환 자료형은 int가 아니라 str입니다.</p></details>
+<details><summary>F_B2 · 힌트 2</summary><p>f 문자열을 사용해 상품명, 콜론, 공백, 금액, 원을 차례로 연결합니다.</p></details>
+<details><summary>F_B3 · 힌트 1</summary><p>두 함수의 입력과 반환값을 화살표로 이어 봅니다.</p></details>
+<details><summary>F_B3 · 힌트 2</summary><p>금액 계산 → 그 금액으로 문장 만들기 → 그 문장 반환. 이미 만든 함수를 다시 사용합니다.</p></details>
+<h3>선택 응용</h3>
+<p>열 파일: <a href="01_functions/applied.py"><code>01_functions/applied.py</code></a><br />
+직접 채울 곳: <strong>F_A1, F_A2</strong></p>
+<pre><code class="language-text">python 01_functions/applied.py
+python check.py 01_applied
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 주문 3건의 총액 16000 / 6000원 이상 주문 2건 / 빈 목록 합계 0</p>
+<p><strong>설명 질문:</strong> return이 for문 안에 있으면 두 번째·세 번째 주문은 계산되나요?</p>
+<p>화면 출력 대조: <a href="expected/01_functions/applied.txt"><code>expected/01_functions/applied.txt</code></a></p>
+<details><summary>F_A1 · 힌트 1</summary><p>total=0에서 시작한 뒤 각 주문의 금액을 누적합니다.</p></details>
+<details><summary>F_A1 · 힌트 2</summary><p>for 안에서는 더하기, for가 끝난 뒤에는 return을 둡니다. 빈 목록은 0입니다.</p></details>
+<details><summary>F_A2 · 힌트 1</summary><p>기준 금액과 정확히 같아도 포함합니다.</p></details>
+<details><summary>F_A2 · 힌트 2</summary><p>주문 하나의 금액을 계산하고 &gt;= minimum일 때 count를 1 올립니다.</p></details>
+<h3>선택 심화</h3>
+<p>열 파일: <a href="01_functions/advanced.py"><code>01_functions/advanced.py</code></a><br />
+직접 채울 곳: <strong>F_D1, F_D2</strong></p>
+<pre><code class="language-text">python 01_functions/advanced.py
+python check.py 01_advanced
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 유효 수량 합 5 / 제외 7건 / 원본 값 9개 유지</p>
+<p><strong>설명 질문:</strong> None과 0은 이 실습에서 어떻게 다른가요? 잘못된 값을 조용히 0으로 만들지 않는 이유는 무엇인가요?</p>
+<p>화면 출력 대조: <a href="expected/01_functions/advanced.txt"><code>expected/01_functions/advanced.txt</code></a></p>
+<details><summary>F_D1 · 힌트 1</summary><p>int로 바꿀 수 있는지와 1 이상인지를 각각 확인합니다.</p></details>
+<details><summary>F_D1 · 힌트 2</summary><p>문자열·정수만 허용합니다. None, bool, float는 제외하고 변환 실패는 None으로 표시합니다.</p></details>
+<details><summary>F_D2 · 힌트 1</summary><p>None은 0이라는 뜻이 아니라 사용할 수 없다는 표시입니다.</p></details>
+<details><summary>F_D2 · 힌트 2</summary><p>각 값에 parse_quantity를 호출하고 None이면 제외 건수를, 아니면 합계를 올립니다.</p></details>
+<p><a id="classes"></a></p>
+<h1>02 클래스 활용</h1>
+<p><strong>오전 3~4교시</strong></p>
+<p><strong>함수에서 한 걸음만 이동:</strong> 아까는 가격과 수량을 매번 전달했습니다. 이제 주문 객체 안에 보관합니다.
+<code>self</code>는 “이 주문”을 가리킵니다. 오늘은 상속이나 복잡한 설계 문법을 추가하지 않습니다.</p>
+<pre><code class="language-python">first = Order(&quot;아메리카노&quot;, 3000, 2)
+second = Order(&quot;카페라떼&quot;, 4000, 1)
+first.quantity = 3
+</code></pre>
+<p>수정 후 first.quantity와 second.quantity를 각각 적습니다.
+<code>first.amount</code>는 메서드 자체이고, <code>first.amount()</code>는 호출 결과입니다. 괄호를 확인합니다.</p>
+<p><strong>기본필수 추가 반복:</strong> 첫 주문의 상품명과 수량을 바꿔도 둘째 주문이 그대로인지 확인합니다.</p>
+<h3>기본필수</h3>
+<p>열 파일: <a href="02_classes/basic.py"><code>02_classes/basic.py</code></a><br />
+직접 채울 곳: <strong>C_B1, C_B2</strong></p>
+<pre><code class="language-text">python 02_classes/basic.py
+python check.py 02_basic
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 첫 금액 6000 / 둘째 금액 4000 / 첫 수량 변경 후 9000 / 둘째는 4000 유지</p>
+<p><strong>설명 질문:</strong> 매개변수 quantity와 self.quantity의 역할이 어떻게 다르나요?</p>
+<p>화면 출력 대조: <a href="expected/02_classes/basic.txt"><code>expected/02_classes/basic.txt</code></a></p>
+<details><summary>C_B1 · 힌트 1</summary><p>item과 self.item은 이름이 비슷하지만 쓰는 위치가 다릅니다.</p></details>
+<details><summary>C_B1 · 힌트 2</summary><p>self.속성 = 매개변수 형태로 세 값을 각각 저장합니다.</p></details>
+<details><summary>C_B2 · 힌트 1</summary><p>함수에서는 price를 받았지만 이번에는 self에 값이 저장되어 있습니다.</p></details>
+<details><summary>C_B2 · 힌트 2</summary><p>self.unit_price와 self.quantity를 곱하고 return합니다.</p></details>
+<h3>선택 응용</h3>
+<p>열 파일: <a href="02_classes/applied.py"><code>02_classes/applied.py</code></a><br />
+직접 채울 곳: <strong>C_A1, C_A2</strong></p>
+<pre><code class="language-text">python 02_classes/applied.py
+python check.py 02_applied
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 쿠키 수량 4, 금액 8000 / 수량 0 변경은 거절 / 기존 수량 4 유지</p>
+<p><strong>설명 질문:</strong> 입력 검사를 한 뒤 대입해야 하는 이유는 무엇인가요?</p>
+<p>화면 출력 대조: <a href="expected/02_classes/applied.txt"><code>expected/02_classes/applied.txt</code></a></p>
+<details><summary>C_A1 · 힌트 1</summary><p>검사보다 대입이 먼저 오면 잘못된 수량도 저장될 수 있습니다.</p></details>
+<details><summary>C_A1 · 힌트 2</summary><p>정수인지, bool이 아닌지, 1 이상인지 확인하고 마지막에 self.quantity를 바꿉니다.</p></details>
+<details><summary>C_A2 · 힌트 1</summary><p>키 네 개는 item, unit_price, quantity, amount입니다.</p></details>
+<details><summary>C_A2 · 힌트 2</summary><p>금액은 이미 만든 self.amount()를 호출합니다. 기존 객체를 반환하는 것이 아닙니다.</p></details>
+<h3>선택 심화</h3>
+<p>열 파일: <a href="02_classes/advanced.py"><code>02_classes/advanced.py</code></a><br />
+직접 채울 곳: <strong>C_D1, C_D2, C_D3</strong></p>
+<pre><code class="language-text">python 02_classes/advanced.py
+python check.py 02_advanced
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 첫 장바구니 12000 / 둘째 0 / 두 목록은 서로 다른 객체</p>
+<p><strong>설명 질문:</strong> 목록을 <strong>init</strong> 밖에 함께 만들면 무엇이 공유될 수 있나요?</p>
+<p>화면 출력 대조: <a href="expected/02_classes/advanced.txt"><code>expected/02_classes/advanced.txt</code></a></p>
+<details><summary>C_D1 · 힌트 1</summary><p>첫 번째 장바구니에 넣은 주문이 두 번째에 나타나면 안 됩니다.</p></details>
+<details><summary>C_D1 · 힌트 2</summary><p>self.orders = 빈 목록을 __init__ 안에 둡니다.</p></details>
+<details><summary>C_D2 · 힌트 1</summary><p>List에 원소 하나를 추가하는 메서드는 append입니다.</p></details>
+<details><summary>C_D2 · 힌트 2</summary><p>추가 대상은 self.orders, 추가할 값은 order입니다.</p></details>
+<details><summary>C_D3 · 힌트 1</summary><p>Dict의 order[&quot;amount&quot;]가 아니라 객체의 메서드를 호출합니다.</p></details>
+<details><summary>C_D3 · 힌트 2</summary><p>빈 장바구니는 total의 시작값인 0을 그대로 반환합니다.</p></details>
+<p><a id="files"></a></p>
+<h1>03 CSV·JSON 읽기·정제·집계·저장</h1>
+<p><strong>오후 5~6교시</strong></p>
+<p><strong>하나의 처리 흐름:</strong> 읽기 → 공백/자료형 정리 → 금액 계산 → 합계 → 저장 → 다시 읽기.
+먼저 <code>data/orders_basic.csv</code>와 <code>data/orders_basic.json</code>을 VS Code에서 텍스트로 엽니다.
+CSV 3건과 JSON 2건은 서로 다른 거래이므로 연결하면 5건입니다.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>상품</th>
+<th style="text-align:right">단가</th>
+<th style="text-align:right">수량</th>
+<th style="text-align:right">예상 금액</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C01</td>
+<td>아메리카노</td>
+<td style="text-align:right">3000</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">6000</td>
+</tr>
+<tr>
+<td>C02</td>
+<td>카페라떼</td>
+<td style="text-align:right">4000</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">4000</td>
+</tr>
+<tr>
+<td>C03</td>
+<td>쿠키</td>
+<td style="text-align:right">2000</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">6000</td>
+</tr>
+<tr>
+<td>J01</td>
+<td>아메리카노</td>
+<td style="text-align:right">3000</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right">3000</td>
+</tr>
+<tr>
+<td>J02</td>
+<td>카페라떼</td>
+<td style="text-align:right">4000</td>
+<td style="text-align:right">2</td>
+<td style="text-align:right">8000</td>
+</tr>
+</tbody>
+</table>
+<p>CSV의 숫자 문자열을 그대로 더하면 원하는 계산이 되지 않습니다.
+<code>int(&quot;2&quot;)</code>는 정수 2, <code>&quot; 쿠키 &quot;.strip()</code>은 공백이 없는 “쿠키”입니다.
+<code>read_csv</code>, <code>read_json</code>, <code>save_results</code>의 파일 열고 닫는 부분은 제공했습니다.
+읽기 함수들을 호출하고 정제·집계를 구현하는 데 집중합니다.</p>
+<p><strong>원본 보존:</strong> <code>data</code>는 수정하지 않습니다. 새 행을 만들어 <code>outputs</code>에 저장합니다.
+수량 누락·중복 처리는 응용·심화에서만 다룹니다. 기본필수에서 한꺼번에 해결하지 않습니다.
+<strong>기본필수 추가 반복:</strong> 입력 파일 사본에서 한 수량만 바꾸고 결과가 얼마나 달라질지 먼저 적어 봅니다.</p>
+<h3>기본필수</h3>
+<p>열 파일: <a href="03_files/basic.py"><code>03_files/basic.py</code></a><br />
+직접 채울 곳: <strong>D_B1, D_B2, D_B3</strong></p>
+<pre><code class="language-text">python 03_files/basic.py
+python check.py 03_basic
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 주문 5건 / 상품 9개 / 27000원 / CSV·JSON 재읽기 성공</p>
+<p><strong>설명 질문:</strong> 주문 5건과 수량 9개의 차이를 설명하고, 저장한 두 파일을 직접 열어 보세요.</p>
+<p>화면 출력 대조: <a href="expected/03_files/basic.txt"><code>expected/03_files/basic.txt</code></a></p>
+<details><summary>D_B1 · 힌트 1</summary><p>read_csv와 read_json은 위에서 import한 제공 함수입니다.</p></details>
+<details><summary>D_B1 · 힌트 2</summary><p>각각 반환하는 List 두 개를 +로 연결합니다. CSV 뒤에 JSON을 붙입니다.</p></details>
+<details><summary>D_B2 · 힌트 1</summary><p>strip은 양끝 공백을 제거합니다. int는 숫자 문자열을 정수로 바꿉니다.</p></details>
+<details><summary>D_B2 · 힌트 2</summary><p>새 Dict에는 order_id·item·unit_price·quantity·amount 다섯 키를 넣습니다.</p></details>
+<details><summary>D_B3 · 힌트 1</summary><p>주문 5건과 상품 9개는 다른 수치입니다.</p></details>
+<details><summary>D_B3 · 힌트 2</summary><p>len(rows)는 주문 수입니다. 수량과 금액은 각각 별도 변수에 더합니다.</p></details>
+<h3>선택 응용</h3>
+<p>열 파일: <a href="03_files/applied.py"><code>03_files/applied.py</code></a><br />
+직접 채울 곳: <strong>D_A1, D_A2</strong></p>
+<pre><code class="language-text">python 03_files/applied.py
+python check.py 03_applied
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 10행 → 정상 5·제외 5 / 아메리카노 9000·카페라떼 12000·쿠키 6000원</p>
+<p><strong>설명 질문:</strong> 수량이 없는 주문을 0개로 처리하지 않고 제외 이유에 남기는 이유는 무엇인가요?</p>
+<p>화면 출력 대조: <a href="expected/03_files/applied.txt"><code>expected/03_files/applied.txt</code></a></p>
+<details><summary>D_A1 · 힌트 1</summary><p>check_row는 (정제 행, 이유)를 반환합니다. 성공하면 이유는 None입니다.</p></details>
+<details><summary>D_A1 · 힌트 2</summary><p>실패는 rejected에 원본·이유를 담고, 성공은 clean에 checked를 담습니다.</p></details>
+<details><summary>D_A2 · 힌트 1</summary><p>처음 본 상품이면 누적할 두 값을 0으로 준비합니다.</p></details>
+<details><summary>D_A2 · 힌트 2</summary><p>상품명을 바깥 Dict의 키로 쓰고 안쪽 quantity와 amount에 더합니다.</p></details>
+<h3>선택 심화</h3>
+<p>열 파일: <a href="03_files/advanced.py"><code>03_files/advanced.py</code></a><br />
+직접 채울 곳: <strong>D_D1, D_D2</strong></p>
+<pre><code class="language-text">python 03_files/advanced.py
+python check.py 03_advanced
+</code></pre>
+<p><strong>완료 시 확인할 값:</strong> 14행 → 정상 6·보류 포함 제외 8 / 31000원 / 이유별 4·1·1·2건</p>
+<p><strong>설명 질문:</strong> 내용이 다른 같은 ID의 거래는 자동으로 어느 쪽을 믿을 수 있나요? 원본과 이유를 어떻게 남겼나요?</p>
+<p>화면 출력 대조: <a href="expected/03_files/advanced.txt"><code>expected/03_files/advanced.txt</code></a></p>
+<details><summary>D_D1 · 힌트 1</summary><p>잘못된 첫 행 때문에 뒤의 정상 행까지 제외하지 않도록 유효성 검사를 먼저 합니다.</p></details>
+<details><summary>D_D1 · 힌트 2</summary><p>정상 행의 ID가 seen_ids에 있으면 보류. 없다면 seen_ids와 clean에 함께 추가합니다.</p></details>
+<details><summary>D_D2 · 힌트 1</summary><p>개별 데이터가 아니라 rejected 안의 reason을 셉니다.</p></details>
+<details><summary>D_D2 · 힌트 2</summary><p>같은 이유를 만나면 기존 값에 1을 더합니다. 빈 목록이면 빈 Dict입니다.</p></details>
+<p><a id="project"></a></p>
+<h1>04 모듈형 일일 프로젝트</h1>
+<p><strong>오후 7~8교시 — 앞의 내용을 새로 공부하지 않고 이어 붙입니다.</strong></p>
+<p>목표는 같은 주문 5건을 함수·객체·모듈로 나누어 처리하는 프로그램입니다.
+앞 파일을 미완성으로 남겼어도 제공된 Order 클래스와 파일 읽기 코드로 시작할 수 있습니다.</p>
+<pre><code class="language-text">main.py         전체 순서 실행 + Dict를 Order 객체로 변환
+   ↓
+storage.py      CSV·JSON 읽기와 저장       (제공)
+cleaning.py     공백·숫자 정제              (P_B1)
+models.py       Order 클래스                (제공)
+reporting.py    객체 목록을 집계            (P_B2)
+main.py         위 기능 연결               (P_B3는 객체 생성)
+</code></pre>
+<p><code>from models import Order</code>는 “models.py에서 Order를 가져와 사용한다”는 뜻입니다.
+파일을 나눈 이유는 코드 길이를 늘리기 위해서가 아니라 읽기·정제·계산의 책임을 찾기 쉽게 하기 위해서입니다.</p>
+<h2>기본필수 — 세 곳만 완성</h2>
+<table>
+<thead>
+<tr>
+<th>작성 순서</th>
+<th>파일</th>
+<th>TODO</th>
+<th>입력 → 반환</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>04_project/cleaning.py</code></td>
+<td>P_B1</td>
+<td>원본 Dict 목록 → 정제 Dict 목록</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>04_project/main.py</code></td>
+<td>P_B3</td>
+<td>정제 Dict 목록 → Order 객체 목록</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>04_project/reporting.py</code></td>
+<td>P_B2</td>
+<td>Order 객체 목록 → 요약 Dict</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-text">python 04_project/main.py
+python check.py 04_basic
+</code></pre>
+<p><strong>완료 결과:</strong> 주문 5건 · 상품 9개 · 27000원.
+<code>04_project/outputs/basic/clean_orders.csv</code>, <code>summary.json</code>, <code>rejected.json</code>을 확인합니다.
+기본필수에서 제외한 행은 없으므로 rejected.json은 빈 목록입니다.
+<code>expected/04_project/basic/</code>에 실제 정답 실행 결과가 있습니다.</p>
+<h2>선택 응용 — 상품별 요약 한 함수</h2>
+<p><code>reporting.py</code>의 P_A1만 추가합니다. 기본필수와 같은 정상 5건을 사용합니다.
+03 파일 응용의 불량 10행과 다릅니다. 새로운 입력 정제까지 동시에 추가하지 않습니다.</p>
+<pre><code class="language-text">python 04_project/main.py applied
+python check.py 04_applied
+</code></pre>
+<p>아메리카노 3개·9000원 / 카페라떼 3개·12000원 / 쿠키 3개·6000원.</p>
+<h2>선택 심화 — 불량·중복 입력도 다루기</h2>
+<p>응용까지 완료한 뒤 <code>cleaning.py</code>의 P_D1을 추가합니다. 14행 중 정상 6건, 제외·보류 8건입니다.
+첫 유효 ID를 유지하고 나중의 같은 ID는 원본과 함께 확인 대기로 남깁니다.</p>
+<pre><code class="language-text">python 04_project/main.py advanced
+python check.py 04_advanced
+</code></pre>
+<p>상품 수량 11개, 집계 금액 31000원. 이 금액은 이번 실습의 임시 정제 정책을 적용한 값입니다.
+실제 매출 확정 전에 중복·충돌 거래 확인이 필요함을 함께 기록합니다.</p>
+<h2>제출과 짝 확인</h2>
+<p>기본필수 프로그램과 결과 파일, <code>기록지/최종_설명.md</code>를 제출합니다.
+짝은 작성자의 설명 없이 README의 실행 명령으로 실행한 다음 다음 질문을 합니다.</p>
+<ol>
+<li>금액 계산은 어느 함수/메서드가 담당하나요?</li>
+<li>왜 파일에서 읽은 숫자를 int로 바꾸었나요?</li>
+<li>Order 객체와 Dictionary 중 어디에서 점(.)을 쓰나요?</li>
+<li>프로그램을 다시 실행해도 원본 data는 그대로인가요?</li>
+</ol>
+<p>수행 속도나 선택 과제 개수로 순위를 매기지 않습니다. 수치 검사가 끝나면 본인 설명을 확인합니다.</p>
+<details><summary>P_B1 · 힌트 1</summary><p>03_files/basic.py의 clean_one을 참고해도 됩니다. 암기 문제가 아닙니다.</p></details>
+<details><summary>P_B1 · 힌트 2</summary><p>빈 List를 만든 뒤 정제한 새 Dict를 한 행씩 append합니다.</p></details>
+<details><summary>P_B3 · 힌트 1</summary><p>Order의 __init__ 매개변수 순서를 models.py에서 확인합니다.</p></details>
+<details><summary>P_B3 · 힌트 2</summary><p>입력 Dict 한 개 → Order(...) 한 개 → List에 append. 마지막에 목록을 반환합니다.</p></details>
+<details><summary>P_B2 · 힌트 1</summary><p>03에서는 Dict를 다뤘고 여기서는 Order 객체를 다룹니다.</p></details>
+<details><summary>P_B2 · 힌트 2</summary><p>order.quantity는 속성, order.amount()는 메서드입니다. 괄호 차이를 확인합니다.</p></details>
+<details><summary>P_A1 · 힌트 1</summary><p>03 응용의 그룹 집계를 참고하되 Dict 접근을 객체 접근으로 바꿉니다.</p></details>
+<details><summary>P_A1 · 힌트 2</summary><p>기본필수 실행에는 없어도 됩니다. 응용과 심화에서 사용합니다.</p></details>
+<details><summary>P_D1 · 힌트 1</summary><p>03_files/advanced.py와 같은 정책을 재사용합니다.</p></details>
+<details><summary>P_D1 · 힌트 2</summary><p>기본필수 실행에서는 이 함수를 호출하지 않습니다. 심화를 선택한 경우에만 구현합니다.</p></details>
+<p><a id="trouble"></a></p>
+<h1>막혔을 때 — 증상 하나부터</h1>
+<table>
+<thead>
+<tr>
+<th>증상</th>
+<th>먼저 볼 곳</th>
+<th>해볼 일</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[아직 작성할 곳]</code></td>
+<td>표시된 TODO ID</td>
+<td>한 곳을 완성한 뒤 그 파일만 다시 실행</td>
+</tr>
+<tr>
+<td><code>None</code>이 보임</td>
+<td>함수의 마지막 줄</td>
+<td>print만 하지 않았는지, return이 있는지 확인</td>
+</tr>
+<tr>
+<td>한 주문만 합산됨</td>
+<td>return 들여쓰기</td>
+<td>for문이 끝난 뒤 return이 있는지 확인</td>
+</tr>
+<tr>
+<td>숫자가 이어 붙음</td>
+<td><code>type(...)</code></td>
+<td>int로 바꾼 후 계산</td>
+</tr>
+<tr>
+<td><code>NameError</code></td>
+<td>철자·변수의 위치</td>
+<td>매개변수인지, self 속성인지 확인</td>
+</tr>
+<tr>
+<td><code>AttributeError</code></td>
+<td><code>__init__</code>의 속성 이름</td>
+<td>self.quantity 등 생성한 이름과 같은지 확인</td>
+</tr>
+<tr>
+<td><code>KeyError</code></td>
+<td>Dict의 실제 키</td>
+<td>unit_price와 price를 혼동하지 않았는지 확인</td>
+</tr>
+<tr>
+<td><code>IndentationError</code></td>
+<td>줄 앞의 공백</td>
+<td>함수·for·if의 들여쓰기를 주변 코드와 맞춤</td>
+</tr>
+<tr>
+<td><code>SyntaxError</code></td>
+<td>괄호·따옴표·콜론</td>
+<td>에러 줄 바로 위도 확인</td>
+</tr>
+<tr>
+<td><code>FileNotFoundError</code></td>
+<td>파일명·압축 해제</td>
+<td>폴더를 통째로 풀었는지, data를 삭제하지 않았는지 확인</td>
+</tr>
+</tbody>
+</table>
+<p><strong>질문할 때:</strong> 실행 명령, 파일명, TODO 번호, 예상값, 실제값(또는 마지막 오류 문장)을 함께 보여 주세요.
+5분 넘게 같은 오류라면 혼자 계속 바꾸지 않고 도움을 요청합니다. 본인이 시도한 한 줄을 설명합니다.</p>
+<h2>문법 연결표</h2>
+<table>
+<thead>
+<tr>
+<th>표현</th>
+<th>이 실습에서의 의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>row[&quot;quantity&quot;]</code></td>
+<td>Dictionary의 quantity 값</td>
+</tr>
+<tr>
+<td><code>order.quantity</code></td>
+<td>Order 객체에 저장된 quantity 속성</td>
+</tr>
+<tr>
+<td><code>order.amount()</code></td>
+<td>Order 객체의 amount 메서드 호출</td>
+</tr>
+<tr>
+<td><code>return value</code></td>
+<td>호출한 쪽에 value 전달</td>
+</tr>
+<tr>
+<td><code>print(value)</code></td>
+<td>화면에 value 표시</td>
+</tr>
+<tr>
+<td><code>rows.append(row)</code></td>
+<td>List 뒤에 원소 하나 추가</td>
+</tr>
+<tr>
+<td><code>&quot; 쿠키 &quot;.strip()</code></td>
+<td>양끝 공백 제거</td>
+</tr>
+<tr>
+<td><code>int(&quot;3&quot;)</code></td>
+<td>정수 3으로 바꾸기</td>
+</tr>
+<tr>
+<td><code>from models import Order</code></td>
+<td>다른 파일의 클래스 가져오기</td>
+</tr>
+<tr>
+<td><code>if __name__ == &quot;__main__&quot;:</code></td>
+<td>직접 실행할 때만 아래 실행부 시작</td>
+</tr>
+</tbody>
+</table>
+<h2>오늘 끝날 때</h2>
+<p>“나는 오늘 ______를 받아 ______를 반환하는 함수를 완성했다.”
+“객체에 저장된 값을 사용하려면 ______로 접근한다.”
+“내 프로그램은 ______를 읽어 ______를 저장한다.”</p>
+<p>모르는 항목은 빈칸으로 남겨도 됩니다. 다음 복습에서 다시 확인할 지점입니다.</p>
+</main></body></html>

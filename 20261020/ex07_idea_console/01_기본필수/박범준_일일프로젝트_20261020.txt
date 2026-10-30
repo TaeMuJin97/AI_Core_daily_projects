@@ -1,0 +1,9 @@
+박범준 / 기본필수 / 20261020 17:40
+
+# TODO 01: 공백 정리 후 빈 이름을 거부하고 아이디어 이름을 List에 저장하세요.
+    # raise NotImplementedError("TODO 1: add_idea")
+    name = name.strip()
+    if not name:
+        return False
+    ideas.append(name)
+    return True

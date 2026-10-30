@@ -1,0 +1,22 @@
+{
+  "train_shape": [
+    60,
+    8
+  ],
+  "valid_shape": [
+    20,
+    8
+  ],
+  "feature_names": [
+    "num__input_chars",
+    "num__allowed_tools",
+    "cat__task_type_qa",
+    "cat__task_type_research",
+    "cat__task_type_summary",
+    "cat__priority_high",
+    "cat__priority_low",
+    "cat__priority_normal"
+  ],
+  "finite": true,
+  "ids_preserved": true
+}

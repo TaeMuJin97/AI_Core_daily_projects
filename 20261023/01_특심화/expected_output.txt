@@ -1,0 +1,15 @@
+{
+  "stage_audit": {
+    "rows": 6,
+    "unique_requests": 3,
+    "repeated_request_ids": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  "matured_at_0915": [
+    "L01",
+    "L04"
+  ]
+}

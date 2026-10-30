@@ -1,0 +1,17 @@
+# 가상환경 폴더 전부 무시 (하위 폴더 포함)
+.venv/
+venv/
+gpuvenv/
+*venv/
+
+# 파이썬 캐시 파일 무시
+__pycache__/
+*.py[cod]
+
+# OS 및 에디터 설정 파일 무시
+.DS_Store
+Thumbs.db
+.vscode/
+
+# 강사님 원본 클론 폴더(practice_assignment) 제외
+practice_assignment/

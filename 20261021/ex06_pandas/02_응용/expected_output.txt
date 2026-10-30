@@ -1,0 +1,8 @@
+shape: (6, 4)
+columns: ['name', 'difficulty', 'score', 'role_count']
+응용 name: ['B', 'B', 'C']
+행 수: 6 -> 5
+점수 결측: 2
+난이도: ['기본필수', '응용', '응용', '심화', '미정']
+응용 평균: 75.0
+원본 보존: True
