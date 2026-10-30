@@ -37,8 +37,8 @@ loss_fn = nn.CrossEntropyLoss()
 # >>> A06
 # TODO A06: 위 요구사항에 맞게 이 블록만 완성합니다.
 configs = [
-    {'name': 'baseline', 'lr': 0.01, 'bn': False},
-    {'name': 'batchnorm', 'lr': 0.01, 'bn': True}
+    {'name': 'baseline', 'lr': 0.01, 'bn': False}, # batchnorm_false
+    {'name': 'batchnorm', 'lr': 0.01, 'bn': True}   # batchnorm_true
 ]
 # <<< A06
 summary = []
