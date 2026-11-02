@@ -18,8 +18,6 @@ practice_assignment/
 
 # 데이터 및 학습 결과물 폴더/파일 제외 (현업 정석)
 data/
-20261102/02_응용/data/
-
 outputs/
 *.csv
 *.png
