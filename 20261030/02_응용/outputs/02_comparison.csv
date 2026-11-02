@@ -1,2 +1,0 @@
-name,lr,best_epoch,best_valid_loss,valid_acc_at_best,last_train_loss_eval,last_valid_loss
-lr0.001,0.001,20,0.29357433319091797,0.887499988079071,0.25954726338386536,0.29357433319091797

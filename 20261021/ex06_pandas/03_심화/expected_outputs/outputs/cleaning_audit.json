@@ -1,9 +1,0 @@
-{
-  "before_rows": 6,
-  "after_rows": 5,
-  "removed_duplicates": 1,
-  "original_score_missing": 1,
-  "numeric_failures": 1,
-  "clean_score_missing": 2,
-  "filled_difficulty": 1
-}
