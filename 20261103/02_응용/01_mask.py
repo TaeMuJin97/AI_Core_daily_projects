@@ -49,6 +49,13 @@ mask = torch.arange(padded.size(1)).unsqueeze(0) >= lengths.unsqueeze(1)
 # 따라서 ~mask로 실제 시점(True)만 남기고 [3, 5, 1]로 차원을 늘려 곱한 뒤, 실제 길이(lengths)로 나눕니다.
 valid = (~mask).unsqueeze(-1)
 mean = (padded * valid).sum(dim=1) / lengths.unsqueeze(1)
+
+# 한줄 정답 코드 추가
+# mean = (padded * (~mask).unsqueeze(-1)).sum(dim=1) / lengths.unsqueeze(-1)
+# 값이 복잡해 보이죠? 실제로는 패딩된 부분을 제외하고 각 시퀀스의 평균을 계산하는 간단한 연산입니다.
+#   mean = sum(scores) / len(scores) 이게 원래 식이에요.
+#   그런데 패딩값을 빼야해서 (~mask)로 실제 값만 남기고, sum(dim=1)으로 합산하고, lengths로 나누어 평균을 구하는 거죠.
+
 # END A01
 
 print("Padding mask:\n", mask)
