@@ -13,15 +13,15 @@ import csv
 rows = []
 for filename in ["scene.png", "noisy.png", "objects.png"]:
     image = cv2.imread(filename)
-    # >>> TODO B07
-    # image를 Gray로 만든 뒤 (너비160, 높이120)으로 축소하세요. 변수는 gray, small입니다.
-    gray = image[:, :, 0]
-    small = gray.copy()
-    # <<< TODO B07
-    # >>> TODO B08
-    # 축소한 small에 Canny 80,160을 적용하여 edge를 만드세요.
-    edge = small.copy()
-    # <<< TODO B08
+    # >>> 해설 B07
+    # 단계별 파일을 남겨 무엇이 달라졌는지 눈으로 확인합니다. 원본320×240과 출력160×120은 같은 가로세로 비율입니다.
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    small = cv2.resize(gray, (160, 120), interpolation=cv2.INTER_AREA)
+    # <<< 해설 B07
+    # >>> 해설 B08
+    # 이 프로젝트에서는 단순한 처리 흐름을 익히기 위해 필터는 추가하지 않습니다.
+    edge = cv2.Canny(small, 80, 160)
+    # <<< 해설 B08
     stem = Path(filename).stem
     cv2.imwrite(f"p07_{stem}_gray.png", gray)
     cv2.imwrite(f"p07_{stem}_small.png", small)
@@ -37,12 +37,12 @@ while cap.isOpened() and writer.isOpened():
     ok, frame = cap.read()
     if not ok:
         break
-    # >>> TODO B09
-    # 각 frame에도 같은 Gray→160×120 Resize→Canny 순서를 적용하세요. 마지막 변수는 frame_edge입니다.
-    frame_gray = frame[:, :, 0]
-    frame_small = cv2.resize(frame_gray, (160, 120))
-    frame_edge = frame_small.copy()
-    # <<< TODO B09
+    # >>> 해설 B09
+    # 출력 Writer의 frameSize=(160,120)과 쓰는 프레임의 shape가 일치해야 합니다. FPS12와 프레임48을 유지하므로 재생시간4초입니다.
+    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    frame_small = cv2.resize(frame_gray, (160, 120), interpolation=cv2.INTER_AREA)
+    frame_edge = cv2.Canny(frame_small, 80, 160)
+    # <<< 해설 B09
     writer.write(cv2.cvtColor(frame_edge, cv2.COLOR_GRAY2BGR))
     count += 1
 cap.release()
