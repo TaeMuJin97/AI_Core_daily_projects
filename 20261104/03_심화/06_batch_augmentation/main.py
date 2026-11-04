@@ -1,41 +1,322 @@
+
 from pathlib import Path
 import os
 import cv2
 import numpy as np
 
-# 제공 코드: 어느 작업 폴더에서 실행해도 현재 파일 옆의 입력을 읽습니다.
-# OpenCV에는 영문 상대 경로를 전달합니다. 원본 파일은 덮어쓰지 않습니다.
+# ============================================================
+# 1. 실행 환경 및 경로 설정
+# ============================================================
+
+# 현재 Python 파일이 위치한 폴더를 작업 디렉터리로 설정
+# 어느 위치에서 실행해도 상대 경로가 동일하도록 유지
 os.chdir(Path(__file__).resolve().parent)
 
 import csv
 import json
 from time import perf_counter
-Path("outputs").mkdir(exist_ok=True)
-
 import hashlib
 
-def augment(image,seed):
-    rng=np.random.default_rng(seed)
-    flip=bool(rng.random()<0.5); beta=int(rng.integers(-20,21))
-    result=cv2.flip(image,1) if flip else image.copy()
-    # >>> TODO H06
-    # beta를 적용하되 uint8의 순환을 막고 값 범위를 지키세요. 원본 image는 수정하지 않습니다.
-    result=result.copy()
-    # <<< TODO H06
-    return result,{"seed":seed,"flip":flip,"beta":beta}
+# 증강 결과 이미지를 저장할 outputs 폴더 생성
+# exist_ok=True: 폴더가 이미 존재해도 오류가 발생하지 않음
+Path("outputs").mkdir(exist_ok=True)
 
-with open("../data/manifest.csv",encoding="utf-8-sig",newline="") as f:
-    sources=list(csv.DictReader(f))
-rows=[]
-for row in sorted(sources,key=lambda r:r["sample_id"]):
-    if row["split"]!="train":
-        continue  # valid/test는 증강 대상이 아닙니다.
-    seed=42+int(row["sample_id"].split("_")[-1])
-    src=Path("../data")/row["path"];image=cv2.imread(str(src))
-    result,settings=augment(image,seed);dest=Path("outputs")/(row["sample_id"]+"_aug.png")
-    saved=cv2.imwrite(str(dest),result)
-    rows.append([row["sample_id"],row["split"],str(dest),seed,settings["flip"],settings["beta"],saved,hashlib.sha256(src.read_bytes()).hexdigest()])
-with open("outputs/augmentation.csv","w",encoding="utf-8-sig",newline="") as f:
-    w=csv.writer(f);w.writerow(["id","split","output","seed","flip","beta","saved","source_sha256"]);w.writerows(rows)
-print("증강 이미지:",len(rows),"/ train만 처리")
-print("설정:",[(r[0],r[3],r[4],r[5]) for r in rows])
+
+# ============================================================
+# 2. 데이터 증강 함수 정의
+# ============================================================
+
+def augment(image: np.ndarray, seed: int) -> tuple[np.ndarray, dict]:
+    """
+    입력 이미지에 랜덤 데이터 증강을 적용합니다.
+
+    입력값:
+    image는 OpenCV로 읽은 BGR 형식의 이미지 배열입니다.
+    seed는 난수 생성기의 시드 값으로, 동일한 seed를 사용하면 같은 증강 결과를 재현할 수 있습니다.
+
+    증강 방식:
+    1. 50% 확률로 좌우 반전
+    2. 밝기 값 -20 ~ +20 사이에서 무작위 조정
+
+    반환값:
+    result   : 증강된 이미지
+    settings : 증강에 사용한 설정값
+    """
+
+    # --------------------------------------------------------
+    # 2-1. 난수 생성기(Random Number Generator) 초기화
+    # --------------------------------------------------------
+
+    # seed를 고정하면 실행할 때마다 동일한 난수가 생성됨
+    # 즉, 동일 이미지와 Seed라면 같은 증강 결과를 재현할 수 있음
+    rng = np.random.default_rng(seed)
+
+    # --------------------------------------------------------
+    # 2-2. 랜덤 증강 조건 생성
+    # --------------------------------------------------------
+
+    # 0.0 ~ 1.0 사이 난수를 생성
+    # 값이 0.5보다 작으면 좌우 반전 수행
+    # 즉, 좌우 반전 확률은 50%
+    flip = bool(rng.random() < 0.5)
+
+    # -20 ~ +20 사이의 정수를 무작위 선택
+    # beta < 0 : 이미지가 어두워짐
+    # beta > 0 : 이미지가 밝아짐
+    # beta = 0 : 밝기 변화 없음
+    beta = int(rng.integers(-20, 21))
+
+    # --------------------------------------------------------
+    # 2-3. 이미지 좌우 반전(Horizontal Flip)
+    # --------------------------------------------------------
+
+    # flip=True  : 이미지를 좌우 반전
+    # flip=False : 원본 이미지를 복사하여 사용
+    #
+    # cv2.flip(image, 1)
+    #   1 : 좌우 반전
+    #   0 : 상하 반전
+    #  -1 : 상하좌우 반전
+    #
+    # image.copy()를 사용하여 원본 배열을 수정하지 않도록 함
+    result = cv2.flip(image, 1) if flip else image.copy()
+
+    # --------------------------------------------------------
+    # 2-4. 밝기 조절(Brightness Adjustment)
+    # --------------------------------------------------------
+
+    # uint8은 0~255 범위만 표현할 수 있음
+    # uint8 상태로 직접 덧셈하면 Overflow가 발생할 수 있음
+    #
+    # 예: 250 + 20 = 270
+    # uint8로 순환되면 14가 될 수 있음
+    #
+    # 따라서:
+    # ① float32로 변환하여 안전하게 계산
+    # ② beta를 더하여 밝기 조절
+    # ③ np.clip()으로 0~255 범위 제한
+    # ④ uint8로 다시 변환
+    #
+    # BGR의 모든 채널에 동일한 beta를 더함
+    result = np.clip(
+        result.astype(np.float32) + beta,
+        0,
+        255
+    ).astype(np.uint8)
+
+    # --------------------------------------------------------
+    # 2-5. 증강 결과 및 설정 반환
+    # --------------------------------------------------------
+
+    # 증강 이미지와 재현에 필요한 설정값을 함께 반환
+    # seed : 사용한 난수 시드
+    # flip : 좌우 반전 여부
+    # beta : 밝기 조절값
+    return result, {
+        "seed": seed,
+        "flip": flip,
+        "beta": beta
+    }
+
+
+# ============================================================
+# 3. 데이터 목록(Manifest) 불러오기
+# ============================================================
+
+# manifest.csv는 이미지별 경로 및 데이터 분할 정보가 담긴 파일
+#
+# 예:
+# sample_id,split,path
+# img_001,train,images/img_001.png
+# img_002,valid,images/img_002.png
+# img_003,test,images/img_003.png
+#
+# csv.DictReader:
+# CSV의 각 행을 컬럼 이름을 Key로 가지는 Dictionary로 읽음
+with open(
+    "../data/manifest.csv",
+    encoding="utf-8-sig",
+    newline=""
+) as f:
+    sources = list(csv.DictReader(f))
+
+
+# ============================================================
+# 4. Train 데이터만 선별하여 증강
+# ============================================================
+
+# 증강 결과 및 원본 무결성 정보를 저장할 리스트
+rows = []
+
+# sample_id 순서로 정렬하여 처리 순서를 일정하게 유지
+for row in sorted(sources, key=lambda r: r["sample_id"]):
+
+    # --------------------------------------------------------
+    # 4-1. 데이터 분할(Split) 확인
+    # --------------------------------------------------------
+
+    # 학습용(train) 데이터만 증강
+    #
+    # valid: 모델 성능 검증에 사용
+    # test : 최종 모델 성능 평가에 사용
+    #
+    # 검증/테스트 데이터를 증강하면 평가 조건이 변경될 수 있으므로
+    # 현재 실습에서는 Train 데이터만 증강 대상으로 사용
+    if row["split"] != "train":
+        continue
+
+    # --------------------------------------------------------
+    # 4-2. 이미지별 난수 Seed 생성
+    # --------------------------------------------------------
+
+    # sample_id의 마지막 숫자를 추출하여 Seed 생성
+    #
+    # 예:
+    # img_001 → 42 + 1 = 43
+    # img_002 → 42 + 2 = 44
+    #
+    # 동일한 sample_id는 같은 Seed를 사용하므로
+    # 실행할 때마다 증강 결과를 재현할 수 있음
+    seed = 42 + int(row["sample_id"].split("_")[-1])
+
+    # --------------------------------------------------------
+    # 4-3. 원본 이미지 불러오기
+    # --------------------------------------------------------
+
+    # Manifest에 저장된 상대 경로를 이용해 이미지 위치 구성
+    src = Path("../data") / row["path"]
+
+    # OpenCV로 이미지를 BGR 형식으로 읽기
+    image = cv2.imread(str(src))
+
+    # --------------------------------------------------------
+    # 4-4. 데이터 증강 실행
+    # --------------------------------------------------------
+
+    # 좌우 반전 및 밝기 조절 수행
+    # result   : 증강된 이미지
+    # settings : Seed, Flip, Beta 설정값
+    result, settings = augment(image, seed)
+
+    # --------------------------------------------------------
+    # 4-5. 증강 이미지 저장
+    # --------------------------------------------------------
+
+    # 원본 파일명과 구분하기 위해 _aug.png를 붙임
+    #
+    # 예:
+    # img_001 → outputs/img_001_aug.png
+    dest = Path("outputs") / (
+        row["sample_id"] + "_aug.png"
+    )
+
+    # PNG 이미지로 저장
+    # 성공하면 True, 실패하면 False 반환
+    saved = cv2.imwrite(str(dest), result)
+
+    # --------------------------------------------------------
+    # 4-6. 원본 이미지 SHA-256 해시 계산
+    # --------------------------------------------------------
+
+    # SHA-256은 파일 내용을 기준으로 고정 길이 해시값을 생성
+    #
+    # 원본 파일의 변경 여부를 추적하기 위해 사용
+    # 같은 파일 내용 → 같은 SHA-256 해시
+    # 파일 내용 변경 → 일반적으로 다른 SHA-256 해시
+    #
+    # 주의:
+    # 여기서는 증강 이미지가 아니라 원본 이미지의 해시를 계산
+    source_hash = hashlib.sha256(
+        src.read_bytes()
+    ).hexdigest()
+
+    # --------------------------------------------------------
+    # 4-7. 증강 이력 및 결과 수집
+    # --------------------------------------------------------
+
+    # 이미지별 증강 설정 및 저장 성공 여부 기록
+    #
+    # 이 정보는 추후 실험 재현, 데이터 관리,
+    # 원본 파일 변경 여부 확인에 활용 가능
+    rows.append([
+        row["sample_id"],     # 이미지 ID
+        row["split"],         # 데이터 분할(train)
+        str(dest),            # 증강 이미지 저장 경로
+        seed,                 # 난수 Seed
+        settings["flip"],     # 좌우 반전 여부
+        settings["beta"],     # 밝기 조절값
+        saved,                # 이미지 저장 성공 여부
+        source_hash           # 원본 이미지 SHA-256
+    ])
+
+
+# ============================================================
+# 5. 데이터 증강 이력 CSV 저장
+# ============================================================
+
+# 각 이미지에 어떤 증강 설정을 적용했는지 기록
+#
+# 파일명: outputs/augmentation.csv
+#
+# 실험 재현성과 데이터 추적성 확보를 위한 로그
+with open(
+    "outputs/augmentation.csv",
+    "w",
+    encoding="utf-8-sig",
+    newline=""
+) as f:
+
+    w = csv.writer(f)
+
+    # CSV 컬럼명 작성
+    w.writerow([
+        "id",
+        "split",
+        "output",
+        "seed",
+        "flip",
+        "beta",
+        "saved",
+        "source_sha256"
+    ])
+
+    # 증강 결과 저장
+    w.writerows(rows)
+
+
+# ============================================================
+# 6. 최종 처리 결과 출력
+# ============================================================
+import pandas as pd
+
+# 증강 결과를 DataFrame으로 변환
+df = pd.DataFrame(
+    rows,
+    columns=[
+        "이미지 ID", "데이터 구분", "저장 경로",
+        "Seed", "좌우 반전", "밝기 조절", "저장 성공", "원본 SHA-256"
+    ]
+)
+
+# 출력용 테이블 생성 (원본 데이터는 유지)
+display_df = df[["이미지 ID", "Seed", "좌우 반전", "밝기 조절", "저장 성공"]].copy()
+
+# Boolean 값을 이해하기 쉬운 문자열로 변환
+display_df["좌우 반전"] = display_df["좌우 반전"].map({True: "적용", False: "미적용"})
+display_df["저장 성공"] = display_df["저장 성공"].map({True: "성공", False: "실패"})
+
+# 밝기 조절값에 부호 표시
+display_df["밝기 조절"] = display_df["밝기 조절"].map(lambda x: f"{x:+d}")
+
+# 콘솔 출력
+print("\n" + "=" * 65)
+print("          OpenCV 데이터 증강(Augmentation) 실행 결과")
+print("=" * 65)
+print(display_df.to_string(index=False))
+print("-" * 65)
+print(f"총 처리 건수  : {len(df)}건")
+print(f"저장 성공    : {int(df['저장 성공'].sum())}건")
+print(f"좌우 반전 적용: {int(df['좌우 반전'].sum())}건")
+print(f"데이터 범위  : Train Only")
+print("=" * 65)
+
