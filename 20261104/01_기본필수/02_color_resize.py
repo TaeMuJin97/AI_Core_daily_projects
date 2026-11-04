@@ -10,8 +10,8 @@ os.chdir(Path(__file__).resolve().parent)
 image = cv2.imread("scene.png")
 # >>> TODO B02
 # image를 Gray와 RGB로 각각 변환하여 gray, rgb에 넣으세요. 두 번째 인자는 변환 코드입니다.
-gray = image.copy()
-rgb = image.copy()
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 # <<< TODO B02
 small = cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)
 cv2.imwrite("p02_gray.png", gray)
