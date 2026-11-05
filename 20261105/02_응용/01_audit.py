@@ -28,7 +28,7 @@ for split in ["train", "valid", "test"]:
     for label, name in enumerate(dataset.classes):
         # TODO A01: 해당 라벨의 개수를 세세요.
         # BEGIN A01
-        count = 0  # dataset.targets에서 label의 수를 세세요.
+        count = dataset.targets.count(label)  # dataset.targets에서 label의 수를 세세요.
         # END A01
         rows.append({"split": split, "class": name, "n": count, "ratio": count/len(dataset)})
     for path,_ in dataset.samples:
@@ -40,3 +40,9 @@ duplicates = [paths for paths in seen.values() if len(paths)>1]
 print("바이트 동일 중복 그룹:",len(duplicates))
 (OUT/"duplicates.json").write_text(json.dumps(duplicates,ensure_ascii=False,indent=2),encoding="utf-8")
 # test 픽셀은 중복 감사에만 쓰며 모델 성능을 계산하지 않습니다.
+
+
+#   누수가능성 설명
+#   바이트 단위의 동일 중복 이미지는 발견되지 않았으나, 
+#   Train·Valid·Test 간 시각적으로 유사한 이미지나 동일 원본에서 변형된 이미지가 포함되어 있을 경우 
+#   데이터 누수(Data Leakage)가 발생할 가능성이 있다.

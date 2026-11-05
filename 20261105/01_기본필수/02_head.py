@@ -34,7 +34,7 @@ for p in model.parameters():
     p.requires_grad = False
 # TODO B02: 256개 특징에서 3개 logit을 출력하는 새 Linear Head를 만드세요.
 # BEGIN B02
-model[9] = nn.Linear(256, 1)  # 출력 개수를 고치세요.
+model[9] = nn.Linear(256, 3)  # 출력 개수를 고치세요.
 # END B02
 print("source 종류: 별도 합성 이미지로 사전학습한 TinyShapeCNN")
 print("학습 파라미터:", sum(p.numel() for p in model.parameters() if p.requires_grad))
