@@ -22,3 +22,8 @@ outputs/
 *.csv
 *.png
 *.pt
+
+# 비디오 및 대용량 미디어 파일 제외
+*.avi
+*.mp4
+*.mov
