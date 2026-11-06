@@ -1,17 +1,15 @@
 """
 ==============================================================================
-[실습 보고서: 07_project_3.py - 3가지 전략 비교 및 프로젝트 자동화 최종 파이프라인]
-1. 실험 목적: Head-only, Partial, Head+Weight(클래스 불균형 대응)의 3가지 실험 군을 고정하고,
-              Valid Loss 기준 Best Checkpoint 모델을 복원하여 정량 지표, 예측 로그, 교차 행렬,
-              오분류 샘플 및 Grad-CAM 오버레이까지 전 과정을 완전 자동화함.
+[실습 보고서: 07_project.py - 응용 전이학습 전략 및 클래스 불균형 대응 3가지 조건 비교 자동화 파이프라인]
+1. 실험 목적: Head-only, Partial, 그리고 Head + Class Weight의 3가지 핵심 실험 군을
+              동일한 조건(seed=14, 8 Epochs)에서 비교하고, Validation Loss 기준 Best Checkpoint를
+              복원하여 성능 지표(metrics.csv/history.csv/predictions.csv/confusion.csv)와
+              마지막 조건의 대표 오답 Grad-CAM(project_cam.png)을 자동 생성함.
 2. 고정 조건: 난수 시드(seed=14), 입력 규격(32x32 RGB, [0, 1]), Optimizer(AdamW, lr=0.003, weight_decay=0.0001),
               총 8 Epochs, Test 분할 미사용(test_used=False)
 3. 핵심 구현: 
-   - A07: experiments 리스트에 대조군과 실험군 조건 정의
-   - A08: valid.samples 순서와 일치하는 정밀 predictions.csv 데이터프레임 구성
-4. 주요 산출물: 
-   - outputs/metrics.csv, outputs/history.csv, outputs/predictions.csv, outputs/confusion.csv
-   - outputs/project_error_*.png, outputs/project_cam.png
+   - A07: experiments 리스트에 3가지 비교 전략 정의
+   - A08: valid.samples 순서에 맞춰 실제값, 예측값, 확신도(Confidence)가 담긴 정밀 예측 로그 테이블 생성
 ==============================================================================
 """
 """Day14: 제공된 정상 이미지로 학습합니다. test는 읽지 않습니다."""
@@ -37,8 +35,12 @@ OUT.mkdir(exist_ok=True)
 transform = tr.Compose([tr.Resize((32, 32)), tr.ToTensor()])
 import time
 import cv2
+
 train = ImageFolder(DATA / "train", transform=transform)
 valid = ImageFolder(DATA / "valid", transform=transform)
+
+# [핵심 개념: 인메모리 텐서 스택 구성]
+# 개별 이미지 튜플을 torch.stack으로 묶어 [N, 3, 32, 32] 형태의 일괄 배치 텐서로 변환합니다.
 X_train = torch.stack([train[i][0] for i in range(len(train))])
 y_train = torch.tensor(train.targets, dtype=torch.long)
 X_valid = torch.stack([valid[i][0] for i in range(len(valid))])
@@ -46,8 +48,10 @@ y_valid = torch.tensor(valid.targets, dtype=torch.long)
 
 # TODO A07: Head 기준선·Partial·Head+weight 세 조건을 고정하세요.
 # BEGIN A07
-# [핵심 포인트 1: 3가지 핵심 실험 전략 비교 설정]
-# Head-only 기준선, 상위 층 일부를 여는 Partial, 그리고 클래스 불균형 Loss Weight를 적용한 조건을 리스트업합니다.
+# [핵심 개념: 비교 실험 군(Experiments) 확장 설계]
+# 1) head+none: 분류기만 학습하는 기본 전이학습 기준선
+# 2) partial+none: 상위 특징 추출 층(model[4])까지 함께 열어 미세조정하는 범위 확장 전략
+# 3) head+weight: 불균형 데이터 해소를 위해 CrossEntropyLoss에 역빈도 가중치를 부여한 보정 전략
 experiments = [
     ("head", "none"),
     ("partial", "none"),
@@ -57,20 +61,25 @@ experiments = [
 
 rows = []
 all_history = []
+
 for strategy, balance in experiments:
+    # [핵심 개념: 루프 내부 시드 고정으로 공정한 조건 유지]
     torch.manual_seed(14)
+    
     # 제공 부분: 0~8은 Backbone, 9는 새 3클래스 Head입니다.
     model = nn.Sequential(
         nn.Conv2d(3, 8, 3, padding=1, bias=False), nn.BatchNorm2d(8), nn.ReLU(), nn.MaxPool2d(2),
         nn.Conv2d(8, 16, 3, padding=1, bias=False), nn.BatchNorm2d(16), nn.ReLU(),
         nn.AdaptiveAvgPool2d((4, 4)), nn.Flatten(), nn.Linear(256, 3),
     )
+    
     # 안전한 수치 배열만 읽습니다. Target 이미지로 사전학습한 파일이 아닙니다.
     with np.load(DATA / "source_backbone.npz", allow_pickle=False) as saved:
         state = model.state_dict()
         state.update({name: torch.from_numpy(saved[name].copy()) for name in saved.files})
     model.load_state_dict(state)
 
+    # [핵심 개념: 학습 범위(Requires_grad) 동적 제어]
     for p in model.parameters():
         p.requires_grad = False
     for p in model[9].parameters():
@@ -79,12 +88,18 @@ for strategy, balance in experiments:
         for p in model[4].parameters():
             p.requires_grad = True
             
+    # BatchNorm 통계를 고정하기 위해 eval() 모드 지정 (가중치 업데이트와 무관하게 러닝 통계 보호)
     model.eval()
+    
+    # 오직 requires_grad=True인 파라미터만 Optimizer에 전달하여 불필요한 연산 차단
     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=0.003, weight_decay=0.0001)
     
+    # [핵심 개념: 클래스 불균형 해소를 위한 역빈도(Inverse Frequency) 가중치 산출]
     counts = torch.bincount(y_train, minlength=3).float()
     inverse = 1.0 / counts
     class_weights = inverse / inverse.mean()
+    
+    # balance 조건에 따라 Loss에 가중치(weight)를 동적으로 부여
     criterion = nn.CrossEntropyLoss(weight=class_weights if balance == "weight" else None)
     
     best_loss = float("inf")
@@ -97,16 +112,20 @@ for strategy, balance in experiments:
         optimizer.step()
         
         with torch.no_grad():
-            vl = nn.CrossEntropyLoss()(model(X_valid), y_valid).item()
+            vl = criterion(model(X_valid), y_valid).item()
             
         all_history.append({"strategy": strategy, "balance": balance, "epoch": epoch, "valid_loss": vl})
         
+        # [핵심 개념: Validation Loss 기준 Best Model Checkpointing]
+        # 에폭 8까지 학습하는 동안 검증 손실이 가장 낮았던 순간의 가중치를 deepcopy(.detach().clone())로 백업
         if vl < best_loss:
             best_loss = vl
             best_epoch = epoch
             best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
             
     elapsed = time.perf_counter() - started
+    
+    # 평가 전 가장 성능이 뛰어났던 에폭의 가중치로 모델 복원
     model.load_state_dict(best_state)
     
     with torch.no_grad():
@@ -132,8 +151,8 @@ pd.DataFrame(all_history).to_csv(OUT / "history.csv", index=False)
 # 마지막 head+weight 후보의 예측을 설명용으로 저장합니다. 자동 최고 모델이라고 부르지 않습니다.
 # TODO A08: 실제 y_valid와 pred를 표에 넣으세요. valid.samples와 같은 순서입니다.
 # BEGIN A08
-# [핵심 포인트 2: 검증 셋 샘플별 정밀 예측 이력 구성]
-# valid.samples의 파일 경로 구조와 y_valid(실제값), pred(예측값), confidence(확신도)를 매칭하여 데이터프레임을 만듭니다.
+# [핵심 개념: 샘플별 정밀 예측 이력 데이터프레임 구성]
+# 파일 이름, 실제 라벨(actual), 모델 예측값(predicted), 그리고 확신도(confidence)를 매핑하여 로그 저장
 result = pd.DataFrame({
     "file": [Path(p).name for p, _ in valid.samples],
     "actual": y_valid.numpy(),
@@ -158,11 +177,13 @@ for i in errors[:8]:
     
 index = errors[0] if errors else 0
 
-# hook 대신 Sequential을 둘로 나눕니다. 관심 클래스의 logit을 미분합니다.
+# [핵심 개념: autograd.grad를 이용한 특정 클래스 Logit의 공간 편미분 (Grad-CAM)]
+# Hook 없이 Sequential을 둘로 나누어 첫 번째 오답 샘플에 대한 모델의 시각적 판단 근거 역추적
 image = X_valid[index:index + 1].clone().requires_grad_(True)
 features = model[:7](image)
 logits_one = model[7:](features)
 target = int(logits_one.argmax(1).item())
+
 gradient = torch.autograd.grad(logits_one[0, target], features)[0]
 weights = gradient.mean(dim=(2, 3), keepdim=True)
 cam = (weights * features).sum(dim=1).relu()
