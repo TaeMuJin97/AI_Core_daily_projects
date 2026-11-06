@@ -1,3 +1,19 @@
+"""
+==============================================================================
+[실습 보고서: 07_project_3.py - 3가지 전략 비교 및 프로젝트 자동화 최종 파이프라인]
+1. 실험 목적: Head-only, Partial, Head+Weight(클래스 불균형 대응)의 3가지 실험 군을 고정하고,
+              Valid Loss 기준 Best Checkpoint 모델을 복원하여 정량 지표, 예측 로그, 교차 행렬,
+              오분류 샘플 및 Grad-CAM 오버레이까지 전 과정을 완전 자동화함.
+2. 고정 조건: 난수 시드(seed=14), 입력 규격(32x32 RGB, [0, 1]), Optimizer(AdamW, lr=0.003, weight_decay=0.0001),
+              총 8 Epochs, Test 분할 미사용(test_used=False)
+3. 핵심 구현: 
+   - A07: experiments 리스트에 대조군과 실험군 조건 정의
+   - A08: valid.samples 순서와 일치하는 정밀 predictions.csv 데이터프레임 구성
+4. 주요 산출물: 
+   - outputs/metrics.csv, outputs/history.csv, outputs/predictions.csv, outputs/confusion.csv
+   - outputs/project_error_*.png, outputs/project_cam.png
+==============================================================================
+"""
 """Day14: 제공된 정상 이미지로 학습합니다. test는 읽지 않습니다."""
 from pathlib import Path
 import json
@@ -30,8 +46,15 @@ y_valid = torch.tensor(valid.targets, dtype=torch.long)
 
 # TODO A07: Head 기준선·Partial·Head+weight 세 조건을 고정하세요.
 # BEGIN A07
-experiments=[("head","none")]  # 나머지 두 조건을 추가하세요.
+# [핵심 포인트 1: 3가지 핵심 실험 전략 비교 설정]
+# Head-only 기준선, 상위 층 일부를 여는 Partial, 그리고 클래스 불균형 Loss Weight를 적용한 조건을 리스트업합니다.
+experiments = [
+    ("head", "none"),
+    ("partial", "none"),
+    ("head", "weight")
+]
 # END A07
+
 rows = []
 all_history = []
 for strategy, balance in experiments:
@@ -55,48 +78,86 @@ for strategy, balance in experiments:
     if strategy == "partial":
         for p in model[4].parameters():
             p.requires_grad = True
+            
     model.eval()
     optimizer = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=0.003, weight_decay=0.0001)
+    
     counts = torch.bincount(y_train, minlength=3).float()
     inverse = 1.0 / counts
     class_weights = inverse / inverse.mean()
     criterion = nn.CrossEntropyLoss(weight=class_weights if balance == "weight" else None)
+    
     best_loss = float("inf")
     started = time.perf_counter()
+    
     for epoch in range(1, 9):
         optimizer.zero_grad()
         loss = criterion(model(X_train), y_train)
         loss.backward()
         optimizer.step()
+        
         with torch.no_grad():
             vl = nn.CrossEntropyLoss()(model(X_valid), y_valid).item()
-        all_history.append({"strategy":strategy,"balance":balance,"epoch":epoch,"valid_loss":vl})
+            
+        all_history.append({"strategy": strategy, "balance": balance, "epoch": epoch, "valid_loss": vl})
+        
         if vl < best_loss:
-            best_loss=vl;best_epoch=epoch
-            best_state={k:v.detach().clone() for k,v in model.state_dict().items()}
-    elapsed = time.perf_counter()-started
+            best_loss = vl
+            best_epoch = epoch
+            best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
+            
+    elapsed = time.perf_counter() - started
     model.load_state_dict(best_state)
+    
     with torch.no_grad():
-        prob=model(X_valid).softmax(1);pred=prob.argmax(1)
-    report=classification_report(y_valid,pred,labels=[0,1,2],output_dict=True,zero_division=0)
-    rows.append({"strategy":strategy,"balance":balance,"params":sum(p.numel() for p in model.parameters() if p.requires_grad),"best_epoch":best_epoch,"accuracy":accuracy_score(y_valid,pred),"macro_f1":f1_score(y_valid,pred,labels=[0,1,2],average="macro",zero_division=0),"triangle_recall":report['2']['recall'],"seconds":elapsed})
+        prob = model(X_valid).softmax(1)
+        pred = prob.argmax(1)
+        
+    report = classification_report(y_valid, pred, labels=[0, 1, 2], output_dict=True, zero_division=0)
+    
+    rows.append({
+        "strategy": strategy,
+        "balance": balance,
+        "params": sum(p.numel() for p in model.parameters() if p.requires_grad),
+        "best_epoch": best_epoch,
+        "accuracy": accuracy_score(y_valid, pred),
+        "macro_f1": f1_score(y_valid, pred, labels=[0, 1, 2], average="macro", zero_division=0),
+        "triangle_recall": report['2']['recall'],
+        "seconds": elapsed
+    })
 
-pd.DataFrame(rows).to_csv(OUT/"metrics.csv",index=False)
-pd.DataFrame(all_history).to_csv(OUT/"history.csv",index=False)
+pd.DataFrame(rows).to_csv(OUT / "metrics.csv", index=False)
+pd.DataFrame(all_history).to_csv(OUT / "history.csv", index=False)
+
 # 마지막 head+weight 후보의 예측을 설명용으로 저장합니다. 자동 최고 모델이라고 부르지 않습니다.
 # TODO A08: 실제 y_valid와 pred를 표에 넣으세요. valid.samples와 같은 순서입니다.
 # BEGIN A08
-result=pd.DataFrame(columns=["file","actual","predicted","confidence"])  # 실제 예측 표로 바꾸세요.
+# [핵심 포인트 2: 검증 셋 샘플별 정밀 예측 이력 구성]
+# valid.samples의 파일 경로 구조와 y_valid(실제값), pred(예측값), confidence(확신도)를 매칭하여 데이터프레임을 만듭니다.
+result = pd.DataFrame({
+    "file": [Path(p).name for p, _ in valid.samples],
+    "actual": y_valid.numpy(),
+    "predicted": pred.numpy(),
+    "confidence": prob.max(1).values.numpy()
+})
 # END A08
-result.to_csv(OUT/"predictions.csv",index=False)
-pd.DataFrame(confusion_matrix(y_valid,pred,labels=[0,1,2]),index=valid.classes,columns=valid.classes).to_csv(OUT/"confusion.csv")
-predictions=pred;probabilities=prob
-for old in OUT.glob("project_error_*.png"):old.unlink()
-errors=(pred!=y_valid).nonzero().flatten().tolist()
+
+result.to_csv(OUT / "predictions.csv", index=False)
+pd.DataFrame(confusion_matrix(y_valid, pred, labels=[0, 1, 2]), index=valid.classes, columns=valid.classes).to_csv(OUT / "confusion.csv")
+
+predictions = pred
+probabilities = prob
+
+for old in OUT.glob("project_error_*.png"):
+    old.unlink()
+    
+errors = (pred != y_valid).nonzero().flatten().tolist()
 for i in errors[:8]:
-    rgb=np.uint8(X_valid[i].permute(1,2,0).numpy()*255)
-    cv2.imwrite(str(OUT/f"project_error_{i:03d}.png"),cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
-index=errors[0] if errors else 0
+    rgb = np.uint8(X_valid[i].permute(1, 2, 0).numpy() * 255)
+    cv2.imwrite(str(OUT / f"project_error_{i:03d}.png"), cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR))
+    
+index = errors[0] if errors else 0
+
 # hook 대신 Sequential을 둘로 나눕니다. 관심 클래스의 logit을 미분합니다.
 image = X_valid[index:index + 1].clone().requires_grad_(True)
 features = model[:7](image)
@@ -108,10 +169,12 @@ cam = (weights * features).sum(dim=1).relu()
 cam = torch.nn.functional.interpolate(cam.unsqueeze(1), size=(32, 32), mode="bilinear", align_corners=False)[0, 0]
 cam = cam.detach().numpy()
 cam = cam / max(float(cam.max()), 1e-8)  # 양의 반응이 없으면 0 지도를 유지
+
 rgb = (X_valid[index].permute(1, 2, 0).numpy() * 255).astype(np.uint8)
 heat_bgr = cv2.applyColorMap(np.uint8(cam * 255), cv2.COLORMAP_JET)
 overlay = cv2.addWeighted(cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR), 0.6, heat_bgr, 0.4, 0)
 
-cv2.imwrite(str(OUT/"project_cam.png"),cv2.resize(overlay,(256,256)))
+cv2.imwrite(str(OUT / "project_cam.png"), cv2.resize(overlay, (256, 256)))
+
 print(pd.DataFrame(rows).drop(columns="seconds").round(4).to_string(index=False))
-print("예측 행:",len(result),"오답:",len(errors),"test 사용: False")
+print("예측 행:", len(result), "오답:", len(errors), "test 사용: False")
