@@ -27,3 +27,6 @@ outputs/
 *.avi
 *.mp4
 *.mov
+
+# OCR 입력용 임시 텍스트 파일 제외
+p02_inputs.txt
