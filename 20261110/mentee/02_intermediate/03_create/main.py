@@ -53,24 +53,21 @@ def create_knowledge(payload: KnowledgeWrite):
     with LOCK:
         data = read_data()
         # BEGIN A03-01
-        # TODO A03-01: 검증된 payload를 dict로 변환하여 entry에 저장하세요.
-        # 아래 미완성 표시를 지우고 요구한 코드를 작성하세요.
-        raise NotImplementedError("A03-01를 먼저 완성하세요.")
+        # 해설 A03-01: Pydantic 객체를 파일에 쓸 수 있는 dict로 변환합니다. JSON 문자열을 만드는 단계는 아닙니다.
+        entry = payload.model_dump()
         # END A03-01
         # BEGIN A03-02
-        # TODO A03-02: 현재 data의 next_id를 새 entry의 id로 지정하세요.
-        # 아래 미완성 표시를 지우고 요구한 코드를 작성하세요.
-        raise NotImplementedError("A03-02를 먼저 완성하세요.")
+        # 해설 A03-02: ID는 요청 Body가 아니라 서버가 발급합니다.
+        entry["id"] = data["next_id"]
         # END A03-02
         # BEGIN A03-03
-        # TODO A03-03: entries에 새 지식을 추가한 뒤 다음 ID를 1 올리세요.
-        # 아래 미완성 표시를 지우고 요구한 코드를 작성하세요.
-        raise NotImplementedError("A03-03를 먼저 완성하세요.")
+        # 해설 A03-03: 목록과 발급 번호를 같은 파일에 저장해야 재시작 뒤에도 다음 번호가 유지됩니다.
+        data["entries"].append(entry)
+        data["next_id"] += 1
         # END A03-03
         # BEGIN A03-04
-        # TODO A03-04: 변경된 data를 파일에 저장하세요.
-        # 아래 미완성 표시를 지우고 요구한 코드를 작성하세요.
-        raise NotImplementedError("A03-04를 먼저 완성하세요.")
+        # 해설 A03-04: 422는 Route 본문 이전에 발생하므로 이 저장 단계까지 오지 않습니다.
+        write_data(data)
         # END A03-04
     # 201을 선언하는 것만으로 저장되지는 않습니다. 실제 저장 성공 뒤 응답합니다.
     return entry
