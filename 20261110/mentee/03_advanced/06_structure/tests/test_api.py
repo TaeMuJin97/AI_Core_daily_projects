@@ -1,3 +1,16 @@
+"""
+==============================================================================
+[실습 보고서: 03_advanced/06_structure/tests/test_api.py - FastAPI 3계층 구조 통합 자동화 테스트]
+1. 실험 목적: 분리된 3계층(Router-Schema-Repository) 아키텍처가 정상 작동하는지,
+              그리고 20개의 핵심 시나리오(조회, 필터링, 에러 방어, 파일 보존, 응답 규격)를
+              pytest 자동화 테스트를 통해 엄격하게 검증함.
+2. 핵심 포인트:
+   - 테스트 격리(Isolation): isolated_client 픽스처를 통해 매 테스트마다 독립된 임시 파일 경로를 사용하므로,
+     실제 원본 data/knowledge.json 파일이 안전하게 보호됨.
+   - API 계약 검증 (H06-04): 클라이언트에게 반환되는 상세 조회 응답의 키 집합이 정확히 
+     id, title, content, category 4가지 필드로만 구성되어 있음을 보장함.
+==============================================================================
+"""
 import json
 import pytest
 
@@ -132,9 +145,11 @@ def test_openapi_and_response_fields(isolated_client):
     assert {"get", "put", "delete"} <= set(doc["paths"]["/api/knowledge/{knowledge_id}"])
     r = client.get("/api/knowledge/1")
     assert r.status_code == 200
+    
     # BEGIN H06-04
     # TODO H06-04: 상세 응답의 키가 id·title·content·category 네 가지인지 검사하세요.
-    # 아래 미완성 표시를 지우고 요구한 코드를 작성하세요.
-    raise NotImplementedError("H06-04를 먼저 완성하세요.")
+    # [핵심 구현: 반환된 JSON 딕셔너리의 키 집합이 Knowledge 스키마 규격과 정확히 일치하는지 검증]
+    assert set(r.json().keys()) == {"id", "title", "content", "category"}
     # END H06-04
+    
     assert client.get("/docs").status_code == 200
