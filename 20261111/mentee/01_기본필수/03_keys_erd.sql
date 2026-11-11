@@ -53,7 +53,8 @@ category_id INTEGER NOT NULL
 
 -- @step E3_SEED expect=00000 capture=- reconnect=false
 -- [연습 데이터 입력] 부모 분류(1, '연습')를 먼저 넣고, 이를 참조하는 자식 지식(1, '안내', 1)을 입력
-INSERT INTO public.categories_try VALUES (1,'연습');
+INSERT INTO public.categories_try VALUES (1,
+'연습');
 INSERT INTO public.knowledge_try VALUES (1,'안내',1);
 
 -- @step E3_READ expect=00000 capture=- reconnect=false

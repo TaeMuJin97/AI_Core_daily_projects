@@ -1,14 +1,23 @@
--- Day18 | 실습 07: 취소·확정·인덱스·실행계획 | PPT 48~54, 76 | 30분
+/*
+==============================================================================
+[실습 보고서: 06_constraints.sql - DB 제약조건(CHECK·FK) 위반 검증 및 ROLLBACK 회복]
+1. 실험 목적: FastAPI를 거치지 않고 DB에 직접 잘못된 데이터(빈 문자열 본문, 존재하지 않는 분류 ID)를
+              INSERT 했을 때 DB 제약조건이 이를 차단하는지 확인하고, ROLLBACK으로 회복 후 기존 데이터 보존을 검증함.
+2. 핵심 포인트:
+   - CHECK 제약 위반 (SQLSTATE 23514): 본문(content)에 빈 문자열('')을 넣으면 NULL은 아니지만
+     char_length(content) BETWEEN 1 AND 2000 규칙에 걸려 거부됨.
+   - FOREIGN KEY 제약 위반 (SQLSTATE 23503): 부모 테이블(categories)에 없는 ID(-1)를 참조하려 하면 거부됨.
+   - 오류 후 회복(25P02 방지): PostgreSQL은 BEGIN 블록 안에서 오류가 나면 해당 트랜잭션이 중단 상태가 되므로,
+     반드시 ROLLBACK을 별도 실행해 정리해야 다음 SQL을 정상 실행할 수 있음.
+==============================================================================
+*/
+-- Day18 | 실습 06: 제약조건·실패·회복 | PPT 42~47 | 35분
 -- SQL 편집: VS Code / 실행: pgAdmin Query Tool (주 경로), psql (선택 경로)
 -- @step은 실행 단위를 표시하는 주석입니다. SQL 명령이 아닙니다.
 -- 한 @step 구간씩 선택 실행합니다. 오류 뒤 ROLLBACK은 반드시 별도 실행합니다.
--- __TODO_...__는 구현할 빈칸, __NEW_ID__/__A_ID__/__B_ID__/__C_ID__는 실제 실행 입력입니다.
--- 입력 ID는 RETURNING에서 읽어 해당 토큰을 실제 정수로 바꿉니다. 4·5·6으로 예측하지 않습니다.
--- 아직 남은 토큰 때문에 생긴 문법 오류는 의도한 제약 실패로 인정하지 않습니다.
 
--- @step E7_GUARD expect=00000 capture=- reconnect=false
+-- @step E6_GUARD expect=00000 capture=- reconnect=false
 -- 제공된 안전 확인입니다. 이 블록은 TODO가 아닙니다.
--- 개인 수업용 DB에서만 실행합니다. 이름만 맞다고 운영 DB가 안전해지는 것은 아닙니다.
 DO $guard$
 BEGIN
   IF current_database() !~ '^knowledge_lab(_[a-z0-9_]+)?$' THEN
@@ -18,55 +27,41 @@ END;
 $guard$;
 SET search_path TO public;
 
--- @step E7_BEFORE expect=00000 capture=- reconnect=false
-SELECT id,content FROM public.knowledge WHERE id=2;
-
--- @step E7_CANCEL_BEGIN expect=00000 capture=- reconnect=false
-BEGIN;
-
--- @step E7_TEMP expect=00000 capture=- reconnect=false
-UPDATE public.knowledge SET content='취소할 임시 안내입니다.' WHERE id=2 RETURNING id,content;
-
--- @step E7_CANCEL expect=00000 capture=- reconnect=false
--- BEGIN TASK B07_01
--- TODO B07_01
--- 임시 본문 수정을 확정하지 않고 취소하는 명령을 넣으세요. 다음 SELECT에서 시작 본문이 보여야 합니다.
-__TODO_END_CANCEL__;
--- END TASK B07_01
-
--- @step E7_CANCEL_READ expect=00000 capture=- reconnect=false
-SELECT id,content FROM public.knowledge WHERE id=2;
-
--- @step E7_SAVE_BEGIN expect=00000 capture=- reconnect=false
-BEGIN;
-
--- @step E7_SAVE expect=00000 capture=- reconnect=false
-UPDATE public.knowledge SET content='실행 전에 가상환경을 확인합니다.' WHERE id=2 RETURNING id,content;
-
--- @step E7_COMMIT expect=00000 capture=- reconnect=false
--- BEGIN TASK B07_02
--- TODO B07_02
--- 가상환경 확인 안내를 확정하세요. 이 명령 후 새 연결에서 조회해도 같은 본문이 나와야 합니다.
-__TODO_END_SAVE__;
--- END TASK B07_02
-
--- @step E7_RECONNECT expect=00000 capture=- reconnect=true
-SELECT current_database() AS database_name;
-SELECT id,content FROM public.knowledge WHERE id=2;
-
--- @step E7_INDEX_INSPECT expect=00000 capture=- reconnect=false
-SELECT indexname,indexdef FROM pg_indexes WHERE schemaname='public' AND tablename='knowledge' ORDER BY indexname;
-
--- @step E7_PLAN_BEFORE expect=00000 capture=- reconnect=false
-EXPLAIN SELECT id,title FROM public.knowledge WHERE category_id=1;
-
--- 같은 이름이 이미 있으면 정의를 확인하고 CREATE 구간을 건너뜁니다.
-
--- @step E7_INDEX_CREATE expect=00000 capture=- reconnect=false
-CREATE INDEX idx_knowledge_category_id ON public.knowledge(category_id);
-
--- @step E7_PLAN_AFTER expect=00000 capture=- reconnect=false
-EXPLAIN (ANALYZE, BUFFERS) SELECT id,title FROM public.knowledge WHERE category_id=1;
-
--- @step E7_FINAL expect=00000 capture=- reconnect=false
+-- @step E6_BEFORE expect=00000 capture=- reconnect=false
+-- [실패 실험 전 상태 확인] 기존 지식 3건과 분류 3건의 초기 상태를 먼저 확인
 SELECT id, title, content, category_id FROM public.knowledge ORDER BY id;
+
+-- @step E6_PARENT expect=00000 capture=- reconnect=false
+SELECT id,name FROM public.categories ORDER BY id;
+SELECT id FROM public.categories WHERE id=-1;
+
+-- @step E6_CHECK_BEGIN expect=00000 capture=- reconnect=false
+BEGIN;
+
+-- @step E6_BAD_CONTENT expect=23514 capture=- reconnect=false
+-- [의도적 실패 1: 길이 CHECK 위반(23514)] 본문에 빈 문자열('')을 넣어 knowledge_content_length 제약 위반 유도
+INSERT INTO public.knowledge(title,content,category_id) VALUES ('오류 확인','',1);
+
+-- @step E6_CHECK_CANCEL expect=00000 capture=- reconnect=false
+-- BEGIN TASK B06_01
+-- TODO B06_01
+-- 앞의 빈 본문 INSERT가 CHECK 오류로 거부된 뒤 이 구간만 따로 실행해 미확정 거래를 취소하세요.
+-- [핵심 구현: 오류로 인해 중단 상태에 빠진 현재 트랜잭션을 ROLLBACK으로 취소하여 정상 상태로 회복]
+ROLLBACK;
+-- END TASK B06_01
+
+-- @step E6_FK_BEGIN expect=00000 capture=- reconnect=false
+BEGIN;
+
+-- @step E6_BAD_FK expect=23503 capture=- reconnect=false
+-- [의도적 실패 2: 외래키 FK 위반(23503)] 부모 categories에 존재하지 않는 분류 ID(-1)를 넣어 참조 무결성 위반 유도
+INSERT INTO public.knowledge(title,content,category_id) VALUES ('오류 확인','정상 본문',-1);
+
+-- @step E6_FK_CANCEL expect=00000 capture=- reconnect=false
+-- [오류 후 회복] FK 오류 발생 후 이 줄만 단독 선택 실행하여 트랜잭션 정리
+ROLLBACK;
+
+-- @step E6_AFTER expect=00000 capture=- reconnect=false
+-- [기존 데이터 보존 검증] 두 번의 INSERT 실패와 ROLLBACK 이후에도 기존 지식 3건과 분류 3건이 온전히 보존되었는지 확인
+SELECT id, title, content, category_id FROM public.knowledge ORDER BY id;
+SELECT id,name FROM public.categories ORDER BY id;
