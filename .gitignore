@@ -30,3 +30,7 @@ outputs/
 
 # OCR 입력용 임시 텍스트 파일 제외
 p02_inputs.txt
+# 환경변수 및 비밀번호 파일 제외
+.env
+**/.env
+*.env
