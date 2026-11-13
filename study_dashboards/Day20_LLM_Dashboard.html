@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 20 · LLM & Transformer 인터랙티브 복습 대시보드</title>
+  <!-- Tailwind CSS & React CDN (설치 없이 브라우저에서 바로 실행되도록 연결) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    body { font-family: 'Pretendard', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    // 수업 데이터 (Day 20 PDF 기준)
+    const SAMPLES = [
+      {
+        id: "Q",
+        label: "현업 문의",
+        title: "사내 IT 지원 질문",
+        text: "FastAPI에서 PostgreSQL 연결이 안 됩니다.",
+        tokens: ["[CLS]", "Fast", "##API", "에서", "Postgre", "##SQL", "연결", "##이", "안", "됩니다", ".", "[SEP]"],
+        ids: [101, 24112, 19310, 11460, 29182, 31029, 25190, 10739, 9521, 38192, 119, 102]
+      },
+      {
+        id: "A",
+        label: "지식 A",
+        title: "실습 파일 보관",
+        text: "실습 파일은 개인 폴더에 보관합니다.",
+        tokens: ["[CLS]", "실습", "파일", "##은", "개인", "폴더", "##에", "보관", "##합니다", ".", "[SEP]"],
+        ids: [101, 21903, 30192, 10892, 14201, 35019, 10588, 20194, 15920, 119, 102]
+      },
+      {
+        id: "B",
+        label: "지식 B",
+        title: "서버 실행",
+        text: "프로젝트 폴더에서 서버를 실행합니다.",
+        tokens: ["[CLS]", "프로젝트", "폴더", "##에서", "서버", "##를", "실행", "##합니다", ".", "[SEP]"],
+        ids: [101, 38910, 35019, 11460, 22910, 11513, 23910, 15920, 119, 102]
+      },
+      {
+        id: "C",
+        label: "지식 C",
+        title: "질문 작성",
+        text: "오류 메시지와 시도한 작업을 함께 적습니다.",
+        tokens: ["[CLS]", "오류", "메시지", "##와", "시도", "##한", "작업", "##을", "함께", "적", "##습니다", ".", "[SEP]"],
+        ids: [101, 25011, 28910, 12638, 21092, 11102, 19820, 10622, 28190, 9665, 22190, 119, 102]
+      }
+    ];
+
+    function App() {
+      const [mainTab, setMainTab] = useState("sim"); // sim | summary | notion
+      const [step, setStep] = useState(1);
+
+      // Step 1: Token & Context 상태
+      const [sampleIdx, setSampleIdx] = useState(0);
+      const [maxLen, setMaxLen] = useState(12);
+      const [ragBudget, setRagBudget] = useState(2000);
+
+      // Step 3: Self-Attention 상태
+      const [useCausalMask, setUseCausalMask] = useState(true);
+      const [selectedRow, setSelectedRow] = useState(2); // t3 기본 선택
+
+      // Step 4: Logit & Temperature 상태
+      const [temp, setTemp] = useState(1.0);
+      const [copied, setCopied] = useState("");
+
+      const currentSample = SAMPLES[sampleIdx];
+
+      // Padding / Truncation 계산
+      const tokenAnalysis = useMemo(() => {
+        const rawTokens = currentSample.tokens;
+        const rawIds = currentSample.ids;
+        const isTruncated = rawTokens.length > maxLen;
+        const slicedTokens = rawTokens.slice(0, maxLen);
+        const slicedIds = rawIds.slice(0, maxLen);
+        const padCount = Math.max(0, maxLen - slicedTokens.length);
+        const finalTokens = [...slicedTokens, ...Array(padCount).fill("[PAD]")];
+        const finalIds = [...slicedIds, ...Array(padCount).fill(0)];
+        const mask = finalTokens.map(t => (t === "[PAD]" ? 0 : 1));
+        return { finalTokens, finalIds, mask, isTruncated, padCount };
+      }, [currentSample, maxLen]);
+
+      // Self-Attention (3x2 Q/K/V 예제 계산)
+      const attentionData = useMemo(() => {
+        const Q = [[1, 0], [0, 1], [1, 1]];
+        const K = [[1, 0], [0, 1], [1, 1]];
+        const V = [[1, 0], [0, 1], [1, 1]];
+        const scale = Math.sqrt(2);
+
+        const scores = Q.map(q =>
+          K.map(k => (q[0] * k[0] + q[1] * k[1]) / scale)
+        );
+
+        const weights = scores.map((row, i) => {
+          const maskedRow = row.map((val, j) => (useCausalMask && j > i ? -Infinity : val));
+          const maxVal = Math.max(...maskedRow.filter(v => v !== -Infinity));
+          const exps = maskedRow.map(v => (v === -Infinity ? 0 : Math.exp(v - maxVal)));
+          const sum = exps.reduce((a, b) => a + b, 0);
+          return exps.map(e => e / sum);
+        });
+
+        const out = weights.map(wRow => [
+          wRow[0] * V[0][0] + wRow[1] * V[1][0] + wRow[2] * V[2][0],
+          wRow[0] * V[0][1] + wRow[1] * V[1][1] + wRow[2] * V[2][1]
+        ]);
+
+        return { Q, K, V, scores, weights, out };
+      }, [useCausalMask]);
+
+      // Temperature Softmax 계산 (logits = [2.0, 1.0, 0.0])
+      const probs = useMemo(() => {
+        const logits = [2.0, 1.0, 0.0];
+        const scaled = logits.map(l => l / temp);
+        const maxL = Math.max(...scaled);
+        const exps = scaled.map(s => Math.exp(s - maxL));
+        const sum = exps.reduce((a, b) => a + b, 0);
+        return exps.map(e => e / sum);
+      }, [temp]);
+
+      const copyText = (text, key) => {
+        navigator.clipboard.writeText(text);
+        setCopied(key);
+        setTimeout(() => setCopied(""), 2000);
+      };
+
+      return (
+        <div className="min-h-screen bg-[#0b0f19] text-slate-100 p-4 md:p-8">
+          <div className="max-w-6xl mx-auto space-y-6">
+            {/* 상단 헤더 */}
+            <header className="bg-gradient-to-r from-indigo-950/80 via-slate-900 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-1">
+                  <span className="px-2 py-0.5 bg-indigo-500/20 rounded-full border border-indigo-500/40">Day 20 · 2026.11.13</span>
+                  <span>생성형 AI · LLM 및 RAG 엔지니어링</span>
+                </div>
+                <h1 className="text-2xl md:text-3xl font-bold text-white">
+                  LLM 내부 원리 & Transformer 인터랙티브 대시보드
+                </h1>
+                <p className="text-sm text-slate-400 mt-1">
+                  사내 문의: <span className="text-amber-300 font-medium">"FastAPI에서 PostgreSQL 연결이 안 됩니다."</span> — 문장이 Token에서 출력이 되기까지
+                </p>
+              </div>
+
+              {/* 메인 탭 전환 버튼 */}
+              <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+                {[
+                  { id: "sim", label: "⚡ 실습 시뮬레이터" },
+                  { id: "summary", label: "📚 1~8교시 핵심 요약" },
+                  { id: "notion", label: "📝 노션 & Git 복사" }
+                ].map(t => (
+                  <button
+                    key={t.id}
+                    onClick={() => setMainTab(t.id)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                      mainTab === t.id
+                        ? "bg-indigo-600 text-white shadow-lg"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </header>
+
+            {/* 탭 1: 실습 시뮬레이터 */}
+            {mainTab === "sim" && (
+              <div className="space-y-6">
+                {/* 4단계 파이프라인 네비게이터 */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { s: 1, title: "01. Token & Context", sub: "2교시 · 분할·패딩·예산" },
+                    { s: 2, title: "02. Embedding & Cosine", sub: "3교시 · 벡터·방향 유사도" },
+                    { s: 3, title: "03. Self-Attention", sub: "4~5교시 · Q/K/V & Mask" },
+                    { s: 4, title: "04. Logits & Decoding", sub: "6~8교시 · 온도·추론·RAG" }
+                  ].map(item => (
+                    <button
+                      key={item.s}
+                      onClick={() => setStep(item.s)}
+                      className={`text-left p-4 rounded-xl border transition-all ${
+                        step === item.s
+                          ? "bg-indigo-600/20 border-indigo-500 shadow-lg shadow-indigo-500/10"
+                          : "bg-slate-900/70 border-slate-800 hover:border-slate-700"
+                      }`}
+                    >
+                      <div className="text-xs text-indigo-400 font-semibold">{item.sub}</div>
+                      <div className="text-base font-bold text-white mt-0.5">{item.title}</div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* STEP 1: Token & Context */}
+                {step === 1 && (
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h2 className="text-lg font-bold text-white">🔤 Tokenizer · Padding · Attention Mask 실험</h2>
+                        <div className="flex gap-1.5">
+                          {SAMPLES.map((s, idx) => (
+                            <button
+                              key={s.id}
+                              onClick={() => setSampleIdx(idx)}
+                              className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                                sampleIdx === idx ? "bg-indigo-600 text-white" : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                              }`}
+                            >
+                              {s.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="p-3.5 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <div>
+                          <span className="text-xs text-indigo-400 font-semibold mr-2">[{currentSample.title}]</span>
+                          <span className="text-sm text-slate-200">"{currentSample.text}"</span>
+                        </div>
+                        <span className="text-xs bg-slate-800 px-2.5 py-1 rounded text-slate-300">
+                          원본 Token: {currentSample.tokens.length}개
+                        </span>
+                      </div>
+
+                      <div>
+                        <div className="flex justify-between text-xs text-slate-300 mb-1">
+                          <span>배치 최대 길이 (max_length = <strong>{maxLen}</strong>)</span>
+                          <span>
+                            {tokenAnalysis.isTruncated ? (
+                              <span className="text-rose-400 font-semibold">⚠️ Truncation 발생 (뒤쪽 잘림!)</span>
+                            ) : tokenAnalysis.padCount > 0 ? (
+                              <span className="text-emerald-400 font-semibold">✅ Padding {tokenAnalysis.padCount}개 추가됨</span>
+                            ) : (
+                              <span className="text-sky-400">딱 맞음</span>
+                            )}
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min="6"
+                          max="16"
+                          value={maxLen}
+                          onChange={e => setMaxLen(Number(e.target.value))}
+                          className="w-full accent-indigo-500 cursor-pointer"
+                        />
+                      </div>
+
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-xs text-center border-collapse">
+                          <thead>
+                            <tr className="bg-slate-950 text-slate-400 border-b border-slate-800">
+                              <th className="p-2 text-left">구분</th>
+                              {tokenAnalysis.finalTokens.map((_, i) => (
+                                <th key={i} className="p-2 font-mono">t{i + 1}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="border-b border-slate-800/60">
+                              <td className="p-2 text-left font-semibold text-indigo-300">Token</td>
+                              {tokenAnalysis.finalTokens.map((t, i) => (
+                                <td key={i} className={`p-2 font-mono ${t === "[PAD]" ? "text-slate-600" : "text-white font-semibold"}`}>
+                                  {t}
+                                </td>
+                              ))}
+                            </tr>
+                            <tr className="border-b border-slate-800/60">
+                              <td className="p-2 text-left font-semibold text-amber-300">Token ID</td>
+                              {tokenAnalysis.finalIds.map((id, i) => (
+                                <td key={i} className="p-2 font-mono text-slate-300">{id}</td>
+                              ))}
+                            </tr>
+                            <tr>
+                              <td className="p-2 text-left font-semibold text-emerald-300">Mask</td>
+                              {tokenAnalysis.mask.map((m, i) => (
+                                <td key={i} className={`p-2 font-mono font-bold ${m === 1 ? "text-emerald-400" : "text-rose-500"}`}>
+                                  {m}
+                                </td>
+                              ))}
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <h3 className="text-base font-bold text-white">📊 Context Window 예산 계산기</h3>
+                      <p className="text-xs text-slate-400">
+                        시스템 지시(300) + 이전 대화(1,200) + 질문(150) + 출력 예약(850) + 검색 근거
+                      </p>
+                      <div>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span>RAG 검색 근거 Token</span>
+                          <span className="font-mono text-indigo-400">{ragBudget} tokens</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="500"
+                          max="3000"
+                          step="100"
+                          value={ragBudget}
+                          onChange={e => setRagBudget(Number(e.target.value))}
+                          className="w-full accent-indigo-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-2 text-xs">
+                        <div className="flex justify-between"><span>고정 예산 합계:</span><span className="font-mono">2,500</span></div>
+                        <div className="flex justify-between text-indigo-300"><span>+ RAG 검색 근거:</span><span className="font-mono">{ragBudget}</span></div>
+                        <div className="border-t border-slate-800 pt-2 flex justify-between font-bold text-sm">
+                          <span>총 필요 Context:</span>
+                          <span className={2500 + ragBudget > 4500 ? "text-rose-400" : "text-emerald-400"}>
+                            {(2500 + ragBudget).toLocaleString()} / 4,500
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 2: Embedding & Cosine */}
+                {step === 2 && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <h2 className="text-lg font-bold text-white">🧭 2D 벡터 Cosine 유사도 (방향 비교)</h2>
+                      <p className="text-xs text-slate-400">
+                        수업 코드: <code className="text-indigo-300">a=[1.0, 0.0]</code>, <code className="text-emerald-300">b=[0.8, 0.2]</code>, <code className="text-rose-300">c=[-1.0, 0.0]</code>
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 pt-2">
+                        <div className="p-4 bg-slate-950 rounded-xl border border-emerald-500/30">
+                          <div className="text-xs text-slate-400">Cosine(a, b) · 같은 방향</div>
+                          <div className="text-2xl font-bold text-emerald-400 font-mono mt-1">+0.9701</div>
+                          <div className="text-xs text-slate-400 mt-1">실습 안내 A ↔ 실습 안내 B (유사)</div>
+                        </div>
+                        <div className="p-4 bg-slate-950 rounded-xl border border-rose-500/30">
+                          <div className="text-xs text-slate-400">Cosine(a, c) · 정반대 방향</div>
+                          <div className="text-2xl font-bold text-rose-400 font-mono mt-1">-1.0000</div>
+                          <div className="text-xs text-slate-400 mt-1">방향이 정반대인 벡터</div>
+                        </div>
+                      </div>
+                      <div className="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
+                        💡 <strong>핵심 주의점:</strong> Cosine 유사도가 높다는 것은 의미 방향이 비슷하다는 뜻일 뿐, 그 문장이 <strong>최신 사실인지·올바른 출처인지</strong>는 보장하지 않습니다!
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <h2 className="text-lg font-bold text-white">⚖️ Token Embedding vs Sentence Embedding</h2>
+                      <div className="space-y-3 text-xs">
+                        <div className="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                          <div className="font-bold text-indigo-400 mb-1">1) Token Embedding — shape: (B, T, D) 예: (2, 5, 8)</div>
+                          <p className="text-slate-300">각 Token ID를 길이 D의 연속 벡터로 바꾼 것. Transformer Block 내부의 Attention 계산 입력으로 들어갑니다.</p>
+                        </div>
+                        <div className="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                          <div className="font-bold text-emerald-400 mb-1">2) Sentence Embedding — shape: (B, D) 예: (3, 384)</div>
+                          <p className="text-slate-300">문장 전체를 대표하는 하나의 벡터. RAG에서 질문과 지식 문서 간 의미 검색(Vector DB)에 사용합니다.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 3: Self-Attention */}
+                {step === 3 && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-lg font-bold text-white">🔥 3×3 Self-Attention Weight 행렬</h2>
+                        <button
+                          onClick={() => setUseCausalMask(!useCausalMask)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                            useCausalMask ? "bg-indigo-600 text-white" : "bg-slate-800 text-slate-300"
+                          }`}
+                        >
+                          Causal Mask: {useCausalMask ? "ON (미래 가림)" : "OFF (양방향)"}
+                        </button>
+                      </div>
+                      <p className="text-xs text-slate-400">행을 클릭하면 오른쪽에서 가중합(Weight × V) 수식을 직접 확인합니다.</p>
+
+                      <table className="w-full text-center text-sm border-collapse">
+                        <thead>
+                          <tr className="text-xs text-slate-400 border-b border-slate-800">
+                            <th className="p-2">Query \ Key</th>
+                            <th className="p-2">Key t1</th>
+                            <th className="p-2">Key t2</th>
+                            <th className="p-2">Key t3</th>
+                            <th className="p-2 text-emerald-400">행 합계</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {attentionData.weights.map((row, i) => (
+                            <tr
+                              key={i}
+                              onClick={() => setSelectedRow(i)}
+                              className={`cursor-pointer border-b border-slate-800/70 transition ${
+                                selectedRow === i ? "bg-indigo-600/20" : "hover:bg-slate-800/40"
+                              }`}
+                            >
+                              <td className="p-3 font-bold text-indigo-300">Query t{i + 1}</td>
+                              {row.map((w, j) => (
+                                <td key={j} className={`p-3 font-mono ${w === 0 ? "text-slate-600" : "text-white font-semibold"}`}>
+                                  {w.toFixed(2)}
+                                </td>
+                              ))}
+                              <td className="p-3 font-mono text-emerald-400 font-bold">
+                                {row.reduce((a, b) => a + b, 0).toFixed(2)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <h2 className="text-lg font-bold text-white">🧮 선택된 행(t{selectedRow + 1})의 Value 가중합 계산</h2>
+                      <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3 text-xs font-mono">
+                        <div className="text-slate-400">// V = [[1, 0], [0, 1], [1, 1]]</div>
+                        <div>
+                          Weight(t{selectedRow + 1}) = [
+                          {attentionData.weights[selectedRow].map(w => w.toFixed(2)).join(", ")}]
+                        </div>
+                        <div className="text-indigo-300">
+                          Output(t{selectedRow + 1}) = {attentionData.weights[selectedRow][0].toFixed(2)}×[1,0] +{" "}
+                          {attentionData.weights[selectedRow][1].toFixed(2)}×[0,1] +{" "}
+                          {attentionData.weights[selectedRow][2].toFixed(2)}×[1,1]
+                        </div>
+                        <div className="text-base font-bold text-emerald-400 pt-1">
+                          ≈ [{attentionData.out[selectedRow][0].toFixed(2)}, {attentionData.out[selectedRow][1].toFixed(2)}]
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        • <strong>Q·K^T / √d_k</strong>는 참고 비율을 구하기 위한 점수(Score)이고, Softmax를 거치면 합이 1인 가중치(Weight)가 됩니다.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 4: Logits & Temperature */}
+                {step === 4 && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-lg font-bold text-white">🌡️ Logit → Softmax 확률 & Temperature 실험</h2>
+                        <span className="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 rounded font-mono text-xs">
+                          Temp = {temp.toFixed(1)}
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="0.2"
+                        max="2.5"
+                        step="0.1"
+                        value={temp}
+                        onChange={e => setTemp(Number(e.target.value))}
+                        className="w-full accent-indigo-500 cursor-pointer"
+                      />
+                      <div className="space-y-3 pt-2">
+                        {[
+                          { tok: "후보 1: '확인합니다'", logit: 2.0, p: probs[0] },
+                          { tok: "후보 2: '점검하세요'", logit: 1.0, p: probs[1] },
+                          { tok: "후보 3: '재부팅'", logit: 0.0, p: probs[2] }
+                        ].map((item, i) => (
+                          <div key={i} className="space-y-1 text-xs">
+                            <div className="flex justify-between">
+                              <span className="font-semibold text-slate-200">{item.tok} (Logit: {item.logit.toFixed(1)})</span>
+                              <span className="font-mono text-emerald-400 font-bold">{(item.p * 100).toFixed(1)}%</span>
+                            </div>
+                            <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800">
+                              <div
+                                className="bg-indigo-500 h-full transition-all duration-200"
+                                style={{ width: `${item.p * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                      <h2 className="text-lg font-bold text-white">🏗️ AI Agent 플랫폼 계층별 책임 분리</h2>
+                      <div className="grid grid-cols-2 gap-3 text-xs">
+                        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                          <div className="font-bold text-sky-400">1. FastAPI (서비스 입구)</div>
+                          <p className="text-slate-400 mt-1">요청/응답 스키마 검증, 상태코드, 도구 실행 권한 통제</p>
+                        </div>
+                        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                          <div className="font-bold text-emerald-400">2. PostgreSQL (원본 저장)</div>
+                          <p className="text-slate-400 mt-1">지식 원본·분류 무결성 보관 및 트랜잭션 확정</p>
+                        </div>
+                        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                          <div className="font-bold text-amber-400">3. RAG (검색 근거 연결)</div>
+                          <p className="text-slate-400 mt-1">관련 문서를 검색해 LLM의 Context 예산에 주입</p>
+                        </div>
+                        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                          <div className="font-bold text-indigo-400">4. LLM (언어 추론·생성)</div>
+                          <p className="text-slate-400 mt-1">문맥을 읽고 다음 Token 확률을 계산해 답변 초안 생성</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 탭 2: 1~8교시 핵심 요약 */}
+            {mainTab === "summary" && (
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { h: "1교시 · LLM 생태계와 역할", d: "AI ⊃ 생성형 AI ⊃ Foundation Model ⊃ LLM. LLM은 다음 Token 점수를 계산해 생성할 뿐, 원본 저장(PostgreSQL)과 권한 통제(FastAPI)는 백엔드의 몫이다." },
+                  { h: "2교시 · Tokenizer & Context Window", d: "문자열 → Token → 정수 Token ID. 배치 처리를 위해 Padding(길이 맞춤), Truncation(잘림), Attention Mask(1/0)를 쓰며, 시스템 지시·대화·RAG 근거·출력이 모두 Context 예산을 공유한다." },
+                  { h: "3교시 · Embedding & Cosine 유사도", d: "Token ID는 단순 번호표이고 Embedding은 학습된 연속 벡터다. Cosine 유사도는 방향(1: 같음, 0: 직교, -1: 반대)을 비교하며, 유사도가 높다고 사실성이 보장되지는 않는다." },
+                  { h: "4교시 · Transformer Block & Shape", d: "입력 (B, T, D)가 Self-Attention(문맥 혼합) → Residual + LayerNorm → FFN(위치별 비선형 변환)을 거치며 동일한 shape (B, T, D)를 유지한 채 층을 통과한다." },
+                  { h: "5교시 · Self-Attention & Causal Mask", d: "softmax((Q·K^T)/√d_k + Mask) × V. Decoder 생성 모델은 미래 Token을 컨닝하지 못하도록 상삼각 행렬을 -inf로 가리는 Causal Mask를 적용한다." },
+                  { h: "6교시 · Training vs Inference & Decoding", d: "학습은 Loss와 backward(), optimizer.step()으로 가중치를 바꾸지만, 추론은 가중치를 고정하고 KV Cache를 활용하며 Logit에 Softmax/Temperature/Top-k/Top-p를 적용해 다음 Token을 고른다." },
+                  { h: "7교시 · 한계·검증·RAG/Agent 경계", d: "환각(Hallucination), 지식 시점 한계, 보안 문제를 막기 위해 형식(Schema)·근거(RAG 출처)·정확성·권한(Backend 승인)을 분리해 검증해야 한다." },
+                  { h: "8교시 · 일일프로젝트 종합", d: "지식 3건(실습 파일 보관, 서버 실행, 질문 작성)과 사내 문의 사례를 통해 Token → Embedding → Attention → Logit → RAG/Agent 연결을 한 장의 흐름도로 설명한다." }
+                ].map((c, idx) => (
+                  <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                    <div className="text-sm font-bold text-indigo-400 mb-1.5">{c.h}</div>
+                    <p className="text-xs text-slate-300 leading-relaxed">{c.d}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* 탭 3: 노션 & Git 명령어 복사 */}
+            {mainTab === "notion" && (
+              <div className="space-y-4">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-base font-bold text-white">🚀 Day 20 스켈레톤 Git 세팅 명령어</h2>
+                    <button
+                      onClick={() => copyText(`cd /c/workspace\ngit add .gitignore 20261113/\ngit commit -m "chore: Day20 LLM 생태계 및 Token·Embedding·Attention 실습 기초 스켈레톤 세팅"\ngit push`, "git")}
+                      className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold rounded-lg"
+                    >
+                      {copied === "git" ? "✅ 복사 완료!" : "명령어 복사"}
+                    </button>
+                  </div>
+                  <pre className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono text-emerald-300 overflow-x-auto">
+{`cd /c/workspace
+git add .gitignore 20261113/
+git commit -m "chore: Day20 LLM 생태계 및 Token·Embedding·Attention 실습 기초 스켈레톤 세팅"
+git push`}
+                  </pre>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
