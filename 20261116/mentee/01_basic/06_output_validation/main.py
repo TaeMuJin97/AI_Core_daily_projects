@@ -42,7 +42,7 @@ def make_model():
         model_config = ConfigDict(extra="forbid", strict=True)
         status: Literal["answered", "insufficient_context"]
         answer: str = Field(min_length=1, max_length=500)
-        source_ids: list[SourceID] = Field(max_length=3)
+        source_ids: list[SourceID] = Field(max_length=3) # type: ignore
         missing_information: str = Field(max_length=200)
 
     # 기본값을 추가하지 마세요. 네 필드 모두 필수입니다.
