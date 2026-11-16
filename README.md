@@ -42,4 +42,4 @@
   - **주요 학습 내용**: Subword Tokenizer 분할 원리, Context Window 한계와 Attention 메커니즘 이해, Temperature/Top-p 샘플링에 따른 출력 분포 및 환각(Hallucination) 발생 원인 분석
 - **[Day 21 (2026-11-16)](./20261116/)**: Prompt Engineering·Context 예산 관리 및 출력 검증·제한된 재시도 파이프라인 (`AI 지식 답변 생성기 v1`)
   - **주요 학습 내용**: `string.Template` 기반 6요소 프롬프트 안전 조립, Zero/Few-shot 예제 오염 분리(`ID 901`), 작업 분해와 정보 부족(`insufficient_context`) 기준 정의, Context Window 토큰 예산(`margin=256`) 계산, Pydantic(`strict=True`) 기반 3단계 출력 검증기 및 최대 2회 제한 재시도(Bounded Retry) 제어, Dev(`D01~D03`)/Holdout(`H01~H03`) 분리 A/B 평가 구축
-  - [📄 Day 21 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261116/mentee/01_basic/08_daily_project/ARCHITECTURE_NOTES.md)
+  - [📄 Day 21 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261116/ARCHITECTURE_NOTES.md)
