@@ -43,3 +43,6 @@
 - **[Day 21 (2026-11-16)](./20261116/)**: Prompt Engineering·Context 예산 관리 및 출력 검증·제한된 재시도 파이프라인 (`AI 지식 답변 생성기 v1`)
   - **주요 학습 내용**: `string.Template` 기반 6요소 프롬프트 안전 조립, Zero/Few-shot 예제 오염 분리(`ID 901`), 작업 분해와 정보 부족(`insufficient_context`) 기준 정의, Context Window 토큰 예산(`margin=256`) 계산, Pydantic(`strict=True`) 기반 3단계 출력 검증기 및 최대 2회 제한 재시도(Bounded Retry) 제어, Dev(`D01~D03`)/Holdout(`H01~H03`) 분리 A/B 평가 구축
   - [📄 Day 21 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261116/ARCHITECTURE_NOTES.md)
+  - [Day 22 (2026-11-17)](./20261117/): 프로덕션 LLM API 클라이언트 설계 및 운영 제어 파이프라인 (`AI 지식 답변 생성기 v2`)
+  - 주요 학습 내용: `.env` 환경변수 분리 및 OpenAI Responses API 연결, `WireAnswer`(`text.format`) 서버 스키마와 `response_gate`(거절·미완료·빈 출력 분리), SSE 스트리밍 수신 및 TTFT(`first_text_ms`) 단조 시계 측정, HTTP 401/403/429(`quota` vs `rate_limit`) 오류 분류와 2차원 제한 재시도(`2×2=4`), `Decimal` 기반 캐시·일반 토큰 분리 비용 정산, SHA-256 조건부 캐시 키와 사람 승인 기반 `Response Cache`(`checkpoint_cache`), 명시적 모델 라우팅(`fast`/`quality`) 및 `H01~H03` 통합 회귀 검증
+  - [📄 Day 22 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261117/ARCHITECTURE_NOTES.md)
