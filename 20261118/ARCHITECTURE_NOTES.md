@@ -1,6 +1,6 @@
 # 📐 Day 23 Architecture Notes: Embedding · pgvector · Retriever 전체 지도 및 파이프라인 설계
 
-**핵심 아키텍처 요약**: Day 23에서는 Embedding, pgvector, Retriever(검색 결과 평가 포함) 파이프라인을 구축하며, 기존에 구축한 **11/10-11 기반(FastAPI, PostgreSQL)**과 **11/16-17 기반(Context 구성, Prompt 조립, LLM Client, 출력 검사)**을 그대로 유지한 채 의미 기반 검색 계층(Semantic Retrieval Layer)을 결합합니다.
+**핵심 아키텍처 요약**: Day 23에서는 Embedding, pgvector, Retriever(검색 결과 평가 포함) 파이프라인을 구축하며, 기존에 구축한 11/10-11 기반(FastAPI, PostgreSQL)과 11/16-17 기반(Context 구성, Prompt 조립, LLM Client, 출력 검사)을 그대로 유지한 채 의미 기반 검색 계층(Semantic Retrieval Layer)을 결합합니다.
 
 ---
 
