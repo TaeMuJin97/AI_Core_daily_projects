@@ -46,3 +46,6 @@
   - [Day 22 (2026-11-17)](./20261117/): 프로덕션 LLM API 클라이언트 설계 및 운영 제어 파이프라인 (`AI 지식 답변 생성기 v2`)
   - 주요 학습 내용: `.env` 환경변수 분리 및 OpenAI Responses API 연결, `WireAnswer`(`text.format`) 서버 스키마와 `response_gate`(거절·미완료·빈 출력 분리), SSE 스트리밍 수신 및 TTFT(`first_text_ms`) 단조 시계 측정, HTTP 401/403/429(`quota` vs `rate_limit`) 오류 분류와 2차원 제한 재시도(`2×2=4`), `Decimal` 기반 캐시·일반 토큰 분리 비용 정산, SHA-256 조건부 캐시 키와 사람 승인 기반 `Response Cache`(`checkpoint_cache`), 명시적 모델 라우팅(`fast`/`quality`) 및 `H01~H03` 통합 회귀 검증
   - [📄 Day 22 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261117/ARCHITECTURE_NOTES.md)
+  - [Day 23 (2026-11-18)](./20261118/): Embedding 및 PostgreSQL `pgvector` 기반 Semantic Search Retriever 구축
+  - 주요 학습 내용: 비대칭 검색(Asymmetric Search) 및 사전 준비(Ingest)·질문 요청(Query) 경로 분리, Dot Product·Cosine Similarity/Distance(`<=>`)·L2 Distance 수학적 비교 및 영벡터·`NaN` 무결성 검증, `intfloat/multilingual-e5-small`(`384차원`) 모델 로드 및 `query:`·`passage:` 접두어 계약 적용, Windows 11 PostgreSQL 18.6 환경 `pgvector v0.8.7` 서버 확장 빌드 및 `register_vector` 연동, `day23_search_docs` 스키마 설계·Metadata 필터 Top-k 조회, Exact Search 기준선과 HNSW 인덱스 실행 계획(`EXPLAIN`) 비교 및 Retrieval 결과 정성평가(`empty`·`error`·`irrelevant` 분리)
+  - [📄 Day 23 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261118/ARCHITECTURE_NOTES.md)
