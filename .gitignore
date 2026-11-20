@@ -17,6 +17,9 @@ Thumbs.db
 # 강사님 원본 클론 폴더(practice_assignment) 제외
 practice_assignment/
 
+# 개인 프로젝트 레포지토리 제외
+report-agent-project/
+
 # 데이터 및 학습 결과물 폴더/파일 제외 (현업 정석)
 data/
 outputs/
@@ -38,3 +41,6 @@ p02_inputs.txt
 
 # pgvector test용 폴더 제외
 20261118/test/
+
+# 개인 프로젝트 레포지토리 제외
+report-agent-project/
