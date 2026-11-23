@@ -9,6 +9,7 @@ from coursekit.io import save_json, show_success
 from coursekit.data import example_hit, load_hits
 from coursekit.reporting import execution_record
 
+# max_items = 2 (magic number를 안에 쓰지 말기?)
 def format_hit(hit: dict) -> str:
     """Hit 한 건의 ID·위치·본문을 한 문자열 블록으로 반환합니다."""
     # BEGIN D26-02-I01
