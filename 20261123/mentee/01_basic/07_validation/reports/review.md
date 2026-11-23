@@ -29,3 +29,4 @@
 
 - `01_basic` (기본필수) 수준을 선택해 `normal`, `insufficient`, `unknown_source` 3개 공통 사례를 실행·검증함 (응용·심화 추가 항목은 해당 없음).
   - *(참고 개념 정리)*: `KnowledgeAnswer`는 `strict=True`와 `SourceID` 정수 제약을 두어 문자열 ID(`"201"`)는 스키마 단계에서 차단되고, 중복 ID(`[201, 201]`)는 `len(ids) != len(set(ids))`에서 `duplicate_source_ids`로 차단됨. 또한 `incomplete`는 `check_raw_message`에서 거절되는 시스템 오류이며, 출처 ID가 맞아도 원문 숫자를 틀린 `wrong_claim`은 기계 검사를 통과(`accepted`)할 수 있으므로 반드시 사람의 원문 대조(`human_review_required: true`)가 필요함.
+  
