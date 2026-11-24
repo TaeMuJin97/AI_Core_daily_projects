@@ -1,12 +1,26 @@
 # 실행 기록 (직접 작성)
 
-- 선택 단계 / 실습: 
-- 실행 날짜와 Python Interpreter:
-- 실행 모드: **live / offline_fixture** (둘 중 하나를 명확히 기록)
+- 선택 단계 / 실습: `01_basic` / `08_enhanced_rag_api` (Enhanced RAG FastAPI 통합)
+- 실행 날짜와 Python Interpreter: 2026-11-24 / Python 3.13 (`C:\workspace\envs\.backendenv`)
+- 실행 모드: **live** (`execution_mode: "live_e5_cuda_postgresql_llm"`, `outputs/day27_08_live.json` 실측 완료 및 `outputs/day27_08_fixture.json` 사전 검증 완료 — 두 결과를 구분하여 기록)
 - 요청 질문과 Category:
+  - `Q01` (`"회의실 예약을 취소하는 방법은?"`, `category: "시설"`, `use_rewrite=True`, `candidate_k=5`, `context_k=2`, `use_rerank=True`) → 정상 답변 (`HTTP 200`, `status: "answered"`)
+  - `Q06` (`"정확한 과제 마감 날짜는?"`, `use_rewrite=False`, `candidate_k=5`, `context_k=2`, `use_rerank=True`) → 근거 부족 거절 (`HTTP 200`, `status: "insufficient_context"`)
+  - `INVALID_K` (`candidate_k=0`) → 입력 계약 위반으로 파이프라인 호출 전 차단 (`HTTP 422`, `greater_than_equal: ge=1`)
+  - `FIXED_RERANK_ERROR` (`--offline` 고정 오류 Fixture) → `StageError('rerank', 'model_unavailable_fixture')`를 내부 처리 실패로 격리 (`HTTP 502`)
 - Query Rewrite의 원 질문과 검색용 질문:
+  - `Q01`: `original_question` `"회의실 예약을 취소하는 방법은?"` → `search_query` `"회의실 예약을 취소하는 방법은?"` (이미 독립적인 질문이므로 의미 왜곡 없이 유지됨)
+  - `Q06`: `use_rewrite=False` 설정으로 `rewrite` 단계를 건너뛰고(`0.001ms`), `original_question` `"정확한 과제 마감 날짜는?"`을 그대로 `search_query`로 사용함
 - Candidate ID → Rerank ID → Context included ID:
+  - `Q01`: `candidate_ids` `["FAC-102-C1", "FAC-107-C1", "FAC-109-C1", "FAC-103-C1", "FAC-101-C1"]` → `ranked_ids` `["FAC-102-C1", "FAC-109-C1", "FAC-107-C1", "FAC-103-C1", "FAC-101-C1"]` (`FAC-109-C1` 3위→2위 상승) → `included_ids` `["FAC-102-C1", "FAC-109-C1"]`
+  - `Q06`: `candidate_ids` `["ASS-102-C1", "ASS-103-C1", "ASS-104-C1", "ASS-101-C1", "IT-102-C1"]` → `ranked_ids` 동일 순서 유지 → `included_ids` `["ASS-102-C1", "ASS-103-C1"]`
 - 답변과 출처 문서의 실제 내용 대조:
+  - `Q01`: `result.answer`는 `"예약 시스템의 ‘나의 예약’ 메뉴에서 해당 예약의 ‘취소’를 선택하세요. 시작 2시간 전까지 취소할 수 있습니다."` (`source_ids: [2]`), 서버 연결 `sources`는 `citation_id: 2` (`FAC-102-C1`, `2026-11-v2`, `guides/fac-102.md#section-1`)로 `included_ids` 범위 내의 유효한 출처임을 확인함
+  - `Q06`: Context에 과제 문서(`ASS-102-C1`, `ASS-103-C1`)가 포함되었으나 구체적인 마감 날짜가 없으므로 추측하지 않고 `status: "insufficient_context"`, `answer: "제공된 지식으로는 답할 수 없습니다."`, `source_ids: []`, `sources: []`, `missing_information: "과제별 정확한 마감 날짜가 제공되지 않았습니다. 과제별 안내가 필요합니다."`로 안전하게 거절됨을 확인함
 - 실패 또는 예상과 다른 결과:
+  - `PYTHONUTF8=1 python -m pytest -q tests` 실행 시 `[200, 200, 422, 502]` 계약이 `1 passed`로 통과함.
+  - 실측 `timing_ms`에서 주목할 점으로, 첫 요청(`Q01`)은 모델 로딩이 포함되어 `retrieval: 352.728ms`, `rerank: 4683.286ms`가 걸렸으나, 메모리에 모델이 상주한 두 번째 요청(`Q06`)에서는 **`retrieval: 38.143ms`, `rerank: 36.24ms`**로 급감함. 즉, RTX 5080에서 Warm-up 이후 실제 로컬 검색·재정렬 지연은 약 `74ms` 수준이며 전체 지연의 대부분은 LLM API 호출(`2621.791ms`)임을 실측으로 확인함.
 - 고친 TODO와 이유:
-- 다음 개선 가설 (실측 전에 성공으로 단정하지 말 것):
+  - `D27-08-B01` (`make_service_chain`): `coursekit.runtime.create_demo_chain(offline=bool(offline))`을 호출해 실행 모드에 따라 오프라인 Fixture 또는 실제 CUDA·DB·LLM 전체 RAG 파이프라인을 반환하도록 구현함
+  - `D27-08-B02` (`wire_fastapi`): `POST /api/v1/rag/answer` 라우터에 `RagRequest` 검증을 연결하고, 클라이언트 입력의 `role`을 신뢰하지 않고 서버에서 직접 `trusted_role="learner"`를 주입하며, `ValueError(422)`와 `StageError`·예상치 못한 예외(`502`)를 민감 정보 노출 없이 분리 처리하도록 구현함
+- 다음 개선 가설 (실측 전에 성공으로 단정하지 말 것): 실측에서 모델 상주(Warm-up) 시 GPU Rerank 지연이 `36.24ms`까지 줄어듦을 확인했으므로, 서비스 기동 시점(lifespan/startup)에 E5·Cross-Encoder를 사전 로딩하면 첫 요청 Cold Start 병목도 제거할 수 있을 것으로 예상됨. 또한 단일·소수 사례를 넘어 내일(Day 28) 다수 질문 평가 세트로 `Recall@k`, `MRR`, `nDCG`, `Faithfulness` 정량 지표를 검증할 계획임
