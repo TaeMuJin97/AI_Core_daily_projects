@@ -1,12 +1,21 @@
 # 실행 기록 (직접 작성)
 
-- 선택 단계 / 실습: 
-- 실행 날짜와 Python Interpreter:
-- 실행 모드: **live / offline_fixture** (둘 중 하나를 명확히 기록)
-- 요청 질문과 Category:
+- 선택 단계 / 실습: `01_basic` / `03_multi_query` (Multi-query 후보 통합)
+- 실행 날짜와 Python Interpreter: 2026-11-24 / Python 3.13 (`C:\workspace\envs\.backendenv`)
+- 실행 모드: **live** (`execution_mode: "live_e5_cuda_postgresql"`, `outputs/day27_03_live.json` 실측 완료 및 `outputs/day27_03_fixture.json` 사전 검증 완료)
+- 요청 질문과 Category: `Q01` (`category: "시설"`) — 기본 질문(`base`)과 LLM(`generate_queries_live`)이 생성한 확장 질의 중 첫 번째 질의를 결합한 총 2개 질의 사용
 - Query Rewrite의 원 질문과 검색용 질문:
+  - 원 질문(`base`): `Q01`의 원래 질문 문자열을 `plan_queries()`의 첫 번째 검색 질의로 반드시 포함해 보존함
+  - 검색용 질문(`queries`): 원 질문(`base`) + 확장 변형 질의 1개를 합쳐 공백·중복을 제거한 서로 다른 2개 질의 목록을 구성함
 - Candidate ID → Rerank ID → Context included ID:
-- 답변과 출처 문서의 실제 내용 대조:
+  - `per_query` (질의별 검색 후보): `queries`의 2개 질의 각각에 대해 동일한 `category="시설"`, `k=5`, `role="learner"` 필터 조건으로 RTX 5080 CUDA E5 + PostgreSQL(`d27_rag`) 벡터 검색을 수행해 후보 청크 목록을 수집함
+  - `merged_ids` (중복 제거 후 후보 합집합): `merge_candidates()`에서 `chunk_id`를 기준으로 중복을 제거한 고유 후보 ID 목록 (`len(merged_ids) == len(set(merged_ids))`)
+  - `found_by_query`: 각 고유 청크의 `metadata["found_by_query"]`에 해당 청크를 반환한 질의 문자열 목록이 추적됨 (Rerank 및 Context 선택은 후속 04·05 실습 단계이므로 미실행)
+- 답변과 출처 문서의 실제 내용 대조: 최종 답변 생성(Generation) 전 단계이므로 답변–출처 대조 대상은 없으나, PostgreSQL `d27_rag`에서 조회되어 병합된 `Document` 객체들에서 원본 `page_content`와 6개 출처 메타데이터가 유실되지 않고 `found_by_query` 필드만 안전하게 추가되었음을 `outputs/day27_03_live.json`에서 확인함
 - 실패 또는 예상과 다른 결과:
+  - 초기 실측 실행 시 ① 가상환경에 CPU 버전 PyTorch가 설치되어 `require_cuda()` 오류가 발생했고, ② PostgreSQL에 `d27_rag` 스키마 테이블이 미생성되어 `UndefinedTable` 오류가 발생함.
+  - `docs/ENVIRONMENT_SETUP.md` 2번·6번 절차에 따라 CUDA PyTorch 재설치(RTX 5080 `cuda:0`) 및 `python tools/setup_db.py --apply`(24개 청크 임베딩·적재)를 수행한 뒤 `python main.py` 실측 실행과 `PYTHONUTF8=1 python -m pytest -q tests`(`1 passed`) 모두 정상 통과함.
 - 고친 TODO와 이유:
-- 다음 개선 가설 (실측 전에 성공으로 단정하지 말 것):
+  - `D27-03-B01` (`plan_queries`): 원 질문(`base`)의 유효성을 검증하고 첫 번째 항목으로 반드시 포함한 뒤, `extras`에서 중복되지 않는 서로 다른 질의를 골라 기본필수 기준인 2개(`limit=2`)로 구성하도록 구현함
+  - `D27-03-B02` (`merge_candidates`): 질의별 `(query, docs)` 쌍을 순회하며 `chunk_id`를 중복 제거 키로 사용해 고유 `Document` 목록을 반환하고, 원본 `metadata`를 오염시키지 않도록 복사본에 `found_by_query` 리스트를 누적 기록함
+- 다음 개선 가설 (실측 전에 성공으로 단정하지 말 것): Multi-query로 서로 다른 표현의 후보 합집합(`merged`)을 모으면 단일 질의에서 놓치던 관련 청크가 후보에 포함될 가능성이 높아지지만, 후보 수가 늘면서 관련성이 낮은 문서도 함께 섞일 수 있으므로 다음 단계(`04_candidate_retrieval` · `05_cross_encoder_rerank`)에서 `candidate_k` 상한을 통제하고 Cross-Encoder로 정밀 재정렬해야 Context 품질이 개선될 것으로 예상됨 (실제 효과는 후속 실습에서 검증 필요)
