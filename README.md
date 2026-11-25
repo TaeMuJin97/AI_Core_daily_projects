@@ -49,3 +49,18 @@
   - [Day 23 (2026-11-18)](./20261118/): Embedding 및 PostgreSQL `pgvector` 기반 Semantic Search Retriever 구축
   - 주요 학습 내용: 비대칭 검색(Asymmetric Search) 및 사전 준비(Ingest)·질문 요청(Query) 경로 분리, Dot Product·Cosine Similarity/Distance(`<=>`)·L2 Distance 수학적 비교 및 영벡터·`NaN` 무결성 검증, `intfloat/multilingual-e5-small`(`384차원`) 모델 로드 및 `query:`·`passage:` 접두어 계약 적용, Windows 11 PostgreSQL 18.6 환경 `pgvector v0.8.7` 서버 확장 빌드 및 `register_vector` 연동, `day23_search_docs` 스키마 설계·Metadata 필터 Top-k 조회, Exact Search 기준선과 HNSW 인덱스 실행 계획(`EXPLAIN`) 비교 및 Retrieval 결과 정성평가(`empty`·`error`·`irrelevant` 분리)
   - [📄 Day 23 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261118/ARCHITECTURE_NOTES.md)
+  - **Day 24 (2026-11-19)**: Document Parsing · Chunking · Indexing Pipeline 구축
+  - **주요 학습 내용:** 원본 파일 보존 및 Manifest(`raw_sha256`) 추적, TXT(UTF-8)·Markdown(Heading Path)·HTML(`BeautifulSoup` `main`/표)·PDF(`pypdf`·`needs_ocr` 보류) 파싱, `NFC` vs `NFKC` 정규화와 의미 보존 정제(`clean_prose`), Character/Structure-aware Chunking 및 `E5-small`(`passage:`) 토큰 한도 검사, Span·Coverage 구간 병합·중복 검증, 결정적 `chunk_id`·Metadata Filter(`WHERE`) 및 `pgvector` `staging → ready → publish` 트랜잭션 버전 전환(`citation_id` 매핑)
+  - 📄 [Day 24 아키텍처 설계 및 회고록 (ARCHITECTURE_NOTES.md)](./20261119/ARCHITECTURE_NOTES.md)
+- **Day 25 (2026-11-20)**: 보고서 처리 Agent 개인 일일 프로젝트 (`SRS · ERD · API`)
+  - **주요 학습 내용:** SRS·ERD(10개 테이블·73개 컬럼)·API 명세서 기반 DB 우선 구축(`schema.sql`·`seed.sql` 6종 180건·Prompt 버전 60건), FastAPI 계층형 아키텍처(Router–Service–Repository–Integration)와 SQLAlchemy ORM 트랜잭션(`ON DELETE CASCADE`) 6종 보고서 CRUD, `E5-small` Overview 384차원 벡터 일괄 색인(`report_embeddings`), Keyword + Semantic Hybrid Search(`found`/`not_found` 구분), 원문 기반 실제 LLM 요약·Action Router(`get_report`/`find_report`/`summarize_report`) 및 Postman Collection 통합 검증
+  - *(`20261120` 폴더에는 제공된 스켈레톤 코드만 보관되어 있으며, 전체 구현 코드는 별도 레포지토리에서 관리)*
+  - 🔗 [보고서 처리 Agent 프로젝트 레포지토리 (report-agent-project)](https://github.com/TaeMuJin97/report-agent-project)
+- **Day 26 (2026-11-23)**: Basic RAG & LangChain 서비스 파이프라인 구축
+  - **주요 학습 내용:** Retrieval–Augment–Generation 5단계 흐름 및 기존 E5·`pgvector` 검색 어댑터(`make_retriever`) 연동, `Document`(`page_content`/`metadata`) 변환과 `candidate_k`·`context_k`·글자 예산 기반 Context 구성(`included_ids` 분리 보관), `ChatPromptTemplate`·`ChatOpenAI`·`RunnableLambda`·LCEL(`|`) 조립과 `invoke()` 실행 시점 분리, Pydantic Structured Output 기반 출처 ID 검증(`Citation Validity`)·Grounding 대조 및 FastAPI 엔드포인트 통합
+- **Day 27 (2026-11-24)**: LangChain RAG & Reranking 고도화 (`Query Rewrite · Multi-query · Cross-Encoder`)
+  - **주요 학습 내용:** 실패 위치별 진단 체계, 대화 History 기반 Query Rewrite(`needs_clarification` 조기 중단 및 원 질문 보존), Multi-query 질의 확장과 `chunk_id` 기준 중복 제거 병합, RTX 5080 CUDA GPU Cross-Encoder(`BAAI/bge-reranker-v2-m3`) 재정렬, 7단계 LCEL 파이프라인 통합(`trace`·`timing_ms` 관측성 및 `StageError` 격리), 동일 조건 Before/After 비교 및 CUDA 동기화 Latency 실측(Cold Start `4,683ms` → Warm-up `36.24ms`), FastAPI `/api/v1/rag/answer` 연동(`trusted_role` 서버 고정·`200`/`422`/`502` 상태 코드 분리)
+  - 📄 [Day 27 실습 종합 보고서 (DAY27_SUMMARY.md)](./20261124/mentee/DAY27_SUMMARY.md)
+- **Day 28 (2026-11-25)**: RAG Evaluation & Debugging 및 Agent Tool Quality Gate 구축
+  - **주요 학습 내용:** System→Retrieval→Rerank/Context→Generation 순차 실패 위치 분류, Gold Dataset 계약 검증(복수 정답·No-answer `[]`·Gold Leakage 차단), `Recall@k`·`Precision@k`·`Hit@k` 및 `RR`·`MRR`·`nDCG` 지표 구현, Claim-level `Faithfulness`·`Relevance`·`Correctness` 구분, LangChain `Runnable` 기반 Evaluation Runner(`safe_target_input`·`invoke_target`), 오프라인 Paired A/B 비교(`baseline` vs `rerank_only`) 및 `--live` 실측 디버깅(`gpt-4o-mini` 호환성 해결·`rewrite` `clarification_required` 과민 판정 교차 검증), Agent Tool 연결 전 1차 Quality Gate(`precheck_passed`) 집계
+  - 📄 [Day 28 실습 종합 보고서 (DAY28_SUMMARY.md)](./20261125/mentee/DAY28_SUMMARY.md)
