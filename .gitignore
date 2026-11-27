@@ -44,3 +44,4 @@ p02_inputs.txt
 
 # 개인 프로젝트 레포지토리 제외
 report-agent-project/
+langchain-report-assistant/
