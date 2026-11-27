@@ -1,0 +1,57 @@
+[
+  {
+    "id": "B-02",
+    "file": "app/core/preflight.py",
+    "hint": "repo.preflight()와 require_cuda()의 결과를 얻으세요. 유효 벡터 0 및 키/모델 미설정은 ServiceError. 상태 dict에 gpu, embedding_model, reranker_model, llm=configured 등을 담아 반환하세요."
+  },
+  {
+    "id": "B-04",
+    "file": "app/rag/embeddings.py",
+    "hint": "self.model.encode에 query: 접두어가 붙은 문자열을 전달하고 normalize_embeddings=True를 지정하세요. ndarray를 list로 변환하세요."
+  },
+  {
+    "id": "B-05",
+    "file": "app/db/repository.py",
+    "hint": "SELECT에 VIEW 필드와 embedding cosine distance(<=>)를 포함하세요. 고정 JOIN/FRESH를 사용하고 :vec, :cat, :rid, :k, :model 바인딩을 적용해 distance 오름차순 TOP-k를 반환하세요. SQL 문자열에 사용자 입력을 직접 넣지 마세요."
+  },
+  {
+    "id": "B-06",
+    "file": "app/rag/documents.py",
+    "hint": "Document의 page_content에는 row[content]를, metadata에는 source_id=RPT-번호, report_id/title/category_code/revision/overview/distance를 넣으세요."
+  },
+  {
+    "id": "B-07",
+    "file": "app/rag/reranker.py",
+    "hint": "(query, title + overview) 쌍 목록을 만들고 self.model.predict(..., batch_size=..., show_progress_bar=False)를 호출하세요. docs와 scores를 zip하여 점수 내림차순, ID 오름차순으로 ranked를 구성하세요."
+  },
+  {
+    "id": "B-08",
+    "file": "app/rag/pipeline.py",
+    "hint": "RunnableLambda에서 prepared의 question/query/context를 추출한 뒤 | RAG_PROMPT | model로 연결하세요. chain.invoke(prepared)의 AIMessage를 message에 저장하세요."
+  },
+  {
+    "id": "B-09",
+    "file": "app/tools/rag_tool.py",
+    "hint": "pipeline.run에 question, query, effective_category, args.k, meter를 순서대로 전달하세요. check_tool_output으로 rag_search 반환값을 검사하세요."
+  },
+  {
+    "id": "B-10",
+    "file": "app/db/repository.py",
+    "hint": "reports와 report_categories JOIN, report_embeddings LEFT JOIN을 사용하세요. WHERE report_id=:rid, FRESH의 COALESCE(false)로 최신성 검사. 실제 행이면 found, 없으면 not_found 반환."
+  },
+  {
+    "id": "B-11",
+    "file": "app/agent.py",
+    "hint": "create_agent에 model, tools, system_prompt, middleware를 전달하고 response_format=ProviderStrategy(ModelAnswer)를 지정하세요. agent.invoke의 messages에 user question과 Category를 넣고 config recursion_limit을 유한하게 지정하세요."
+  },
+  {
+    "id": "B-12",
+    "file": "app/api/agent.py",
+    "hint": "runtime.agent.ask(request_id, body, meter)를 호출하여 반환하세요. 응답 형식은 AskResponse입니다."
+  },
+  {
+    "id": "B-13",
+    "file": "app/services/validator.py",
+    "hint": "answer.answer에서 RPT-숫자 정규식으로 inline ID를 추출하세요. source_ids와 일치하고 중복이 없어야 하며 allowed 집합의 부분집합이어야 합니다."
+  }
+]
